@@ -15,12 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.Account;
-import com.bedrosians.bedlogic.domain.SimpleAccount;
 
 
 @Repository
-public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements AccountDao {
+public class AccountDaoImpl extends GenericDaoImpl<FullAccount, String> implements AccountDao {
 	
 
 	@Autowired
@@ -34,7 +34,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly=true)
-	public List<SimpleAccount> getSimpleAccounts(
+	public List<Account> getAccounts(
 			String accountName,
 			String addressStreetLine1,
 			String addressCity,
@@ -50,7 +50,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		query.setMaxResults(10);
-		List<SimpleAccount> list = (List<SimpleAccount>)query.list();
+		List<Account> list = (List<Account>)query.list();
        // tx.commit();
 	
 		return list;

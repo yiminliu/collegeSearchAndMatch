@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 //import org.hibernate.javax.persistence.hibernate-jpa-2.0-api.*;
-import com.bedrosians.bedlogic.domain.Account;
+import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.AccountPhone;
 import com.bedrosians.bedlogic.domain.BranchPK;
 import com.bedrosians.bedlogic.domain.CheckPayment;
-import com.bedrosians.bedlogic.domain.SimpleAccount;
+import com.bedrosians.bedlogic.domain.Account;
 import com.bedrosians.bedlogic.exeception.DataNotFoundException;
 import com.bedrosians.bedlogic.exeception.InvalidRequestParameterException;
 import com.bedrosians.bedlogic.exeception.RestError;
@@ -55,7 +55,7 @@ public class RestfulWebServiceAccountController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK )
 	@ResponseBody
-	public List<SimpleAccount> getSimpleAccounts(
+	public List<Account> getSimpleAccounts(
 			@RequestParam(value="accountName", required=false) String accountName,
 			@RequestParam(value="addressStreetLine1", required=false) String addressStreetLine1,
 			@RequestParam(value="addressCity", required=false) String addressCity,
@@ -71,7 +71,7 @@ public class RestfulWebServiceAccountController {
 	
 		if (activityStatus.equals("all") || activityStatus.equals("active") || activityStatus.equals("inactive")){
 
-			List<SimpleAccount> simpleAccounts = accountService.getSimpleAccounts(
+			List<Account> accounts = accountService.getAccounts(
 				accountName,
 				addressStreetLine1,
 				addressCity,
@@ -83,11 +83,11 @@ public class RestfulWebServiceAccountController {
 				ownerDriverLicenseNo,
 				phoneNo,
 				activityStatus);
-			if (simpleAccounts.size() == 0){
+			if (accounts.size() == 0){
 				throw new DataNotFoundException();
 			}
 		
-			return simpleAccounts;
+			return accounts;
 			
 		}
 		else{
@@ -95,40 +95,41 @@ public class RestfulWebServiceAccountController {
 		}
 	}
 	
-	@RequestMapping(value="/{accountId}", method=RequestMethod.GET)
+	@RequestMapping(value="/lookup/accountId/{accountId}", method=RequestMethod.GET)
 	@ResponseBody
-	public Account getAccountById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
-		Account account = accountService.getAccountById(accountId);
+	public FullAccount getAccountById(@RequestParam String accountId, HttpServletRequest request) throws Exception{
+	//public Account getAccountById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
+		FullAccount account = accountService.getAccountById(accountId);
 		if (account == null){
 			throw new DataNotFoundException();
 		}
 		return account;
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/lookup/accountName/{accountName}", method=RequestMethod.GET)
 	@ResponseBody
-	public Account getAccountByName(@RequestParam String accountName, HttpServletRequest request) throws Exception{
-		Account account = accountService.getAccountByName(accountName);
+	public FullAccount getAccountByName(@RequestParam String accountName, HttpServletRequest request) throws Exception{
+		FullAccount account = accountService.getAccountByName(accountName);
 		if (account == null){
 			throw new DataNotFoundException();
 		}
 		return account;
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/lookup/phoneNo/{phoneNo}", method=RequestMethod.GET)
 	@ResponseBody
-	public Account getAccountByPhoneNo(@RequestParam String phoneNo, HttpServletRequest request) throws Exception{
-		Account account = accountService.getAccountByName(phoneNo);
+	public FullAccount getAccountByPhoneNo(@RequestParam String phoneNo, HttpServletRequest request) throws Exception{
+		FullAccount account = accountService.getAccountByName(phoneNo);
 		if (account == null){
 			throw new DataNotFoundException();
 		}
 		return account;
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/lookup/driverLicenseNo/{driverLicenseNo}", method=RequestMethod.GET)
 	@ResponseBody
-	public Account getAccountByOwnerDriverLicenseNo(@RequestParam String driverLicenseNo, HttpServletRequest request) throws Exception{
-		Account account = accountService.getAccountByOwnerDriverLicenseNo(driverLicenseNo);
+	public FullAccount getAccountByOwnerDriverLicenseNo(@RequestParam String driverLicenseNo, HttpServletRequest request) throws Exception{
+		FullAccount account = accountService.getAccountByOwnerDriverLicenseNo(driverLicenseNo);
 		if (account == null){
 			throw new DataNotFoundException();
 		}

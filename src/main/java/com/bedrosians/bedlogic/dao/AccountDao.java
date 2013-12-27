@@ -2,11 +2,11 @@ package com.bedrosians.bedlogic.dao;
 
 import java.util.List;
 
+import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.Account;
-import com.bedrosians.bedlogic.domain.SimpleAccount;
 
-public interface AccountDao extends GenericDao<Account, String>{
-  public List<SimpleAccount> getSimpleAccounts(
+public interface AccountDao extends GenericDao<FullAccount, String>{
+  public List<Account> getAccounts(
 		String accountName,
 		String addressStreetLine1,
 		String addressCity,

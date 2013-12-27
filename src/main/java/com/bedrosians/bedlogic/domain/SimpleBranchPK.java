@@ -20,7 +20,7 @@ public class SimpleBranchPK implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="custcd")
-	private Account account;
+	private FullAccount account;
 
 	public String getBranchcd() {
 		return branchcd;
@@ -30,11 +30,11 @@ public class SimpleBranchPK implements Serializable {
 		this.branchcd = branchcd;
 	}
 
-	public Account getAccount() {
+	public FullAccount getAccount() {
 		return account;
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(FullAccount account) {
 		this.account = account;
 	}
 }

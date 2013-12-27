@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bedrosians.bedlogic.dao.AccountBranchDao;
 import com.bedrosians.bedlogic.dao.AccountDao;
 import com.bedrosians.bedlogic.dao.CheckPaymentDao;
-import com.bedrosians.bedlogic.domain.Account;
+import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.BranchPK;
 import com.bedrosians.bedlogic.domain.CheckPayment;
-import com.bedrosians.bedlogic.domain.SimpleAccount;
+import com.bedrosians.bedlogic.domain.Account;
 
 @Service
 @Transactional
@@ -30,21 +30,21 @@ public class AccountServiceImpl implements AccountService {
 	
     @Override
 	@Transactional(readOnly=true)
-	public List<Account> getAllAccounts(){
-    	List<Account> accountList = null;
+	public List<FullAccount> getAllAccounts(){
+    	List<FullAccount> accountList = null;
     	return accountList;
     }    
 	
     @Override
 	@Transactional(readOnly=true)
-	public List<Account> getActiveAccounts(){
-    	List<Account> accountList = null;
+	public List<FullAccount> getActiveAccounts(){
+    	List<FullAccount> accountList = null;
     	return accountList;
     }
 	    
 	@Override
 	@Transactional(readOnly=true)
-	public List<SimpleAccount> getSimpleAccounts(
+	public List<Account> getAccounts(
 			String accountName,
 			String addressStreetLine1,
 			String addressCity,
@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
 			String ownerDriverLicenseNo,
 			String phoneNo,
 			String activityStatus) {
-		return accountDao.getSimpleAccounts(
+		return accountDao.getAccounts(
 				accountName,
 				addressStreetLine1,
 				addressCity,
@@ -72,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Account getAccountById(String id) {
+	public FullAccount getAccountById(String id) {
 		
 		String spaces = "";
 		
@@ -81,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
 			spaces = spaces.concat(" ");
 		}
 		
-		Account account = accountDao.read(id.concat(spaces));
+		FullAccount account = accountDao.read(id.concat(spaces));
 		if (account != null){
 			account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
 		}
@@ -90,22 +90,22 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	@Transactional(readOnly=true)
-    public Account getAccountByName(String name){
-		Account account = null;
+    public FullAccount getAccountByName(String name){
+		FullAccount account = null;
 		return account;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Account getAccountByPhoneNo(String phoneNo){
-		Account account = null;
+	public FullAccount getAccountByPhoneNo(String phoneNo){
+		FullAccount account = null;
 		return account;
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
-	public Account getAccountByOwnerDriverLicenseNo(String driverLicenseNo){
-		Account account = null;
+	public FullAccount getAccountByOwnerDriverLicenseNo(String driverLicenseNo){
+		FullAccount account = null;
 		return account;
 	}
 	

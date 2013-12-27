@@ -26,7 +26,7 @@ public class AccountPhone implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="custcd", nullable=false)
-	private Account account;
+	private FullAccount account;
 	
 	@Column(name="branchcd")
 	private String branchId;

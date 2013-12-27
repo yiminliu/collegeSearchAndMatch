@@ -4,28 +4,28 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bedrosians.bedlogic.domain.Account;
+import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.BranchPK;
 import com.bedrosians.bedlogic.domain.CheckPayment;
-import com.bedrosians.bedlogic.domain.SimpleAccount;
+import com.bedrosians.bedlogic.domain.Account;
 
 @Service
 public interface AccountService {
 	
-    List<Account> getAllAccounts();
+    List<FullAccount> getAllAccounts();
 	
-	List<Account> getActiveAccounts();
+	List<FullAccount> getActiveAccounts();
 	
-	Account getAccountById(String id);
+	FullAccount getAccountById(String id);
 	
-	Account getAccountByName(String name);
+	FullAccount getAccountByName(String name);
 	
-	Account getAccountByPhoneNo(String phoneNo);
+	FullAccount getAccountByPhoneNo(String phoneNo);
 	
-	Account getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
+	FullAccount getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
 	
-	List<SimpleAccount> getSimpleAccounts(
+	List<Account> getAccounts(
 		String accountName,
 		String addressStreetLine1,
 		String addressCity,
