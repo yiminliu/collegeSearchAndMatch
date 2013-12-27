@@ -13,17 +13,17 @@ import com.bedrosians.bedlogic.domain.Account;
 @Service
 public interface AccountService {
 	
-    List<FullAccount> getAllAccounts();
+    List<Account> getAllAccounts();
 	
-	List<FullAccount> getActiveAccounts();
+	List<Account> getActiveAccounts();
 	
-	FullAccount getAccountById(String id);
+	Account getAccountById(String id);
 	
-	FullAccount getAccountByName(String name);
+	Account getAccountByName(String name);
 	
-	FullAccount getAccountByPhoneNo(String phoneNo);
+	Account getAccountByPhoneNo(String phoneNo);
 	
-	FullAccount getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
+	Account getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
 	
 	List<Account> getAccounts(
 		String accountName,

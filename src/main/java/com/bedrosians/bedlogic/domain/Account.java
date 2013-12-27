@@ -1,5 +1,6 @@
 package com.bedrosians.bedlogic.domain;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -41,10 +43,10 @@ public class Account{
 	
 	private String ownerDriverLicenseNo;
 	
-	private String bankcruptcyCaseNo;
-	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="account")
-	@Cascade(CascadeType.ALL)
+	//private String bankcruptcyCaseNo;
+		
+	private List<CheckPayment> checkPayments;
+		
 	private Set<AccountPhone> phoneNumbers;
 			
 	public Account() {
@@ -173,6 +175,8 @@ public class Account{
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="account")
+	@Cascade(CascadeType.ALL)
 	public Set<AccountPhone> getPhoneNumbers() {
 		return phoneNumbers;
 	}
@@ -181,14 +185,22 @@ public class Account{
 		this.phoneNumbers = phoneNumbers;
 	}
 
-	@Column(name="caseNo")
-	public String getBankcruptcyCaseNo() {
-		return bankcruptcyCaseNo;
+	//@Column(name="caseNo")
+	//public String getBankcruptcyCaseNo() {
+	//	return bankcruptcyCaseNo;
+	//}
+
+	//public void setBankcruptcyCaseNo(String bankcruptcyCaseNo) {
+	//	this.bankcruptcyCaseNo = bankcruptcyCaseNo;
+	//}
+
+	@Transient
+	public List<CheckPayment> getCheckPayments() {
+		return checkPayments;
 	}
 
-	public void setBankcruptcyCaseNo(String bankcruptcyCaseNo) {
-		this.bankcruptcyCaseNo = bankcruptcyCaseNo;
+	public void setCheckPayments(List<CheckPayment> checkPayments) {
+		this.checkPayments = checkPayments;
 	}
-	
-	
+			
 }

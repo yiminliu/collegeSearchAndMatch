@@ -30,16 +30,16 @@ public class AccountServiceImpl implements AccountService {
 	
     @Override
 	@Transactional(readOnly=true)
-	public List<FullAccount> getAllAccounts(){
-    	List<FullAccount> accountList = null;
+	public List<Account> getAllAccounts(){
+    	List<Account> accountList = null;
     	return accountList;
     }    
 	
     @Override
 	@Transactional(readOnly=true)
-	public List<FullAccount> getActiveAccounts(){
-    	List<FullAccount> accountList = null;
-    	return accountList;
+	public List<Account> getActiveAccounts(){
+    	List<Account> accountList = null;
+    	return accountDao.getActiveAccounts();
     }
 	    
 	@Override
@@ -72,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public FullAccount getAccountById(String id) {
+	public Account getAccountById(String id) {
 		
 		String spaces = "";
 		
@@ -81,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
 			spaces = spaces.concat(" ");
 		}
 		
-		FullAccount account = accountDao.read(id.concat(spaces));
+		Account account = accountDao.read(id.concat(spaces));
 		if (account != null){
 			account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
 		}
@@ -90,22 +90,22 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Override
 	@Transactional(readOnly=true)
-    public FullAccount getAccountByName(String name){
-		FullAccount account = null;
+    public Account getAccountByName(String name){
+		Account account = null;
 		return account;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public FullAccount getAccountByPhoneNo(String phoneNo){
-		FullAccount account = null;
+	public Account getAccountByPhoneNo(String phoneNo){
+		Account account = null;
 		return account;
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
-	public FullAccount getAccountByOwnerDriverLicenseNo(String driverLicenseNo){
-		FullAccount account = null;
+	public Account getAccountByOwnerDriverLicenseNo(String driverLicenseNo){
+		Account account = null;
 		return account;
 	}
 	

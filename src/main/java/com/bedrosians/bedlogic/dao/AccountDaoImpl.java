@@ -20,7 +20,7 @@ import com.bedrosians.bedlogic.domain.Account;
 
 
 @Repository
-public class AccountDaoImpl extends GenericDaoImpl<FullAccount, String> implements AccountDao {
+public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements AccountDao {
 	
 
 	@Autowired
@@ -46,15 +46,82 @@ public class AccountDaoImpl extends GenericDaoImpl<FullAccount, String> implemen
 			String ownerDriverLicenseNo,
 			String phoneNo,
 			String activityStatus){
-		String queryString = "from SimpleAccount";
+		String queryString = "from Account";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		query.setMaxResults(10);
 		List<Account> list = (List<Account>)query.list();
-       // tx.commit();
-	
+     	
 		return list;
 	}
+	
+	public List<Account> getActiveAccounts(){
+		String queryString = "from Account a where activityStatus = 'Y' or activityStatus = ''";
+		Session session = currentSession();
+		Query query = session.createQuery(queryString);
+		//query.setParameter("status", status);
+		query.setMaxResults(10);
+		List<Account> list = (List<Account>)query.list();
+		
+		return list;
+	}
+	
+	public List<Account> getAccountsByActivityStatus(String status){
+		String queryString = "from Account a where activityStatus =: status";
+		Session session = currentSession();
+		Query query = session.createQuery(queryString);
+		query.setParameter("status", status);
+		query.setMaxResults(10);
+		List<Account> list = (List<Account>)query.list();
+		
+		return list;
+	}
+	
+	
+	  public Account getAccountById(String accountId){
+		  return null;
+	  }
+	  
+	  public Account getAccountByName(String accountName){
+		  return null;
+	  }
+	  public List<Account> getAccountsByParameter(String parameterName, String value){
+		    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
+			Session session = currentSession();
+			Query query = session.createQuery(queryString);
+			query.setParameter(parameterName, value);
+			query.setMaxResults(10);
+			List<Account> list = (List<Account>)query.list();
+			
+			return list;
+	  }
+	  
+	  public Account getAccountByParameter(String parameterName, String value){
+		    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
+			Session session = currentSession();
+			Query query = session.createQuery(queryString);
+			query.setParameter(parameterName, value);
+			query.setMaxResults(10);
+		    Account account = (Account)query.list().get(0);
+			
+			return account;
+	  }
+	  
+	  /*public Account getAccountByParameter(String parameterName, String[] values){
+		    String condition = "";
+		    for(String value : values){
+		    	condition.concat(parameterName.concat(" = :")).concat(parameterName);
+		    }
+		    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
+			Session session = currentSession();
+			Query query = session.createQuery(queryString);
+			query.setParameter(parameterName, value);
+			query.setMaxResults(10);
+		    Account account = (Account)query.list().get(0);
+			
+			return account;
+	  }
+	  */
 	
 	//@SuppressWarnings("unchecked")
 	//@Override
