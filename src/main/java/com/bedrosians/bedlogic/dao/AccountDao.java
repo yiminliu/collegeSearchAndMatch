@@ -19,15 +19,20 @@ public interface AccountDao extends GenericDao<Account, String>{
 		String phoneNo,
 		String activityStatus);
   
+  
+  public List<Account> getAllAccounts();	
+ 	
   public List<Account> getActiveAccounts();
+  
+  //public List<Account> getInactiveAccounts();
   
   public List<Account> getAccountsByActivityStatus(String status);
   
-  public Account getAccountById(String accountId);
+  //public List<Account> getAccountById(String accountId);
   
-  public Account getAccountByName(String accountName);
+  //public List<Account> getAccountByName(String accountName);
   
   public List<Account> getAccountsByParameter(String parameterName, String value);
   
-  public Account getAccountByParameter(String parameterName, String value);
+  //public List<Account> getAccountByParameter(String parameterName, String value);
 }

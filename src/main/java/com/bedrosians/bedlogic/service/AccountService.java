@@ -17,13 +17,23 @@ public interface AccountService {
 	
 	List<Account> getActiveAccounts();
 	
-	Account getAccountById(String id);
+	List<Account> getInactiveAccounts();
 	
-	Account getAccountByName(String name);
+	List<Account> getAccountsById(String id);
 	
-	Account getAccountByPhoneNo(String phoneNo);
+	List<Account> getAccountsByAccountName(String name);
 	
-	Account getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
+	List<Account> getAccountsByPhoneNo(String phoneNo);
+	
+	List<Account> getAccountsByOwnerName(String firstName, String lastName);
+	
+	List<Account> getAccountsByAddress(String address);
+	
+	List<Account> getAccountsByCity(String city);
+	
+	List<Account> getAccountsByZip(String zip);
+	
+	//List<Account> getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
 	
 	List<Account> getAccounts(
 		String accountName,

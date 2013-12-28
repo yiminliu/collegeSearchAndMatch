@@ -2,6 +2,7 @@ package com.bedrosians.bedlogic.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,6 +35,12 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	@Transactional
 	public T read(PK id) {
 		return (T)currentSession().get(type, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<T> readMultiple(PK id) {
+		return (List<T>)currentSession().get(type, id);
 	}
 	public void update(T transientObject) {
 		

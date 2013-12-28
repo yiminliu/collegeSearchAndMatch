@@ -31,32 +31,9 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		return sessionFactory.openSession();
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(readOnly=true)
-	public List<Account> getAccounts(
-			String accountName,
-			String addressStreetLine1,
-			String addressCity,
-			String addressState,
-			String addressZip,
-			String caseNo,
-			String ownerFirstName,
-			String ownerLastName,
-			String ownerDriverLicenseNo,
-			String phoneNo,
-			String activityStatus){
-		String queryString = "from Account";
-		Session session = currentSession();
-		Query query = session.createQuery(queryString);
-		query.setMaxResults(10);
-		List<Account> list = (List<Account>)query.list();
-     	
-		return list;
-	}
 	
-	public List<Account> getActiveAccounts(){
-		String queryString = "from Account a where activityStatus = 'Y' or activityStatus = ''";
+	public List<Account> getAllAccounts(){
+		String queryString = "from Account";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		//query.setParameter("status", status);
@@ -66,6 +43,16 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		return list;
 	}
 	
+	public List<Account> getActiveAccounts(){
+		String queryString = "from Account a where activityStatus = 'Y' or activityStatus = ''";
+		Session session = currentSession();
+		Query query = session.createQuery(queryString);
+		query.setMaxResults(10);
+		List<Account> list = (List<Account>)query.list();
+		
+		return list;
+	}
+			
 	public List<Account> getAccountsByActivityStatus(String status){
 		String queryString = "from Account a where activityStatus =: status";
 		Session session = currentSession();
@@ -78,13 +65,13 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	}
 	
 	
-	  public Account getAccountById(String accountId){
-		  return null;
-	  }
+	  //public List<Account> getAccountById(String accountId){
+	//	  return null;
+	 // }
 	  
-	  public Account getAccountByName(String accountName){
-		  return null;
-	  }
+	  //public Account getAccountByName(String accountName){
+		//  return null;
+	  //}
 	  public List<Account> getAccountsByParameter(String parameterName, String value){
 		    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
 			Session session = currentSession();
@@ -95,33 +82,29 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 			
 			return list;
 	  }
+	  	  
 	  
-	  public Account getAccountByParameter(String parameterName, String value){
-		    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
-			Session session = currentSession();
-			Query query = session.createQuery(queryString);
-			query.setParameter(parameterName, value);
-			query.setMaxResults(10);
-		    Account account = (Account)query.list().get(0);
-			
-			return account;
-	  }
-	  
-	  /*public Account getAccountByParameter(String parameterName, String[] values){
+	  public List<Account> getAccountByParameter(String[] parameterNames, String[] values){
 		    String condition = "";
-		    for(String value : values){
-		    	condition.concat(parameterName.concat(" = :")).concat(parameterName);
+		    List<Account> accountList = null;
+		    for(int i = 0; i < parameterNames.length; i++){
+		    	if(i < parameterNames.length - 1)
+		    	  condition.concat(parameterNames[i].concat(" = :")).concat(parameterNames[i]).concat(" AND ");
+		    	else
+		    		condition.concat(parameterNames[i].concat(" = :")).concat(parameterNames[i]);	
 		    }
-		    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
+		    String queryString = "from Account where ".concat(condition);
 			Session session = currentSession();
 			Query query = session.createQuery(queryString);
-			query.setParameter(parameterName, value);
-			query.setMaxResults(10);
-		    Account account = (Account)query.list().get(0);
+			for(int i = 0; i < parameterNames.length; i++){
+			    query.setParameter(parameterNames[i], values[i]);
+			}
 			
-			return account;
+			accountList = (List<Account>)query.list();
+			
+			return accountList;
 	  }
-	  */
+	  	
 	
 	//@SuppressWarnings("unchecked")
 	//@Override
@@ -212,5 +195,31 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 
 		return crit.list();
 		*/
-	
+	   
+	  
+		@SuppressWarnings("unchecked")
+		@Override
+		@Transactional(readOnly=true)
+		@Deprecated
+		public List<Account> getAccounts(
+				String accountName,
+				String addressStreetLine1,
+				String addressCity,
+				String addressState,
+				String addressZip,
+				String caseNo,
+				String ownerFirstName,
+				String ownerLastName,
+				String ownerDriverLicenseNo,
+				String phoneNo,
+				String activityStatus){
+			String queryString = "from Account";
+			Session session = currentSession();
+			Query query = session.createQuery(queryString);
+			query.setMaxResults(10);
+			List<Account> list = (List<Account>)query.list();
+	     	
+			return list;
+		}
+		
 }

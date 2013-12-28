@@ -1,6 +1,6 @@
 package com.bedrosians.bedlogic.exeception;
 
-public class DataNotFoundException extends Exception{
+public class DataNotFoundException extends RuntimeException{
 
 	/**
 	 * 
