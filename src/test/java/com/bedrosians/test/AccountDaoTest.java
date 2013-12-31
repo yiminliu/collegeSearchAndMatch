@@ -21,7 +21,7 @@ import com.bedrosians.bedlogic.domain.AccountPhone;
 import com.bedrosians.bedlogic.domain.Account;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/AccountDaoTest-context.xml")
+@ContextConfiguration(locations = "/Bedlogic-test-context.xml")
 
 public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
