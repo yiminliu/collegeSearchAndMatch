@@ -2,6 +2,7 @@ package com.bedrosians.bedlogic.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -110,7 +111,7 @@ public class AccountPhone implements Serializable {
 		this.branchId = branchId;
 	}
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "custcd", nullable = false)
 	public Account getAccount() {
 		return account;
@@ -123,12 +124,14 @@ public class AccountPhone implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "AccountPhone [id=" + id + ", type=" + type + ", number="
-				+ number + ", extension=" + extension + ", createdBy="
-				+ createdBy + ", createdDate=" + createdDate
-				+ ", lastModifiedBy=" + lastModifiedBy + ", lastModifiedDate="
-				+ lastModifiedDate + ", account=" + account + ", branchId="
-				+ branchId + "]";
+		return "AccountPhone ["
+				//+ "id=" + id + ", type=" + type 
+				+ ", number=" + number 
+				//+ ", extension=" + extension 
+				//+ ", createdBy="+ createdBy + ", createdDate=" + createdDate
+				//+ ", lastModifiedBy=" + lastModifiedBy + ", lastModifiedDate=" 	+ lastModifiedDate 
+				//+ ", account=" + account + ", branchId=" + branchId 
+				+ "]";
 	}
 
 	/*

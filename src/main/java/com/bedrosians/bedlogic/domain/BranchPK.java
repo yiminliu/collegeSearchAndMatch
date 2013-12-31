@@ -20,6 +20,8 @@ public class BranchPK implements Serializable {
 	
 	@Column(name="branchcd")
 	private String branchcd;
+	
+	public BranchPK(){}
 
 	public BranchPK(String custcd, String branchcd) {
 		super();

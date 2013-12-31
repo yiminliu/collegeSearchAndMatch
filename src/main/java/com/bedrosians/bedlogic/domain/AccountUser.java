@@ -20,49 +20,23 @@ import org.hibernate.annotations.CascadeType;
 @Table(name="AccountUsers")
 public class AccountUser implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -127451862418201850L;
-	@Id
-	@Column(name="user_id")
+	
 	private int userId;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="custcd", nullable=false)
 	private Account account;
-	
-	@Column(name="email")
-	private String email;
-	
-	@Column(name="password")
-	private String password;
-	
-	@Column(name="first_name")
-	private String firstName;
-	
-	@Column(name="last_name")
-	private String lastName;
-	
-	@Column(name="title")
-	private String title;
-	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="accountUser")
-	@Cascade(CascadeType.ALL)
+	private String email;	
+	private String password;	
+	private String firstName;	
+	private String lastName;	
+	private String title;	
 	private Set<AccountUserPhone> phoneNumbers = new HashSet<AccountUserPhone>();
-	
-	@Column(name="created_by")
 	private String createdBy;
-	
-	@Column(name="created_date")
 	private String createdDate;
-	
-	@Column(name="last_modified_by")
 	private String lastModifiedBy;
-	
-	@Column(name="last_modified_date")
 	private String lastModifiedDate;
 
+	@Id
+	@Column(name="user_id")
 	public int getUserId() {
 		return userId;
 	}
@@ -71,6 +45,7 @@ public class AccountUser implements Serializable {
 		this.userId = userId;
 	}
 
+	@Column(name="email")
 	public String getEmail() {
 		return email;
 	}
@@ -79,6 +54,7 @@ public class AccountUser implements Serializable {
 		this.email = email;
 	}
 
+	@Column(name="password")
 	public String getPassword() {
 		return password;
 	}
@@ -87,6 +63,7 @@ public class AccountUser implements Serializable {
 		this.password = password;
 	}
 
+	@Column(name="first_name")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -95,6 +72,7 @@ public class AccountUser implements Serializable {
 		this.firstName = firstName;
 	}
 
+	@Column(name="last_name")
 	public String getLastName() {
 		return lastName;
 	}
@@ -103,6 +81,7 @@ public class AccountUser implements Serializable {
 		this.lastName = lastName;
 	}
 
+	@Column(name="title")
 	public String getTitle() {
 		return title;
 	}
@@ -111,6 +90,18 @@ public class AccountUser implements Serializable {
 		this.title = title;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="custcd", nullable=false)
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="accountUser")
+	@Cascade(CascadeType.ALL)
 	public Set<AccountUserPhone> getPhoneNumbers() {
 		return phoneNumbers;
 	}
@@ -119,6 +110,7 @@ public class AccountUser implements Serializable {
 		this.phoneNumbers = phoneNumbers;
 	}
 
+	@Column(name="created_by")
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -127,6 +119,7 @@ public class AccountUser implements Serializable {
 		this.createdBy = createdBy;
 	}
 
+	@Column(name="created_date")
 	public String getCreatedDate() {
 		return createdDate;
 	}
@@ -135,6 +128,7 @@ public class AccountUser implements Serializable {
 		this.createdDate = createdDate;
 	}
 
+	@Column(name="last_modified_by")
 	public String getLastModifiedBy() {
 		return lastModifiedBy;
 	}
@@ -143,6 +137,7 @@ public class AccountUser implements Serializable {
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
+	@Column(name="last_modified_date")
 	public String getLastModifiedDate() {
 		return lastModifiedDate;
 	}
@@ -150,4 +145,64 @@ public class AccountUser implements Serializable {
 	public void setLastModifiedDate(String lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((account == null) ? 0 : account.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result
+				+ ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + userId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountUser other = (AccountUser) obj;
+		if (account == null) {
+			if (other.account != null)
+				return false;
+		} else if (!account.equals(other.account))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (userId != other.userId)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "AccountUser [userId=" + userId + ", account=" + account
+				+ ", email=" + email + ", password=" + password
+				+ ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", phoneNumbers=" + phoneNumbers + ", createdDate="
+				+ createdDate + "]";
+	}
+	
+	
 }

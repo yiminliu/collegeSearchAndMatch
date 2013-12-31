@@ -1,9 +1,11 @@
 package com.bedrosians.bedlogic.domain;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,46 +14,36 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+//import org.hibernate.annotations.Cascade;
+//import org.hibernate.annotations.CascadeType;
 
 
 @Entity
 @Table(name="arm")
 public class Account{
 
-	private String accountId;	
-	
-	private String accountName;
-	
-	private String creditStatus;
-	
-	private String activityStatus;
-	
-	private String addressStreeLine1;
-	
-	private String addressStreeLine2;
-	
-	private String addressCity;
-	
-	private String addressState;
-	
-	private String addressZip;
-		
-	private String ownerFirstName;
-	
-	private String ownerLastName;
-	
-	private String ownerDriverLicenseNo;
-	
-	//private String bankcruptcyCaseNo;
-		
-	private List<CheckPayment> checkPayments;
-		
-	private Set<AccountPhone> phoneNumbers = new HashSet<AccountPhone>(0);
+	private String accountId;		
+	private String accountName;	
+	private String creditStatus;	
+	private String activityStatus;	
+	private String addressStreeLine1;	
+	private String addressStreeLine2;	
+	private String addressCity;	
+	private String addressState;	
+	private String addressZip;		
+	private String ownerFirstName;	
+	private String ownerLastName;	
+	private String ownerDriverLicenseNo;	
+	//private String bankcruptcyCaseNo;		
+	private List<CheckPayment> checkPayments;		
+	private Set<AccountPhone> accountPhones = new HashSet<>(0);
+	private Set<AccountUser> accountUsers = new HashSet<>(0);
+	private Set<AccountBranch> accountBranches = new HashSet<>(0);
 			
 	public Account() {
-		super();
 	}
 	
 	public Account(String accountId, String accountName,
@@ -179,27 +171,42 @@ public class Account{
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
-	@OneToMany//(fetch=FetchType.EAGER, mappedBy="account")
-	@Cascade(CascadeType.ALL)
-	
-	public Set<AccountPhone> getPhoneNumbers() {
-		return phoneNumbers;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="account", cascade = CascadeType.ALL)
+	//@LazyCollection(LazyCollectionOption.FALSE) 
+	public Set<AccountPhone> getAccountPhones() {
+		return accountPhones;
 	}
 	
-	/*public void addPhone(AccountPhone newPhone){
-		if(phoneNumbers != null) {
-		   if(!phoneNumbers.contains(newPhone) && newPhone.getAccount() != this) {	
-			  newPhone.setAccount(this); 
-		   }	  
-		   phoneNumbers.add(newPhone);
-		   setPhoneNumbers(phoneNumbers);
+	public void addPhone(AccountPhone newPhone){
+		if(accountPhones != null) {
+		   newPhone.setAccount(this); 
+		   accountPhones.add(newPhone);
+		   //setPhoneNumbers(phoneNumbers);
 		}
 	}
-    */
-	public void setPhoneNumbers(Set<AccountPhone> phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
+	    
+	public void setAccountPhones(Set<AccountPhone> accountPhones) {
+	    this.accountPhones = accountPhones;
+	}
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "account", cascade = CascadeType.ALL)
+	public Set<AccountUser> getAccountUsers() {
+		return accountUsers;
 	}
 
+	public void setAccountUsers(Set<AccountUser> accountUsers) {
+		this.accountUsers = accountUsers;
+	}	
+
+	@OneToMany(mappedBy = "branchPK.custcd", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	public Set<AccountBranch> getAccountBranches() {
+		return accountBranches;
+	}
+
+	public void setAccountBranches(Set<AccountBranch> accountBranches) {
+		this.accountBranches = accountBranches;
+	}
+	
 	//@Column(name="caseNo")
 	//public String getBankcruptcyCaseNo() {
 	//	return bankcruptcyCaseNo;
@@ -264,8 +271,8 @@ public class Account{
 				+ ", ownerLastName=" + ownerLastName
 				+ ", ownerDriverLicenseNo=" + ownerDriverLicenseNo
 				+ ", checkPayments=" + checkPayments 
-				//+ ", phoneNumbers="
-				//+ phoneNumbers
+				+ ", accountPhones=" + accountPhones
+				+ ", accountBranches=" + accountBranches
 				+ "]";
 	}
 				

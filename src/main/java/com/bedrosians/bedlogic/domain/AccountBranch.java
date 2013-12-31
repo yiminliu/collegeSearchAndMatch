@@ -5,15 +5,15 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="armbr")
 public class AccountBranch implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5137707010951170389L;
 
 	@EmbeddedId
@@ -25,6 +25,9 @@ public class AccountBranch implements Serializable {
 	@Column(name="brcity")
 	private String branchAddressCity;
 	
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "custcd", nullable = false)
 	public String getCustcd() {
 		return branchPK.getCustcd();
 	}
@@ -51,4 +54,5 @@ public class AccountBranch implements Serializable {
 		this.branchAddressCity = branchAddressCity;
 	}
 
+	
 }
