@@ -19,8 +19,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	private SessionFactory sessionFactory;
 	
 	protected Session currentSession() {
-	//    return sessionFactory.getCurrentSession();
-		return sessionFactory.openSession();
+	    return sessionFactory.getCurrentSession();
+	//	return sessionFactory.openSession();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -32,14 +32,12 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		return null;
 	}
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public T read(PK id) {
 		return (T)currentSession().get(type, id);
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Transactional
-	public List<T> readMultiple(PK id) {
+    public List<T> readMultipleRecords(PK id) {
 		return (List<T>)currentSession().get(type, id);
 	}
 	public void update(T transientObject) {

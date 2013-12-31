@@ -12,46 +12,24 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="CustPhones")
-
 public class AccountPhone implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7440450460585959933L;
+		
+	private int id;		
+	private String type;	
+	private Long number;	
+	private Integer extension;	
+	private String createdBy;	
+	private String createdDate;	
+	private String lastModifiedBy;	
+	private String lastModifiedDate;
+	private Account account;	
+	private String branchId;
+		
 	
 	@Id
 	@Column(name="phone_id")
-	private int id;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="custcd", nullable=false)
-	private FullAccount account;
-	
-	@Column(name="branchcd")
-	private String branchId;
-	
-	@Column(name="phone_type")
-	private String type;
-	
-	@Column(name="phone_number")
-	private Long number;
-	
-	@Column(name="phone_extension")
-	private Integer extension;
-	
-	@Column(name="created_by")
-	private String createdBy;
-	
-	@Column(name="created_date")
-	private String createdDate;
-	
-	@Column(name="last_modified_by")
-	private String lastModifiedBy;
-	
-	@Column(name="last_modified_date")
-	private String lastModifiedDate;
-
 	public int getId() {
 		return id;
 	}
@@ -60,14 +38,7 @@ public class AccountPhone implements Serializable {
 		this.id = id;
 	}
 
-	public String getBranchId() {
-		return branchId;
-	}
-
-	public void setBranchId(String branchId) {
-		this.branchId = branchId;
-	}
-
+	@Column(name="phone_type")
 	public String getType() {
 		return type;
 	}
@@ -76,6 +47,7 @@ public class AccountPhone implements Serializable {
 		this.type = type;
 	}
 
+	@Column(name="phone_number")
 	public Long getNumber() {
 		return number;
 	}
@@ -84,6 +56,7 @@ public class AccountPhone implements Serializable {
 		this.number = number;
 	}
 
+	@Column(name="phone_extension")
 	public Integer getExtension() {
 		return extension;
 	}
@@ -92,6 +65,7 @@ public class AccountPhone implements Serializable {
 		this.extension = extension;
 	}
 
+	@Column(name="created_by")
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -100,6 +74,7 @@ public class AccountPhone implements Serializable {
 		this.createdBy = createdBy;
 	}
 
+	@Column(name="created_date")
 	public String getCreatedDate() {
 		return createdDate;
 	}
@@ -108,6 +83,7 @@ public class AccountPhone implements Serializable {
 		this.createdDate = createdDate;
 	}
 
+	@Column(name="last_modified_by")
 	public String getLastModifiedBy() {
 		return lastModifiedBy;
 	}
@@ -116,6 +92,7 @@ public class AccountPhone implements Serializable {
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
+	@Column(name="last_modified_date")
 	public String getLastModifiedDate() {
 		return lastModifiedDate;
 	}
@@ -123,4 +100,70 @@ public class AccountPhone implements Serializable {
 	public void setLastModifiedDate(String lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
+
+	@Column(name="branchcd")
+	public String getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(String branchId) {
+		this.branchId = branchId;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "custcd", nullable = false)
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "AccountPhone [id=" + id + ", type=" + type + ", number="
+				+ number + ", extension=" + extension + ", createdBy="
+				+ createdBy + ", createdDate=" + createdDate
+				+ ", lastModifiedBy=" + lastModifiedBy + ", lastModifiedDate="
+				+ lastModifiedDate + ", account=" + account + ", branchId="
+				+ branchId + "]";
+	}
+
+	/*
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((account == null) ? 0 : account.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountPhone other = (AccountPhone) obj;
+		if (account == null) {
+			if (other.account != null)
+				return false;
+		} else if (!account.equals(other.account))
+			return false;
+		if (id != other.id)
+			return false;
+		if (number == null) {
+			if (other.number != null)
+				return false;
+		} else if (!number.equals(other.number))
+			return false;
+		return true;
+	}
+    */
 }

@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.dao.AccountBranchDao;
 import com.bedrosians.bedlogic.dao.AccountDao;
+import com.bedrosians.bedlogic.dao.AccountDaoImpl;
 import com.bedrosians.bedlogic.dao.CheckPaymentDao;
-import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.BranchPK;
 import com.bedrosians.bedlogic.domain.CheckPayment;
@@ -20,7 +20,7 @@ import com.bedrosians.bedlogic.domain.Account;
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-	AccountDao accountDao;
+	AccountDaoImpl accountDao;
 	
     @Autowired
 	AccountBranchDao accountBranchDao;
@@ -28,28 +28,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
 	CheckPaymentDao checkPaymentDao;
 	
-    @Override
-	@Transactional(readOnly=true)
-	public List<Account> getAllAccounts(){
-      	return accountDao.getAllAccounts();
-    }    
-	
-    @Override
-	@Transactional(readOnly=true)
-	public List<Account> getActiveAccounts(){
-    	List<Account> accountList = null;
-    	return accountDao.getActiveAccounts();
-    }
     
-    @Override
-	@Transactional(readOnly=true)
-	public List<Account> getInactiveAccounts(){
-    	List<Account> accountList = null;
-    	return accountDao.getAccountsByParameter("activityStatus", "inactive");
-    }
-	    
-   
-	/*@Override
+   	/*@Override
 	@Transactional(readOnly=true)
 	public Account getAccountById(String id) {
 		
@@ -70,20 +50,21 @@ public class AccountServiceImpl implements AccountService {
     
     @Override
 	@Transactional(readOnly=true)
-	public List<Account> getAccountsById(String id) {
+	public Account getAccountById(String id) {
 		
-		String spaces = "";
+		/*String spaces = "";
 		
 		int spaceNeeded = 10 - id.length();
 		for (int i = 0 ; i < spaceNeeded ; i++){
 			spaces = spaces.concat(" ");
 		}
-		
-		List<Account> accountList = accountDao.readMultiple(id.concat(spaces));
-		for (Account account : accountList){	         		
+		*/
+		//Account account = accountDao.getAccountById(id.concat(spaces));
+    	Account account = accountDao.getAccountById(id);
+		if(account != null){	         		
 			account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
 		}
-		return  accountList;
+		return  account;
 	}
 	
 	@Override
@@ -95,8 +76,9 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional(readOnly=true)
     public List<Account> getAccountsByOwnerName(String firstName, String lastName){
-	//	return accountDao.getAccountsByParameter({"ownerFirstName", "ownerFirstName"}, firstName, );
-	  return null;
+		return accountDao.getAccountsByParameters(new String[] {"ownerFirstName, ownerLastName"},
+				                                  new String[] {firstName, lastName});
+	//  return null;
 	
     }
 
@@ -136,6 +118,17 @@ public class AccountServiceImpl implements AccountService {
 		return checkPaymentDao.getCheckPaymentsForAccount(custcd);
 	}
 	
+	@Override
+	@Transactional(readOnly=true)
+	public List<Account> getAccounts(){
+		return accountDao.getAccountsByActivityStatus("all");
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<Account> getAccountsByActivityStatus(String status){
+		return accountDao.getAccountsByActivityStatus(status);
+	}
 	 
 		@Override
 		@Transactional(readOnly=true)

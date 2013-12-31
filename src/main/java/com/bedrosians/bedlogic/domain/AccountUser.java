@@ -30,7 +30,7 @@ public class AccountUser implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="custcd", nullable=false)
-	private FullAccount account;
+	private Account account;
 	
 	@Column(name="email")
 	private String email;

@@ -23,13 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
-
-
-
-
-
-//import org.hibernate.javax.persistence.hibernate-jpa-2.0-api.*;
-import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.AccountPhone;
 import com.bedrosians.bedlogic.domain.BranchPK;
@@ -52,19 +45,26 @@ public class RestfulWebServiceAccountController {
 		this.accountService = accountService;
 	}
 	
-	@RequestMapping(value="/lookup/{activityStatus}", method = RequestMethod.GET)
+	@RequestMapping(value={"/lookup", "/lookup/{activityStatus}"}, method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK )
 	@ResponseBody
 	public List<Account> getAccounts(@PathVariable String activityStatus) {
 			
 		List<Account> accounts = null;
 				
-		if("all".equalsIgnoreCase(activityStatus)) 
+		/*if("all".equalsIgnoreCase(activityStatus)) 
 			accounts = accountService.getAllAccounts();
 		else if("active".equalsIgnoreCase(activityStatus))
 			accounts = accountService.getActiveAccounts();
 		else if("inactive".equalsIgnoreCase(activityStatus))
 			accounts = accountService.getInactiveAccounts();
+		*/
+		if(activityStatus == null || activityStatus.length() == 0)
+		   accounts = accountService.getAccounts();
+		else if ("all".equalsIgnoreCase(activityStatus) ||
+                 "active".equalsIgnoreCase(activityStatus) ||
+		         "inactive".equalsIgnoreCase(activityStatus))
+		          accountService.getAccountsByActivityStatus(activityStatus);
 		else
 			throw new IllegalArgumentException("Valid values for parameter 'activityStatus' are all, active, or inactive");
 				
@@ -78,12 +78,12 @@ public class RestfulWebServiceAccountController {
 	@RequestMapping(value="/lookup/accountId/{accountId}", method=RequestMethod.GET)
 	@ResponseBody
 	//public Account getAccountById(@RequestParam String accountId, HttpServletRequest request) throws Exception{
-	public List<Account> getAccountById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
-		List<Account> accountList = accountService.getAccountsById(accountId);
-		if (accountList == null || accountList.size() < 1){
+	public Account getAccountById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
+		Account account = accountService.getAccountById(accountId);
+		if (account == null){
 			throw new DataNotFoundException();
 		}
-		return accountList;
+		return account;
 	}
 	
 	@RequestMapping(value="/lookup/accountName/{accountName}", method=RequestMethod.GET)

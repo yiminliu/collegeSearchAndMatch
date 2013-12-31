@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bedrosians.bedlogic.domain.FullAccount;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.BranchPK;
 import com.bedrosians.bedlogic.domain.CheckPayment;
@@ -13,13 +12,13 @@ import com.bedrosians.bedlogic.domain.Account;
 @Service
 public interface AccountService {
 	
-    List<Account> getAllAccounts();
+    List<Account> getAccounts();
 	
-	List<Account> getActiveAccounts();
+	//List<Account> getActiveAccounts();
 	
-	List<Account> getInactiveAccounts();
+	List<Account> getAccountsByActivityStatus(String status);
 	
-	List<Account> getAccountsById(String id);
+	Account getAccountById(String id);
 	
 	List<Account> getAccountsByAccountName(String name);
 	
@@ -32,9 +31,7 @@ public interface AccountService {
 	List<Account> getAccountsByCity(String city);
 	
 	List<Account> getAccountsByZip(String zip);
-	
-	//List<Account> getAccountByOwnerDriverLicenseNo(String driverLicenseNo);
-	
+		
 	List<Account> getAccounts(
 		String accountName,
 		String addressStreetLine1,

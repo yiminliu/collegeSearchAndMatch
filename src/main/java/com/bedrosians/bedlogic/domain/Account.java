@@ -1,5 +1,6 @@
 package com.bedrosians.bedlogic.domain;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ import org.hibernate.annotations.CascadeType;
 @Table(name="arm")
 public class Account{
 
-	private String accountId;
+	private String accountId;	
 	
 	private String accountName;
 	
@@ -47,7 +48,7 @@ public class Account{
 		
 	private List<CheckPayment> checkPayments;
 		
-	private Set<AccountPhone> phoneNumbers;
+	private Set<AccountPhone> phoneNumbers = new HashSet<AccountPhone>(0);
 			
 	public Account() {
 		super();
@@ -90,6 +91,7 @@ public class Account{
 		if (creditStatus != null) creditStatus= creditStatus.trim();
 		return creditStatus;
 	}
+	
 	public void setCreditStatus(String creditStatus) {
 		this.creditStatus = creditStatus;
 	}
@@ -99,6 +101,7 @@ public class Account{
 		if (activityStatus != null) activityStatus = activityStatus.trim();
 		return activityStatus;
 	}
+	
 	public void setActivityStatus(String activityStatus) {
 		this.activityStatus = activityStatus;
 	}
@@ -144,6 +147,7 @@ public class Account{
 		if (addressZip != null) addressZip = addressZip.trim(); 
 		return addressZip;
 	}
+	
 	public void setAddressZip(String addressZip) {
 		this.addressZip = addressZip;
 	}
@@ -175,12 +179,23 @@ public class Account{
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="account")
+	@OneToMany//(fetch=FetchType.EAGER, mappedBy="account")
 	@Cascade(CascadeType.ALL)
+	
 	public Set<AccountPhone> getPhoneNumbers() {
 		return phoneNumbers;
 	}
-
+	
+	/*public void addPhone(AccountPhone newPhone){
+		if(phoneNumbers != null) {
+		   if(!phoneNumbers.contains(newPhone) && newPhone.getAccount() != this) {	
+			  newPhone.setAccount(this); 
+		   }	  
+		   phoneNumbers.add(newPhone);
+		   setPhoneNumbers(phoneNumbers);
+		}
+	}
+    */
 	public void setPhoneNumbers(Set<AccountPhone> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
@@ -202,5 +217,56 @@ public class Account{
 	public void setCheckPayments(List<CheckPayment> checkPayments) {
 		this.checkPayments = checkPayments;
 	}
-			
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((accountId == null) ? 0 : accountId.hashCode());
+		result = prime * result
+				+ ((accountName == null) ? 0 : accountName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Account))
+			return false;
+		Account other = (Account) obj;
+		if (accountId == null) {
+			if (other.accountId != null)
+				return false;
+		} else if (!accountId.equals(other.accountId))
+			return false;
+		if (accountName == null) {
+			if (other.accountName != null)
+				return false;
+		} else if (!accountName.equals(other.accountName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return
+				"Account [accountId=" + accountId + ", accountName="
+				+ accountName + ", creditStatus=" + creditStatus
+				+ ", activityStatus=" + activityStatus + ", addressStreeLine1="
+				+ addressStreeLine1 + ", addressStreeLine2="
+				+ addressStreeLine2 + ", addressCity=" + addressCity
+				+ ", addressState=" + addressState + ", addressZip="
+				+ addressZip + ", ownerFirstName=" + ownerFirstName
+				+ ", ownerLastName=" + ownerLastName
+				+ ", ownerDriverLicenseNo=" + ownerDriverLicenseNo
+				+ ", checkPayments=" + checkPayments 
+				//+ ", phoneNumbers="
+				//+ phoneNumbers
+				+ "]";
+	}
+				
 }
