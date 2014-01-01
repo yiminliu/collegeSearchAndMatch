@@ -7,7 +7,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.domain.Account;
-import com.bedrosians.bedlogic.domain.AccountPhone;
 
 
 @Repository
@@ -31,13 +29,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	    //return sessionFactory.getCurrentSession();
 		return sessionFactory.openSession();
 	}
-	
-	
-	//@Override
-	//public List<Account> getAllAccounts(){
-	//	return getAccountsByActivityStatus("all");
-	//}
-	
+		
 	@Override
 	public Account getAccountById(String accountId) {
 		
@@ -65,7 +57,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
-		query.setParameter(parameterName, value);
+		query.setParameter(parameterName, value.toUpperCase());
 		//query.setMaxResults(10);
 		List<Account> list = (List<Account>)query.list();
 			

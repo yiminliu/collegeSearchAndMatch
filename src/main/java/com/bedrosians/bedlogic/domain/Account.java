@@ -1,6 +1,6 @@
 package com.bedrosians.bedlogic.domain;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,12 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
-//import org.hibernate.annotations.Cascade;
-//import org.hibernate.annotations.CascadeType;
 
 
 @Entity
@@ -38,10 +32,10 @@ public class Account{
 	private String ownerLastName;	
 	private String ownerDriverLicenseNo;	
 	//private String bankcruptcyCaseNo;		
-	private List<CheckPayment> checkPayments;		
-	private Set<AccountPhone> accountPhones = new HashSet<>(0);
-	private Set<AccountUser> accountUsers = new HashSet<>(0);
-	private Set<AccountBranch> accountBranches = new HashSet<>(0);
+	private List<CheckPayment> checkPayments = new ArrayList<CheckPayment>(0);		
+	private Set<AccountPhone> accountPhones = new HashSet<AccountPhone>(0);
+	private Set<AccountUser> accountUsers = new HashSet<AccountUser>(0);
+	private Set<AccountBranch> accountBranches = new HashSet<AccountBranch>(0);
 			
 	public Account() {
 	}
@@ -261,13 +255,16 @@ public class Account{
 	@Override
 	public String toString() {
 		return
-				"Account [accountId=" + accountId + ", accountName="
-				+ accountName + ", creditStatus=" + creditStatus
-				+ ", activityStatus=" + activityStatus + ", addressStreeLine1="
-				+ addressStreeLine1 + ", addressStreeLine2="
-				+ addressStreeLine2 + ", addressCity=" + addressCity
-				+ ", addressState=" + addressState + ", addressZip="
-				+ addressZip + ", ownerFirstName=" + ownerFirstName
+				"Account [accountId=" + accountId 
+				+ ", accountName=" + accountName 
+				+ ", creditStatus=" + creditStatus
+				+ ", activityStatus=" + activityStatus 
+				+ ", addressStreeLine1=" + addressStreeLine1 
+				+ ", addressStreeLine2=" + addressStreeLine2 
+				+ ", addressCity=" + addressCity
+				+ ", addressState=" + addressState 
+				+ ", addressZip="  + addressZip 
+				+ ", ownerFirstName=" + ownerFirstName
 				+ ", ownerLastName=" + ownerLastName
 				+ ", ownerDriverLicenseNo=" + ownerDriverLicenseNo
 				+ ", checkPayments=" + checkPayments 
