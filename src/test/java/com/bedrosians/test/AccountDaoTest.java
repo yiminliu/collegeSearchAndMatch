@@ -41,7 +41,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	
 	@Before
 	public void setup(){
-		testAccountId = "17884";//"26818";
+		testAccountId = "26818"; //"17884";//
 		testAccountName = "STONE AGE TILE";
 		testZip = "90640";
 		testCity = "anaheim";
@@ -67,7 +67,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		//assertEquals("Only one account should be returned with given criteria", 1, simpleAccountList.size());
 	}
 	
-	@Test
+	//@Test
 	public void testGetActiveAccounts(){
 		System.out.println("test if the account is returned for some search criteria...");
 		
@@ -84,7 +84,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		assertEquals("Account id should be " + testAccountId, testAccountId, account.getAccountId());
 	}
 			
-	@Test
+	//@Test
 	public void testGetAccountsByActivityStatus(){
 		System.out.println("test if the account is returned by searching its status...");
 		Account account = accountDao.getAccountsByActivityStatus("inactive").get(0);
