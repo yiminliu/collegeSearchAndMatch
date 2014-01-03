@@ -2,7 +2,6 @@ package com.bedrosians.bedlogic.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -134,14 +133,14 @@ public class AccountPhone implements Serializable {
 				+ "]";
 	}
 
-	/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((account == null) ? 0 : account.hashCode());
-		result = prime * result + id;
+		result = prime * result
+				+ ((extension == null) ? 0 : extension.hashCode());
 		result = prime * result + ((number == null) ? 0 : number.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -154,19 +153,23 @@ public class AccountPhone implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		AccountPhone other = (AccountPhone) obj;
-		if (account == null) {
-			if (other.account != null)
+		if (extension == null) {
+			if (other.extension != null)
 				return false;
-		} else if (!account.equals(other.account))
-			return false;
-		if (id != other.id)
+		} else if (!extension.equals(other.extension))
 			return false;
 		if (number == null) {
 			if (other.number != null)
 				return false;
 		} else if (!number.equals(other.number))
 			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
 		return true;
 	}
-    */
+
+	
 }
