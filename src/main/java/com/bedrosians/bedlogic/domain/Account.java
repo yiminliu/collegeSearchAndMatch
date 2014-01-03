@@ -9,8 +9,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -55,6 +58,8 @@ public class Account{
     
 	@Id
 	@Column(name="CustCd")
+	//@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
+	//@SequenceGenerator(name="my_entity_seq_gen", sequenceName="arm_crapp_seqnbr_seq")
 	public String getAccountId() {
 		if (accountId != null) accountId = accountId.trim();
 		return accountId;
@@ -94,6 +99,8 @@ public class Account{
 
 	@Column(name="CoAddr1")
 	public String getAddressStreeLine1() {
+		if (addressStreeLine1 != null) 
+			addressStreeLine1 = addressStreeLine1.trim();
 		return addressStreeLine1;
 	}
 
@@ -103,6 +110,8 @@ public class Account{
 
 	@Column(name="CoAddr2")
 	public String getAddressStreeLine2() {
+		if (addressStreeLine2 != null) 
+			addressStreeLine2 = addressStreeLine2.trim();
 		return addressStreeLine2;
 	}
 
@@ -113,7 +122,7 @@ public class Account{
 	@Column(name="CoCity")
 	public String getAddressCity() {
 		if (addressCity != null) addressCity = addressCity.trim();
-		return addressCity;
+		return addressCity.trim();
 	}
 	public void setAddressCity(String addressCity) {
 		this.addressCity = addressCity;
@@ -165,7 +174,7 @@ public class Account{
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="account", cascade = CascadeType.ALL)
+	@OneToMany(/*fetch=FetchType.EAGER,*/ mappedBy="account", cascade = CascadeType.ALL)
 	//@LazyCollection(LazyCollectionOption.FALSE) 
 	public Set<AccountPhone> getAccountPhones() {
 		return accountPhones;
@@ -183,7 +192,7 @@ public class Account{
 	    this.accountPhones = accountPhones;
 	}
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy = "account", cascade = CascadeType.ALL)
+	@OneToMany(/*fetch=FetchType.EAGER*,*/ mappedBy = "account", cascade = CascadeType.ALL)
 	public Set<AccountUser> getAccountUsers() {
 		return accountUsers;
 	}
