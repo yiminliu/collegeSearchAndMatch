@@ -1,5 +1,7 @@
 package com.bedrosians.bedlogic.exeception;
 
+import org.hibernate.exception.DataException;
+
 public class DataNotFoundException extends RuntimeException{
 
 	/**
