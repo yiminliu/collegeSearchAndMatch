@@ -1,12 +1,17 @@
 package com.bedrosians.bedlogic.dao;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -16,6 +21,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.domain.Account;
+import com.bedrosians.bedlogic.domain.AccountPhone;
+import com.bedrosians.bedlogic.util.PatternMatchMode;
+import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 
 @Repository
@@ -24,6 +32,9 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private AccountPhoneDao accountPhoneDao;
 	
 	protected Session currentSession() {
 	    //return sessionFactory.getCurrentSession();
@@ -35,24 +46,67 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		
 		return read(accountId);
 	}
-				
+	
+	/*
 	@Override
 	public List<Account> getAccountsByActivityStatus(String status){
 		String queryString = "";
 		if ("all".equalsIgnoreCase(status) || status == null || status.length() == 0)
 			queryString = "from Account";
 		else if ("active".equalsIgnoreCase(status))
-			queryString = "from Account a where activityStatus = 'Y' or activityStatus = ''";
+			queryString = "from Account a where activityStatus = ' '";
 		else if ("inactive".equalsIgnoreCase(status))
-		    queryString = "from Account a where activityStatus = 'D'";
+		    queryString = "from Account a where activityStatus != ' '";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
-		List<Account> list = (List<Account>)query.list();
+		query.setReadOnly(true);
+		return (List<Account>)query.list();
+	}
+	*/
+	
+/*
+	@Override
+	public List<Account> getAccountsByActivityStatus(String status){
+		String propertyName = "activityStatus";
+		Criteria criteria = currentSession().createCriteria(Account.class);
+		if  ("all".equalsIgnoreCase(status)){
+			//do nothing
+		}
+		else if  ("active".equalsIgnoreCase(status))
+			//criteria.add(
+			  //  Restrictions.or(Restrictions.isNull(propertyName),
+            //                    		Restrictions.eq(propertyName, " ")));
+			//criteria.add(Restrictions.eq(propertyName, ""));
+			criteria.add(Restrictions.isNull(propertyName));
+		else if  ("inactive".equalsIgnoreCase(status))	
+		   //criteria.add(Restrictions.eq(propertyName, "D").ignoreCase());
+			criteria.add(Restrictions.isNotNull(propertyName));
+		List<Account> list = (List<Account>)criteria.list();
 		
 		return list;
 	}
 	
+	*/
 	@Override
+	public List<Account> getAccountsByActivityStatus(String status){
+		String propertyName = "activityStatus";
+	    List<Account> accounts = null;
+		//Criteria criteria = currentSession().createCriteria(Account.class);
+	    if  ("all".equalsIgnoreCase(status))
+	    	accounts = readByParameter(propertyName, " ", RestrictionOperation.NE);
+	
+		else if  ("active".equalsIgnoreCase(status))
+			accounts = readByParameter(propertyName, " ");
+		else if  ("inactive".equalsIgnoreCase(status))	
+			accounts = readByParameter(propertyName, " ", RestrictionOperation.NE);
+		
+		return accounts;
+	}
+	
+	
+	
+	
+	/*@Override
     public List<Account> getAccountsByParameter(String parameterName, String value){
 	    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
 		Session session = currentSession();
@@ -62,8 +116,16 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		List<Account> list = (List<Account>)query.list();
 			
 		return list;
+		
+		Criteria criteria = currentSession().createCriteria(Account.class);
+	  	criteria.setReadOnly(true);
+	  	System.out.printf("parameterName, value.toUpperCase() = %s, %s ", parameterName, value.toUpperCase());
+		criteria.add(Restrictions.eq(parameterName, value.toUpperCase()));
+		return (List<Account>)criteria.list();	
 	 }
-	  	  
+	 */
+
+		
 	 @Override
 	 public List<Account> getAccountsByParameters(String[] parameterNames, String[] values){
 	    String condition = "";
@@ -85,6 +147,31 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 			
 		return accountList;
 	  }
+	 
+	 
+	 @Override
+	 public List<Account> getAccountsByOwnerName(String firstName, String lastName){
+		 Criteria criteria = currentSession().createCriteria(Account.class);
+		 if(firstName != null){
+			 criteria.add(Restrictions.like("firstName",  firstName, MatchMode.START).ignoreCase());
+		 }
+		 if(lastName != null){
+			 criteria.add(Restrictions.like("lastName",  lastName, MatchMode.START).ignoreCase());
+		 }
+		 criteria.addOrder(Order.asc("lastName"));
+		 return (List<Account>)criteria.list();
+	 }
+	 
+	 public Set<Account> getAccountsByPhoneNo(Long phoneNo){
+		 List<AccountPhone> accountPhones = accountPhoneDao.readByParameter("number", phoneNo);
+	     List<Account> accountList = new ArrayList<Account>();
+		 Set<AccountPhone> accountPhoneSet = new HashSet(accountPhones);
+		 for (AccountPhone phone : accountPhones){
+			 accountList.add(phone.getAccount());
+		 }
+		 return new LinkedHashSet<Account>(accountList);
+	 }
+	 
 		
 	@SuppressWarnings("unchecked")
 	@Override
