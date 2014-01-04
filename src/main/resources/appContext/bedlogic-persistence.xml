@@ -21,11 +21,11 @@
         <property name="password" value="${database.password}" />
           
         <!-- these are C3P0 properties -->
-        <property name="acquireIncrement" value="${acquireIncrement}" />
+        <!-- <property name="acquireIncrement" value="${acquireIncrement}" />
         <property name="minPoolSize" value="${minPoolSize}" />
         <property name="maxPoolSize" value="${maxPoolSize}" />
-        <!-- <property name="maxIdleTime" value="${maxIdleTime}" />-->
-        <property name="timeout" value="${timeout}" />
+        <property name="maxIdleTime" value="${maxIdleTime}" />
+        <property name="timeout" value="${timeout}" />-->
            
         <!-- <property name="initialSize" value="10" />
         <property name="maxActive" value="100" />
