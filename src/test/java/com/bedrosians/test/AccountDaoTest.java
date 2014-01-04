@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.collection.internal.PersistentSet;
 import org.junit.runner.RunWith;
 import org.junit.Before;
@@ -27,6 +24,7 @@ import com.bedrosians.bedlogic.util.PatternMatchMode;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/Bedlogic-test-context.xml")
+//@ContextConfiguration("classpath:/com/bedlogic/resources/-context.xml")
 
 public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
@@ -40,6 +38,9 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	private static String testAddress = null;
 	private static Long testPhoneNo = null;
     private static String testState = null;
+    private static String testFirstName = null;
+    private static String testLastName = null;
+	
 	
 	@Before
 	public void setup(){
@@ -50,6 +51,8 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		testAddress = "1701 SOUTH STATE COLLEGE";
 		testPhoneNo = 7147049293L;
 		testState = "NY";
+		testFirstName = "LARRY/ROGER/HAT";
+		testLastName = "HAJALI";
 	}
 	
 	 
@@ -107,11 +110,23 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	
 	@Test
 	public void testGetAccountsByAccountNameParameter(){
-		System.out.println("test if the account is returned by searching its parater's name...");
+		System.out.println("test if the account is returned by searching its parameter's name...");
 		Account account = accountDao.readByParameter("accountName", testAccountName).get(0);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		assertEquals("account should have 'THE RUG SHOPPE' as account name", testAccountName, account.getAccountName());
+	}
+	
+	@Test
+	public void testGetAccountsByOwnerName(){
+		System.out.println("test if the account is returned by searching its owner's name...");
+		List<Account> accounts = accountDao.getAccountsByOwnerName(testFirstName, testLastName);
+		assertNotNull("should not be null", accounts);
+		for(Account account : accounts) {
+		   System.out.println("account = " + account.toString());
+		   assertEquals("account should have 'THE RUG SHOPPE' as account name", testAccountName, account.getAccountName());
+	    }
+	
 	}
 	
 	@Test
@@ -187,7 +202,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		Set<AccountUser> users = account.getAccountUsers();
 		assertEquals(PersistentSet.class, users.getClass());
 		System.out.println(users.size());
-		assertEquals("account " + testAccountId + " has 1 users ", 1, users.size());
+		assertEquals("account " + testAccountId + " has 0 users ", 0, users.size());
 	}
 	
 	@Test
@@ -211,7 +226,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		System.out.println("An existing account retrieved");
 		System.out.println("account = "+ account.toString());
 		assertEquals("CA", account.getAddressState());
-		System.out.printf("Now, set the state to %s", testState);
+		System.out.printf("Now, set the state to %s, %s", testState, " And save it to DB...");
         account.setAddressState(testState);
 		accountDao.update(account);
 		assertNotEquals("CA", account.getAddressState());
@@ -234,7 +249,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		System.out.println("Now, save the account.");
        	accountDao.save(account);
        	Account newAccount = accountDao.getAccountById("bedlogictest0001");
-       	System.out.println("saved account  = "+ newAccount.toString());
+       	System.out.println("retrieved the saved account  = "+ newAccount.toString());
 		assertNotEquals(testState, account.getAddressState());
 		
 	}
