@@ -15,9 +15,7 @@
 	<mvc:annotation-driven />
 	
 	<tx:annotation-driven />
-	
-	<context:component-scan base-package="com.bedrosians.bedlogic" />
-    
+	    
     <bean id="dataSource"  
         class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
         <property name="driverClassName" value="${database.driver}" />  
@@ -28,21 +26,10 @@
   		<property name="maxActive" value="10" /> 
     </bean>
     
-    <bean id="sessionFactory"  
-        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">  
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
         <property name="packagesToScan" value="com.bedrosians.bedlogic.domain" />
-        <!--  <property name="annotatedClasses">  
-            <list>  
-                <value>com.bedrosians.bedlogic.domain.Account</value>
-                <value>com.bedrosians.bedlogic.domain.AccountUser</value>
-                <value>com.bedrosians.bedlogic.domain.AccountUserPhone</value>
-                 <value>com.bedrosians.bedlogic.domain.AccountBranch</value>
-                <value>com.bedrosians.bedlogic.domain.SimpleAccountBranch</value>
-                <value>com.bedrosians.bedlogic.domain.AccountPhone</value>
-            </list>  
-        </property>-->
-         
+        
         <property name="hibernateProperties">  
             <props>  
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>  
@@ -50,10 +37,15 @@
             </props>  
         </property>  
     </bean>
-    
-    <bean id="hibernateTransactionManager"  
-        class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
+        
+    <!-- Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
         <property name="sessionFactory" ref="sessionFactory" />  
     </bean>
+ 
+    <!-- <context:component-scan base-package="com.bedrosians.bedlogic" />-->
+    <context:component-scan base-package="com.bedrosians.bedlogic.service" />
+    <context:component-scan base-package="com.bedrosians.bedlogic.dao" />
+    
  
 </beans>
