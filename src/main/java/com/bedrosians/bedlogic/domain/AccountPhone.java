@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="CustPhones")
@@ -74,6 +76,7 @@ public class AccountPhone implements Serializable {
 		this.createdBy = createdBy;
 	}
 
+	//@Temporal(TemporalType.DATE)
 	@Column(name="created_date")
 	public String getCreatedDate() {
 		return createdDate;
@@ -92,6 +95,7 @@ public class AccountPhone implements Serializable {
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
+	//@Temporal(TemporalType.DATE)
 	@Column(name="last_modified_date")
 	public String getLastModifiedDate() {
 		return lastModifiedDate;

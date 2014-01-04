@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="AccountUserPhones")
@@ -38,12 +40,14 @@ public class AccountUserPhone implements Serializable {
 	@Column(name="created_by")
 	private String createdBy;
 	
+	//@Temporal(TemporalType.DATE)
 	@Column(name="created_date")
 	private String createdDate;
 	
 	@Column(name="last_modified_by")
 	private String lastModifiedBy;
 	
+	//@Temporal(TemporalType.DATE)
 	@Column(name="last_modified_date")
 	private String lastModifiedDate;
 
