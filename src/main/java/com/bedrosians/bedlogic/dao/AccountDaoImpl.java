@@ -1,6 +1,5 @@
 package com.bedrosians.bedlogic.dao;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -26,28 +25,28 @@ import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 
-@Repository
+@Repository("accountDao")
 public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements AccountDao {
 	
 
-	@Autowired
-	private SessionFactory sessionFactory;
+	//@Autowired
+	//private SessionFactory sessionFactory;
 	
 	@Autowired
 	private AccountPhoneDao accountPhoneDao;
 	
-	protected Session currentSession() {
+	//protected Session currentSession() {
 	    //return sessionFactory.getCurrentSession();
-		return sessionFactory.openSession();
-	}
+		//return sessionFactory.openSession();
+	//}
 		
 	@Override
+	@Transactional
 	public Account getAccountById(String accountId) {
 		
 		return read(accountId);
 	}
 	
-	/*
 	@Override
 	public List<Account> getAccountsByActivityStatus(String status){
 		String queryString = "";
@@ -56,13 +55,13 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		else if ("active".equalsIgnoreCase(status))
 			queryString = "from Account a where activityStatus = ' '";
 		else if ("inactive".equalsIgnoreCase(status))
-		    queryString = "from Account a where activityStatus != ' '";
+		    queryString = "from Account a where activityStatus is not null";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		query.setReadOnly(true);
 		return (List<Account>)query.list();
 	}
-	*/
+	
 	
 /*
 	@Override
@@ -87,25 +86,21 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	}
 	
 	*/
-	@Override
+	/*@Override
 	public List<Account> getAccountsByActivityStatus(String status){
 		String propertyName = "activityStatus";
 	    List<Account> accounts = null;
-		//Criteria criteria = currentSession().createCriteria(Account.class);
-	    if  ("all".equalsIgnoreCase(status))
-	    	accounts = readByParameter(propertyName, " ", RestrictionOperation.NE);
-	
+		if  ("all".equalsIgnoreCase(status))
+	    	accounts = readByParameter(propertyName, " ", RestrictionOperation.NONE);	
 		else if  ("active".equalsIgnoreCase(status))
 			accounts = readByParameter(propertyName, " ");
 		else if  ("inactive".equalsIgnoreCase(status))	
-			accounts = readByParameter(propertyName, " ", RestrictionOperation.NE);
+			accounts = readByParameter(propertyName, " ", RestrictionOperation.NOTNULL);
 		
 		return accounts;
 	}
-	
-	
-	
-	
+	*/
+		
 	/*@Override
     public List<Account> getAccountsByParameter(String parameterName, String value){
 	    String queryString = "from Account where ".concat(parameterName.concat(" = :")).concat(parameterName);
@@ -153,26 +148,30 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	 public List<Account> getAccountsByOwnerName(String firstName, String lastName){
 		 Criteria criteria = currentSession().createCriteria(Account.class);
 		 if(firstName != null){
-			 criteria.add(Restrictions.like("firstName",  firstName, MatchMode.START).ignoreCase());
+			 criteria.add(Restrictions.like("ownerFirstName",  firstName, MatchMode.START).ignoreCase());
 		 }
 		 if(lastName != null){
-			 criteria.add(Restrictions.like("lastName",  lastName, MatchMode.START).ignoreCase());
+			 criteria.add(Restrictions.like("ownerLastName",  lastName, MatchMode.START).ignoreCase());
 		 }
-		 criteria.addOrder(Order.asc("lastName"));
+		 criteria.setReadOnly(true);
+		 criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		 criteria.addOrder(Order.asc("ownerLastName"));
 		 return (List<Account>)criteria.list();
 	 }
 	 
+	 @SuppressWarnings("unchecked")
+     @Override
 	 public Set<Account> getAccountsByPhoneNo(Long phoneNo){
-		 List<AccountPhone> accountPhones = accountPhoneDao.readByParameter("number", phoneNo);
-	     List<Account> accountList = new ArrayList<Account>();
-		 Set<AccountPhone> accountPhoneSet = new HashSet(accountPhones);
+	 	 List<AccountPhone> accountPhones = accountPhoneDao.readByParameter("number", phoneNo);
+		 //List<Account> accountList = new ArrayList<Account>();
+		 Set<Account> accountSet = new HashSet<Account>();
 		 for (AccountPhone phone : accountPhones){
-			 accountList.add(phone.getAccount());
+			 accountSet.add(phone.getAccount());
 		 }
-		 return new LinkedHashSet<Account>(accountList);
-	 }
+		return accountSet;
+	 } 
 	 
-		
+   
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly=true)

@@ -17,7 +17,6 @@ import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 
-
 public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
 	private Class<T> type;
 	
@@ -27,8 +26,9 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	
 	protected Session currentSession() {
 	    return sessionFactory.getCurrentSession();
+	    
 	}
-	
+		
 	@SuppressWarnings("unchecked")
 	public GenericDaoImpl(){
 		this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -37,12 +37,14 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	public PK save(T newInstance) {
 		return (PK)currentSession().save(newInstance);
 	}
+	@Transactional
 	@SuppressWarnings("unchecked")
 	public T read(final PK id) {
 		return (T)currentSession().get(type, id);
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
     public List<T> readMultipleRecords(PK id) {
 		return (List<T>)currentSession().get(type, id);
 	}
@@ -83,6 +85,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		   value = value.toUpperCase();
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	criteria.setReadOnly(true);
+	  	// need it? 
 	  	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	  	switch(op) {
 	  	  case EQ:
@@ -92,7 +95,13 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	  	  case IN:
 	  		   criteria.add(Restrictions.in(parameterName, value.split(",")));	   
 	  		   break;
-	  	case NONE:
+	  	  case NULL:
+	  		   criteria.add(Restrictions.isNull(parameterName));	   
+	  		   break; 		   
+	      case NOTNULL:
+	  		   criteria.add(Restrictions.isNotNull(parameterName));	   
+	  		   break; 	   
+	       case NONE:
 	  		   break;	   
 	  	  default:
 	  		   break;
