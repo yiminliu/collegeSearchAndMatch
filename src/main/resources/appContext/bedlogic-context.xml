@@ -12,7 +12,7 @@
    
     <!-- Transaction -->
     <tx:annotation-driven transaction-manager="transactionManager" />
-      
+          
     <!-- Massage Converter -->      
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
         <property name="messageConverters">
