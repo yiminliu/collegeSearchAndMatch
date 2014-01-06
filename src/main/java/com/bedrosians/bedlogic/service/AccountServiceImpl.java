@@ -8,19 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.dao.AccountBranchDao;
 import com.bedrosians.bedlogic.dao.AccountDao;
-import com.bedrosians.bedlogic.dao.AccountDaoImpl;
 import com.bedrosians.bedlogic.dao.CheckPaymentDao;
 import com.bedrosians.bedlogic.domain.AccountBranch;
 import com.bedrosians.bedlogic.domain.BranchPK;
 import com.bedrosians.bedlogic.domain.CheckPayment;
 import com.bedrosians.bedlogic.domain.Account;
 
-@Service
+@Service("accountService")
 @Transactional
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
-	AccountDaoImpl accountDao;
+	AccountDao accountDao;
 	
     @Autowired
 	AccountBranchDao accountBranchDao;
@@ -52,13 +51,13 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional(readOnly=true)
 	public Account getAccountById(String id) {
 		
-		/*String spaces = "";
+		String spaces = "";
 		
 		int spaceNeeded = 10 - id.length();
 		for (int i = 0 ; i < spaceNeeded ; i++){
 			spaces = spaces.concat(" ");
 		}
-		*/
+		
 		//Account account = accountDao.getAccountById(id.concat(spaces));
     	Account account = accountDao.getAccountById(id);
 		if(account != null){	         		
@@ -70,46 +69,45 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional(readOnly=true)
     public List<Account> getAccountsByAccountName(String name){
-		return accountDao.getAccountsByParameter("accountName", name);
+		//return accountDao.getAccountsByParameter("accountName", name);
+		return accountDao.readByParameter("accountName", name);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
     public List<Account> getAccountsByOwnerName(String firstName, String lastName){
-		return accountDao.getAccountsByParameters(new String[] {"ownerFirstName, ownerLastName"},
-				                                  new String[] {firstName, lastName});
-	//  return null;
-	
-    }
+		return accountDao.getAccountsByOwnerName(firstName, lastName);
+	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByPhoneNo(String phoneNo){
-        return null;
-		//accountDao.getAccountsByParameter(", value)
+      // accountDao.getAccountsByParameter(", value)
+		return null;
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByAddress(String streetAddress){
 
-		return accountDao.getAccountsByParameter("addressStreeLine1", streetAddress);
+		//return accountDao.getAccountsByParameter("addressStreeLine1", streetAddress);
+		return accountDao.readByParameter("addressStreeLine1", streetAddress);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByCity(String city){
-        return accountDao.getAccountsByParameter("city", city);
+        //return accountDao.getAccountsByParameter("city", city);
+		return accountDao.readByParameter("city", city);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByZip(String zip){
-        return accountDao.getAccountsByParameter("zip", zip);
+        //return accountDao.getAccountsByParameter("zip", zip);
+		return accountDao.readByParameter("zip", zip);
 	}
-	
-	
-	
+		
 	public AccountBranch getAccountBranch(BranchPK branchPK) {
 		return accountBranchDao.read(branchPK);
 	}
