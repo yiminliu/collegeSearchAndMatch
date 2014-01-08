@@ -12,27 +12,33 @@ import com.bedrosians.bedlogic.domain.Account;
 @Service
 public interface AccountService {
 	
-    List<Account> getAccounts();
+    public List<Account> getAccounts();
 	
 	//List<Account> getActiveAccounts();
 	
-	List<Account> getAccountsByActivityStatus(String status);
+	public List<Account> getAccountsByActivityStatus(String status);
 	
-	Account getAccountById(String id);
+	public Account getAccountById(String id);
 	
-	List<Account> getAccountsByAccountName(String name);
+	public List<Account> getAccountsByAccountName(String name);
 	
-	List<Account> getAccountsByPhoneNo(String phoneNo);
+	public List<Account> getAccountsByPhoneNo(String phoneNo);
 	
-	List<Account> getAccountsByOwnerName(String firstName, String lastName);
+	public List<Account> getAccountsByOwnerName(String firstName, String lastName);
 	
-	List<Account> getAccountsByAddress(String address);
+	public List<Account> getAccountsByAddress(String address);
 	
-	List<Account> getAccountsByCity(String city);
+	public List<Account> getAccountsByCity(String city);
 	
-	List<Account> getAccountsByZip(String zip);
+	public List<Account> getAccountsByState(String city);
+	
+	public List<Account> getAccountsByZip(String zip);
+	
+	public String createAccount(Account account);
+	
+	public void updateAccount(Account account);
 		
-	List<Account> getAccounts(
+	public List<Account> getAccounts(
 		String accountName,
 		String addressStreetLine1,
 		String addressCity,

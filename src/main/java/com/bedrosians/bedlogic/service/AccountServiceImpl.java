@@ -98,14 +98,21 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByCity(String city){
         //return accountDao.getAccountsByParameter("city", city);
-		return accountDao.readByParameter("city", city);
+		return accountDao.readByParameter("addressCity", city);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<Account> getAccountsByState(String state){
+        //return accountDao.getAccountsByParameter("city", city);
+		return accountDao.readByParameter("addressState", state);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByZip(String zip){
         //return accountDao.getAccountsByParameter("zip", zip);
-		return accountDao.readByParameter("zip", zip);
+		return accountDao.readByParameter("addressZip", zip);
 	}
 		
 	public AccountBranch getAccountBranch(BranchPK branchPK) {
@@ -155,5 +162,17 @@ public class AccountServiceImpl implements AccountService {
 					phoneNo,
 					activityStatus);
 		}
+		
+	@Override
+	@Transactional
+	public String createAccount(Account account){
+		return accountDao.save(account); 
+	}
+	
+	@Override
+	@Transactional
+	public void updateAccount(Account account){
+		accountDao.update(account); 
+	}
 	    
 }
