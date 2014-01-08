@@ -7,22 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.TransactionException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
 import com.bedrosians.bedlogic.domain.AccountBranch;
-import com.bedrosians.bedlogic.domain.AccountPhone;
 import com.bedrosians.bedlogic.domain.BranchPK;
-import com.bedrosians.bedlogic.domain.CheckPayment;
 import com.bedrosians.bedlogic.domain.Account;
 import com.bedrosians.bedlogic.exeception.DataNotFoundException;
 import com.bedrosians.bedlogic.exeception.InvalidRequestParameterException;
@@ -33,34 +32,21 @@ import com.bedrosians.bedlogic.service.AccountService;
 @RequestMapping("/accounts")
 public class RestfulWebServiceAccountController {
 
-	//@Autowired
+	@Autowired
     AccountService accountService;
 		
-	@Autowired
-	public void setAccountService(AccountService accountService){
-		this.accountService = accountService;
-	}
-	
-	@RequestMapping(value={"/lookup", "/lookup/{activityStatus}"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/lookup/{activityStatus}"}, method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK )
 	@ResponseBody
 	public List<Account> getAccounts(@PathVariable String activityStatus) {
 			
 		List<Account> accounts = null;
 				
-		/*if("all".equalsIgnoreCase(activityStatus)) 
-			accounts = accountService.getAllAccounts();
-		else if("active".equalsIgnoreCase(activityStatus))
-			accounts = accountService.getActiveAccounts();
-		else if("inactive".equalsIgnoreCase(activityStatus))
-			accounts = accountService.getInactiveAccounts();
-		*/
-		if(activityStatus == null || activityStatus.length() == 0)
-		   accounts = accountService.getAccounts();
-		else if ("all".equalsIgnoreCase(activityStatus) ||
-                 "active".equalsIgnoreCase(activityStatus) ||
-		         "inactive".equalsIgnoreCase(activityStatus))
-		          accountService.getAccountsByActivityStatus(activityStatus);
+		if ("all".equalsIgnoreCase(activityStatus)    ||
+            "active".equalsIgnoreCase(activityStatus) ||
+		    "inactive".equalsIgnoreCase(activityStatus))
+		
+			accountService.getAccountsByActivityStatus(activityStatus);
 		else
 			throw new IllegalArgumentException("Valid values for parameter 'activityStatus' are all, active, or inactive");
 				
@@ -71,10 +57,12 @@ public class RestfulWebServiceAccountController {
 		return accounts;
 	}
 			
-	@RequestMapping(value="/lookup/accountId/{accountId}", method=RequestMethod.GET)
+	@RequestMapping(value="/lookup/accountId/{accountId}", method=RequestMethod.GET, headers = "Accept=application/json")
 	@ResponseBody
+	@ResponseStatus( HttpStatus.OK )
 	//public Account getAccountById(@RequestParam String accountId, HttpServletRequest request) throws Exception{
 	public Account getAccountById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
+		
 		Account account = accountService.getAccountById(accountId);
 		if (account == null){
 			throw new DataNotFoundException();
@@ -82,9 +70,35 @@ public class RestfulWebServiceAccountController {
 		return account;
 	}
 	
+	@RequestMapping(value="/lookup/payment/accountId/{accountId}", method=RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	@ResponseStatus( HttpStatus.OK )
+	public Account getAccountWithPaymentInfoById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
+		
+		Account account = accountService.getAccountById(accountId);
+		if (account == null){
+			throw new DataNotFoundException();
+		}
+		return account;
+	}
+	
+	@RequestMapping(value="/lookup/user/accountId/{accountId}", method=RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	@ResponseStatus( HttpStatus.OK )
+	public Account getAccountWithUsesrsById(@PathVariable String accountId, HttpServletRequest request) throws Exception{
+		
+		Account account = accountService.getAccountById(accountId);
+		if (account == null){
+			throw new DataNotFoundException();
+		}
+		return account;
+	}
+	
+	
+	
 	@RequestMapping(value="/lookup/accountName/{accountName}", method=RequestMethod.GET)
 	@ResponseBody
-	//public Account getAccountByName(@RequestParam String accountName, HttpServletRequest request) throws Exception{
+	@ResponseStatus( HttpStatus.OK )
 	public List<Account> getAccountByAccountName(@PathVariable String accountName, HttpServletRequest request) throws Exception{
 				
 		List<Account> accountList = accountService.getAccountsByAccountName(accountName);
@@ -96,7 +110,7 @@ public class RestfulWebServiceAccountController {
 	
 	@RequestMapping(value="/lookup/ownerName/{firtName}/{lastName}", method=RequestMethod.GET)
 	@ResponseBody
-	//public Account getAccountByName(@RequestParam String accountName, HttpServletRequest request) throws Exception{
+	@ResponseStatus( HttpStatus.OK )
 	public List<Account> getAccountByOwnerName(@PathVariable String firstName, @PathVariable String lastName, HttpServletRequest request) throws Exception{
 				
 		List<Account> accountList = accountService.getAccountsByOwnerName(firstName, lastName);
@@ -108,7 +122,10 @@ public class RestfulWebServiceAccountController {
 	
 	@RequestMapping(value="/lookup/phoneNo/{phoneNo}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Account> getAccountByPhoneNo(@RequestParam String phoneNo, HttpServletRequest request) throws Exception{
+	@ResponseStatus(HttpStatus.OK)
+	//public List<Account> getAccountByPhoneNo(@RequestParam String phoneNo, HttpServletRequest request) throws Exception{
+	public List<Account> getAccountByPhoneNo(@PathVariable String phoneNo, HttpServletRequest request) throws Exception{
+		
 		List<Account> accountList = accountService.getAccountsByPhoneNo(phoneNo);
 		if (accountList == null || accountList.size() < 1){
 			throw new DataNotFoundException();
@@ -118,7 +135,9 @@ public class RestfulWebServiceAccountController {
 	
 	@RequestMapping(value="/lookup/address/{address}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Account> getAccountByAddress(@RequestParam String address, HttpServletRequest request) throws Exception{
+	@ResponseStatus(HttpStatus.OK)
+	//public List<Account> getAccountByAddress(@RequestParam String address, HttpServletRequest request) throws Exception{
+	public List<Account> getAccountByAddress(@PathVariable String address, HttpServletRequest request) throws Exception{
 		List<Account> accountList = accountService.getAccountsByAddress(address);
 		if (accountList == null || accountList.size() < 1){
 			throw new DataNotFoundException();
@@ -128,7 +147,10 @@ public class RestfulWebServiceAccountController {
 	
 	@RequestMapping(value="/lookup/city/{city}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Account> getAccountByCity(@RequestParam String city, HttpServletRequest request) throws Exception{
+	@ResponseStatus(HttpStatus.OK)
+	//public List<Account> getAccountByCity(@RequestParam String city, HttpServletRequest request) throws Exception{
+	public List<Account> getAccountByCity(@PathVariable String city, HttpServletRequest request) throws Exception{
+		
 		List<Account> accountList = accountService.getAccountsByCity(city);
 		if (accountList == null || accountList.size() < 1){
 			throw new DataNotFoundException();
@@ -138,7 +160,10 @@ public class RestfulWebServiceAccountController {
 	
 	@RequestMapping(value="/lookup/zip/{zip}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Account> getAccountByZip(@RequestParam String zip, HttpServletRequest request) throws Exception{
+	@ResponseStatus(HttpStatus.OK)
+	//public List<Account> getAccountByZip(@RequestParam String zip, HttpServletRequest request) throws Exception{
+    public List<Account> getAccountByZip(@PathVariable String zip, HttpServletRequest request) throws Exception{
+				
 		List<Account> accountList = accountService.getAccountsByZip(zip);
 		if (accountList == null || accountList.size() < 1){
 			throw new DataNotFoundException();
@@ -156,6 +181,30 @@ public class RestfulWebServiceAccountController {
 			throw new DataNotFoundException();
 		}
 		return accountBranch;
+	}
+	
+	@RequestMapping(value="/create", method=RequestMethod.POST)
+	public ResponseEntity createAccount(@RequestBody Account account){
+		
+		 try {
+             accountService.createAccount(account);
+         } catch(Exception e) {
+             e.printStackTrace();
+             throw new RuntimeException(e);
+         }
+         return new ResponseEntity(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.PUT)
+	public ResponseEntity updateAccount(@RequestBody Account account){
+		
+		 try {
+             accountService.updateAccount(account);
+         } catch(Exception e) {
+             e.printStackTrace();
+             throw new RuntimeException(e);
+         }
+         return new ResponseEntity(HttpStatus.OK);
 	}
 		
 	@RequestMapping(method = RequestMethod.GET)
@@ -244,6 +293,7 @@ public class RestfulWebServiceAccountController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<RestError> restErrors = new LinkedList<RestError>();
 		for (String msg : messages){
+			System.out.println("error: " + msg);
 			restErrors.add(new RestError(msg));
 		}
 		map.put("errors", restErrors);
