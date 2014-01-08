@@ -1,6 +1,7 @@
 package com.bedrosians.bedlogic.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,16 +41,16 @@ public class AccountUserPhone implements Serializable {
 	@Column(name="created_by")
 	private String createdBy;
 	
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	@Column(name="created_date")
-	private String createdDate;
+	private Date createdDate;
 	
 	@Column(name="last_modified_by")
 	private String lastModifiedBy;
 	
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	@Column(name="last_modified_date")
-	private String lastModifiedDate;
+	private Date lastModifiedDate;
 
 	public int getId() {
 		return id;
@@ -91,11 +92,11 @@ public class AccountUserPhone implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	public String getCreatedDate() {
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(String createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -107,11 +108,11 @@ public class AccountUserPhone implements Serializable {
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
-	public String getLastModifiedDate() {
+	public Date getLastModifiedDate() {
 		return lastModifiedDate;
 	}
 
-	public void setLastModifiedDate(String lastModifiedDate) {
+	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 }

@@ -17,6 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 @Table(name="arm")
@@ -57,9 +59,11 @@ public class Account{
 	}
     
 	@Id
-	@Column(name="CustCd")
-	//@GeneratedValue(strategy = GenerationType.AUTO, generator="my_entity_seq_gen")
+	@GeneratedValue(generator="account_id_generator") //strategy = GenerationType.IDENTITY) 
+	//@GeneratedValue()//strategy = GenerationType.AUTO)//, generator="my_entity_seq_gen")
 	//@SequenceGenerator(name="my_entity_seq_gen", sequenceName="arm_crapp_seqnbr_seq")
+	@GenericGenerator(name="account_id_generator", strategy="com.bedrosians.bedlogic.util.IdGenerator")
+	@Column(name="CustCd")
 	public String getAccountId() {
 		if (accountId != null) accountId = accountId.trim();
 		return accountId;
@@ -174,8 +178,7 @@ public class Account{
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
-	@OneToMany(/*fetch=FetchType.EAGER,*/ mappedBy="account", cascade = CascadeType.ALL)
-	//@LazyCollection(LazyCollectionOption.FALSE) 
+	@OneToMany(mappedBy="account", fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	public Set<AccountPhone> getAccountPhones() {
 		return accountPhones;
 	}
@@ -192,7 +195,7 @@ public class Account{
 	    this.accountPhones = accountPhones;
 	}
 	
-	@OneToMany(/*fetch=FetchType.EAGER*,*/ mappedBy = "account", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "account", /*fetch=FetchType.EAGER*,*/ cascade = CascadeType.ALL)
 	public Set<AccountUser> getAccountUsers() {
 		return accountUsers;
 	}

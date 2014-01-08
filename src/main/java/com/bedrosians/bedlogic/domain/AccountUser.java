@@ -1,6 +1,7 @@
 package com.bedrosians.bedlogic.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,9 +34,9 @@ public class AccountUser implements Serializable {
 	private String title;	
 	private Set<AccountUserPhone> phoneNumbers = new HashSet<AccountUserPhone>();
 	private String createdBy;
-	private String createdDate;
+	private Date createdDate;
 	private String lastModifiedBy;
-	private String lastModifiedDate;
+	private Date lastModifiedDate;
 
 	@Id
 	@Column(name="user_id")
@@ -43,7 +44,7 @@ public class AccountUser implements Serializable {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	private void setUserId(int userId) {
 		this.userId = userId;
 	}
 
@@ -121,13 +122,13 @@ public class AccountUser implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	@Column(name="created_date")
-	public String getCreatedDate() {
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(String createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -140,13 +141,13 @@ public class AccountUser implements Serializable {
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	@Column(name="last_modified_date")
-	public String getLastModifiedDate() {
+	public Date getLastModifiedDate() {
 		return lastModifiedDate;
 	}
 
-	public void setLastModifiedDate(String lastModifiedDate) {
+	public void setLastModifiedDate(Date lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 	

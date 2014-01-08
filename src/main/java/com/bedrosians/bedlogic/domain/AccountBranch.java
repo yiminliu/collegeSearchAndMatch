@@ -53,6 +53,5 @@ public class AccountBranch implements Serializable {
 	public void setBranchAddressCity(String branchAddressCity) {
 		this.branchAddressCity = branchAddressCity;
 	}
-
 	
 }
