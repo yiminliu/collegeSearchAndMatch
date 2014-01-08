@@ -34,12 +34,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	
 	@Autowired
 	private AccountPhoneDao accountPhoneDao;
-	
-	//protected Session currentSession() {
-	    //return sessionFactory.getCurrentSession();
-		//return sessionFactory.openSession();
-	//}
-		
+			
 	@Override
 	@Transactional
 	public Account getAccountById(String accountId) {

@@ -20,7 +20,6 @@ import com.bedrosians.bedlogic.util.RestrictionOperation;
 public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
 	private Class<T> type;
 	
-	//@Resource(name="sessionFactory")
 	@Autowired
 	private SessionFactory sessionFactory;
 	
@@ -34,22 +33,23 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
+	//@Transactional
 	public PK save(T newInstance) {
 		return (PK)currentSession().save(newInstance);
 	}
-	@Transactional
+	//@Transactional
 	@SuppressWarnings("unchecked")
 	public T read(final PK id) {
 		return (T)currentSession().get(type, id);
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
+	//@Transactional(readOnly=true)
     public List<T> readMultipleRecords(PK id) {
 		return (List<T>)currentSession().get(type, id);
 	}
 	
-	@Transactional
+	//@Transactional
 	public synchronized void update(final T transientObject) {
 		try{
            Session session = currentSession();
