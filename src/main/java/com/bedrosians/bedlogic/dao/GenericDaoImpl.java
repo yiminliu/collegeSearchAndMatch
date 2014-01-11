@@ -33,22 +33,19 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
-	//@Transactional
+	@Transactional
 	public PK save(T newInstance) {
 		return (PK)currentSession().save(newInstance);
 	}
+	
+	@Override
 	//@Transactional
 	@SuppressWarnings("unchecked")
-	public T read(final PK id) {
+	public T findById(final PK id) {
 		return (T)currentSession().get(type, id);
 	}
-	
-	@SuppressWarnings("unchecked")
-	//@Transactional(readOnly=true)
-    public List<T> readMultipleRecords(PK id) {
-		return (List<T>)currentSession().get(type, id);
-	}
-	
+			
+	@Override
 	//@Transactional
 	public synchronized void update(final T transientObject) {
 		try{
@@ -69,7 +66,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
-    public List<T> readByParameter(final String parameterName, String value){
+    public List<T> findByParameter(final String parameterName, String value){
 		if(value != null && value.length() > 0)
 		   value = value.toUpperCase();
 	  	Criteria criteria = currentSession().createCriteria(type);
@@ -80,7 +77,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
-    public List<T> readByParameter(final String parameterName, String value, final RestrictionOperation op){
+    public List<T> findByParameter(final String parameterName, String value, final RestrictionOperation op){
 		if(value != null && value.length() > 0)
 		   value = value.toUpperCase();
 	  	Criteria criteria = currentSession().createCriteria(type);
@@ -110,7 +107,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
-    public List<T> readByParameter(final String parameterName, Long value){
+    public List<T> findByParameter(final String parameterName, Long value){
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	criteria.setReadOnly(true);
 	  	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -119,7 +116,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
-    public List<T> readByParameterPatternMatch(final String parameterName, String value, final PatternMatchMode matchMode){
+    public List<T> findByParameterPatternMatch(final String parameterName, String value, final PatternMatchMode matchMode){
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	switch(matchMode){
 	  		case START:

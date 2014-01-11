@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bedrosians.bedlogic.domain.AccountBranch;
-import com.bedrosians.bedlogic.domain.BranchPK;
-import com.bedrosians.bedlogic.domain.CheckPayment;
-import com.bedrosians.bedlogic.domain.Account;
+import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.BranchPK;
+import com.bedrosians.bedlogic.domain.account.CheckPayment;
 
 @Service
 public interface AccountService {
@@ -51,7 +51,9 @@ public interface AccountService {
 		String phoneNo,
 		String activityStatus);
 		
-	AccountBranch getAccountBranch(BranchPK branchId);
+	AccountBranch getAccountBranchById(String accountId, String branchId);
+	
+	AccountBranch getAccountBranchById(BranchPK branchId);
 	
 	List<CheckPayment> getCheckPaymentsForAccount(String custcd);
 }

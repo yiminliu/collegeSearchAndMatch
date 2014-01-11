@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bedrosians.bedlogic.dao.AccountBranchDao;
-import com.bedrosians.bedlogic.dao.AccountDao;
-import com.bedrosians.bedlogic.dao.CheckPaymentDao;
-import com.bedrosians.bedlogic.domain.AccountBranch;
-import com.bedrosians.bedlogic.domain.BranchPK;
-import com.bedrosians.bedlogic.domain.CheckPayment;
-import com.bedrosians.bedlogic.domain.Account;
+import com.bedrosians.bedlogic.dao.account.AccountBranchDao;
+import com.bedrosians.bedlogic.dao.account.AccountDao;
+import com.bedrosians.bedlogic.dao.account.CheckPaymentDao;
+import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.BranchPK;
+import com.bedrosians.bedlogic.domain.account.CheckPayment;
 
 @Service("accountService")
 @Transactional
@@ -26,51 +26,26 @@ public class AccountServiceImpl implements AccountService {
 	
     @Autowired
 	CheckPaymentDao checkPaymentDao;
-	
-    
-   	/*@Override
-	@Transactional(readOnly=true)
-	public Account getAccountById(String id) {
-		
-		String spaces = "";
-		
-		int spaceNeeded = 10 - id.length();
-		for (int i = 0 ; i < spaceNeeded ; i++){
-			spaces = spaces.concat(" ");
-		}
-		
-		Account account = accountDao.read(id.concat(spaces));
-		if (account != null){
-			account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
-		}
-		return  account;
-	}
-	*/
+	    	
     
     @Override
 	@Transactional(readOnly=true)
 	public Account getAccountById(String id) {
-		
-		String spaces = "";
-		
-		int spaceNeeded = 10 - id.length();
-		for (int i = 0 ; i < spaceNeeded ; i++){
-			spaces = spaces.concat(" ");
-		}
-		
-		//Account account = accountDao.getAccountById(id.concat(spaces));
-    	Account account = accountDao.getAccountById(id);
-		if(account != null){	         		
-			account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
-		}
+    	Account account = null;
+		//accountDao.getAccountById(id);
+		List<Account> accountList = (List<Account>)accountDao.findByParameter("accountId", id);
+		if(accountList != null && accountList.size() > 0)
+		account =  accountList.get(0);
+		//if(account != null){	         		
+		//	account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
+		//}
 		return  account;
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
     public List<Account> getAccountsByAccountName(String name){
-		//return accountDao.getAccountsByParameter("accountName", name);
-		return accountDao.readByParameter("accountName", name);
+		return accountDao.findByParameter("accountName", name);
 	}
 	
 	@Override
@@ -89,34 +64,38 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByAddress(String streetAddress){
-
-		//return accountDao.getAccountsByParameter("addressStreeLine1", streetAddress);
-		return accountDao.readByParameter("addressStreeLine1", streetAddress);
+		return accountDao.findByParameter("addressStreeLine1", streetAddress);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByCity(String city){
-        //return accountDao.getAccountsByParameter("city", city);
-		return accountDao.readByParameter("addressCity", city);
+		return accountDao.findByParameter("addressCity", city);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByState(String state){
         //return accountDao.getAccountsByParameter("city", city);
-		return accountDao.readByParameter("addressState", state);
+		return accountDao.findByParameter("addressState", state);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByZip(String zip){
         //return accountDao.getAccountsByParameter("zip", zip);
-		return accountDao.readByParameter("addressZip", zip);
+		return accountDao.findByParameter("addressZip", zip);
 	}
 		
-	public AccountBranch getAccountBranch(BranchPK branchPK) {
-		return accountBranchDao.read(branchPK);
+	@Override
+	public AccountBranch getAccountBranchById(String accountId, String branchId) {
+		BranchPK branchPK = new BranchPK(accountId, branchId);
+		return accountBranchDao.findById(branchPK);
+	}
+	
+	@Override
+	public AccountBranch getAccountBranchById(BranchPK branchPK) {
+		return accountBranchDao.findById(branchPK);
 	}
 	
 	public List<CheckPayment> getCheckPaymentsForAccount(String custcd) {

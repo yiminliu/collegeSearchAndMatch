@@ -8,13 +8,12 @@ import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 public interface GenericDao <T, PK extends Serializable>{
 	PK save(T newInstance);
-	T read(PK id);
-	List<T> readMultipleRecords(PK id);
+	T findById(PK id);
 	void update(T transientObject);
 	void delete(T persistentObject);
-	List<T> readByParameter(String parameterName, String value);
-	List<T> readByParameter(String parameterName, Long value);
-	List<T> readByParameter(String parameterName, String value, RestrictionOperation op);
-	List<T> readByParameterPatternMatch(String parameterName, String value, PatternMatchMode matchMode);
+	List<T> findByParameter(String parameterName, String value);
+	List<T> findByParameter(String parameterName, Long value);
+	List<T> findByParameter(String parameterName, String value, RestrictionOperation op);
+	List<T> findByParameterPatternMatch(String parameterName, String value, PatternMatchMode matchMode);
 
 }
