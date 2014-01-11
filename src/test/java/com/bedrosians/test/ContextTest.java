@@ -16,19 +16,18 @@ import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bedrosians.bedlogic.dao.AccountDao;
-import com.bedrosians.bedlogic.domain.AccountBranch;
-import com.bedrosians.bedlogic.domain.AccountPhone;
-import com.bedrosians.bedlogic.domain.Account;
-import com.bedrosians.bedlogic.domain.AccountUser;
+import com.bedrosians.bedlogic.dao.account.AccountDao;
+import com.bedrosians.bedlogic.dao.miscellaneous.ObmhDao;
+import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.AccountPhone;
+import com.bedrosians.bedlogic.domain.user.User;
 import com.bedrosians.bedlogic.service.AccountService;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/Bedlogic-test-context.xml")
 //@ContextConfiguration(locations = {"classpath*/appContext/bedlogic-context.xml", "classpath*/appContext/bedlogic-persistence.xml"})
-//@ContextConfiguration(locations = {"classpath*/appContext/bedlogic-persistence.xml"})
-
 
 public class ContextTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
@@ -62,5 +61,18 @@ public class ContextTest extends AbstractTransactionalJUnit4SpringContextTests {
 		AccountService accountService = (AccountService)appContext.getBean("accountService");
 		assertNotNull(accountService);
 		//assertEquals("Account", accountDao.getClass().getName());
+	}
+	
+	@Test
+	public void testGetObmhDao(){
+		System.out.println("test if the Obmh dao is returned...");
+		ObmhDao aDao = (ObmhDao)appContext.getBean("obmhDao");
+		assertNotNull(aDao);
+		//try{
+		//assertEquals(AccountDao.class, ((org.springframework.aop.framework.Advised)accountDao).getTargetSource().getTarget());
+		//}
+		//catch(Exception e){
+		//e.printStackTrace();
+		//}
 	}
 }

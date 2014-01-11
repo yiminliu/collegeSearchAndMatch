@@ -15,11 +15,12 @@ import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bedrosians.bedlogic.dao.AccountDao;
-import com.bedrosians.bedlogic.domain.AccountBranch;
-import com.bedrosians.bedlogic.domain.AccountPhone;
-import com.bedrosians.bedlogic.domain.Account;
-import com.bedrosians.bedlogic.domain.AccountUser;
+import com.bedrosians.bedlogic.dao.account.AccountDao;
+import com.bedrosians.bedlogic.dao.miscellaneous.ObmhDao;
+import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.AccountPhone;
+import com.bedrosians.bedlogic.domain.user.User;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,8 +31,12 @@ import com.bedrosians.bedlogic.util.PatternMatchMode;
 
 public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTests {
 	
+	
 	@Autowired
 	private AccountDao accountDao;
+	
+	@Autowired
+	private ObmhDao obmhDao;
 
 	private static String testAccountId = null;
 	private static String testAccountName = null;
@@ -95,7 +100,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		assertEquals("account should have inactive status ", "D", account.getActivityStatus());
 	}
 	
-	@Test
+	/*@Test
 	public void testGetAccountByPhoneNo(){
 		System.out.println("test if the account by phone number");
 		Set<Account> accounts = accountDao.getAccountsByPhoneNo(testPhoneNo);
@@ -109,11 +114,12 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
   		    }	
 		}		
 	}
+	*/
 	
 	@Test
 	public void testGetAccountsByAccountNameParameter(){
 		System.out.println("test if the account is returned by searching its parameter's name...");
-		Account account = accountDao.readByParameter("accountName", testAccountName).get(0);
+		Account account = accountDao.findByParameter("accountName", testAccountName).get(0);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		assertEquals("account should have 'THE RUG SHOPPE' as account name", testAccountName, account.getAccountName());
@@ -134,7 +140,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	@Test
 	public void testGetAccountsByZipParameter(){
 		System.out.println("test if the account is returned by searching its zip...");
-		Account account = accountDao.readByParameter("addressZip", testZip).get(0);
+		Account account = accountDao.findByParameter("addressZip", testZip).get(0);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		assertEquals("account should have 'testZip' as account zip ", testZip, account.getAddressZip());
@@ -144,7 +150,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	@Test
 	public void testGetAccountsByCityParameter(){
 		System.out.println("test if the account is returned by searching its city...");
-		Account account = accountDao.readByParameter("addressCity", testCity).get(0);
+		Account account = accountDao.findByParameter("addressCity", testCity).get(0);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		assertEquals("account should have "+ testCity + " as account city ", testCity.toUpperCase(), account.getAddressCity());
@@ -153,7 +159,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	@Test
 	public void testGetAccountsByMatchAddress(){
 		System.out.println("test if the account is returned by searching its address...");
-		Account account = accountDao.readByParameterPatternMatch("addressStreeLine1", testAddress, PatternMatchMode.ANYWHERE).get(0);
+		Account account = accountDao.findByParameterPatternMatch("addressStreeLine1", testAddress, PatternMatchMode.ANYWHERE).get(0);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		assertEquals("account should have "+ testAddress + " as account street address ", testAddress.toUpperCase(), account.getAddressStreeLine1().trim());
@@ -180,43 +186,32 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 	    System.out.printf("%d, all accounts retrieved", accountList == null? 0 : accountList.size());
 	}
 		
-	@Test
-	public void testGetAccountWithPhones(){
-		System.out.println("test if the account is returned by searching its ID...");
-		//Account account = accountDao.getAccountById(testAccountId);
-		Account account = accountDao.readByParameter("addressZip", testZip).get(0);
-		assertNotNull("should not be null", account);
-		System.out.println("account = " + account.toString());
-		System.out.println("test if the account has all the phone numbers");
-		Set<AccountPhone> phoneNumbers = account.getAccountPhones();
-		assertEquals(PersistentSet.class, phoneNumbers.getClass());
-		System.out.println(phoneNumbers.size());
-		assertEquals("account " + testAccountId + " has 1 phones ", 1, phoneNumbers.size());
-	}
-	
-	@Test
+	/*@Test
 	public void testGetAccountWithUsers(){
 		System.out.println("test if the account is returned by searching its ID...");
 		Account account = accountDao.getAccountById(testAccountId);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		System.out.println("test if the account has all the users");
-		Set<AccountUser> users = account.getAccountUsers();
+		Set<User> users = account.getAccountUsers();
 		assertEquals(PersistentSet.class, users.getClass());
 		System.out.println(users.size());
 		assertEquals("account " + testAccountId + " has 0 users ", 0, users.size());
 	}
+	*/
 	
 	@Test
 	public void testGetAccountWithBraches(){
 		System.out.println("test if the account has all the branches");
-		Account account = accountDao.readByParameter("addressZip", testZip).get(0);
+		//Account account = accountDao.findByParameter("addressZip", testZip).get(0);
+		//Account account = accountDao.findById(testAccountId);
+		Account account = accountDao.findByParameter("accountId", testAccountId).get(0);
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());		
 		Set<AccountBranch> branches = account.getAccountBranches();
 		assertEquals(PersistentSet.class, branches.getClass());
 		System.out.println(branches.size());
-		assertEquals("account " + testZip + " has 1 branch(s) ", 1, branches.size());
+		assertEquals("account " + testZip + " has 3 branch(s) ", 3, branches.size());
 	}
 	
 	@Test
@@ -237,8 +232,18 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		assertNotEquals("CA", account.getAddressState());
 		
 	}
-	
+
 	@Test
+	@Transactional
+	public void testGenerateId(){
+		System.out.println("test generate a new id ...");
+		long newId = obmhDao.generateId();
+        System.out.printf("Got the new id,  %d", newId);		
+	    assertNotNull(newId);
+	    assertNotEquals(0, newId);
+	}
+	
+	//@Test
 	@Transactional
 	public void testCreateAccount(){
 		System.out.println("test create account ...");
