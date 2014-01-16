@@ -1,0 +1,13 @@
+#get account by id
+curl "http://localhost:8080/bedlogic/accounts/26818"
+
+#get account branches by account id and branch id
+curl "http://localhost:8080/bedlogic/accounts/26818/1"
+
+#get accounts by parameters
+curl "http://localhost:8080/bedlogic/accounts/query?state=CA&zip=90640"
+curl "http://localhost:8080/bedlogic/accounts?state=CA&zip=90640&ownerFirstName=THOMAS"
+curl "http://localhost:8080/bedlogic/accounts?state=CA&ownerDriverLicenseNo=N6676851"
+curl "http://localhost:8080/bedlogic/accounts?ownerLastName=FAYE"
+
+

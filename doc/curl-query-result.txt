@@ -1,0 +1,195 @@
+
+curl http://localhost:8080/bedlogic/accounts/26818
+
+{
+  "accountId":"26818",
+  "accountName":"STONE AGE TILE",
+  "companyName":"",
+  "creditStatus":"OPEN",
+  "activityStatus":"ACTIVE",
+  "addressStreeLine1":"1701 SOUTH STATE COLLEGE",
+  addressStreeLine2":"BOULEVARD",
+  "city":"ANAHEIM",
+  "state":"CA",
+  "zip":"92806",
+  "country":"USA",
+  "ownerFirstName":"LARRY/ROGER/HAT",
+  "ownerLastName":"HAJALI",
+  "ownerDriverLicenseNo":"",
+  "treatAsStore":"N",
+  "isSlabStore":"N",
+  "vendor":"Y",
+  "apContact":"SHAH / ARIANA",
+  "apPhone":"7147049293",
+  "apExt":"0",
+  "apCellphone":"7149373949",
+  "apFax":"7147049294",
+  "apEmail":"AP@SATILE.COM",
+  "apNotes":"",
+  "accountManager":"PATRICA",
+  "accountBranches":
+                   [ 
+                     {"branchId":"AEC"},
+                     {"branchId":"1"},
+                     {"branchId":"2"}
+                   ]
+}
+************************************************************
+
+curl http://localhost:8080/bedlogic/accounts/26818/1
+  {
+    "branchName":"STONE AGE TILE",
+    "addressLine1":"1701 SOUTH STATE COLLEGE",
+    "addressLine2":"BOULEVARD",
+    "city":"ANAHEIM",
+    "state":"CA",
+    "zip":"92806",
+    "country":"USA",
+    "activityStatus":"ACTIVE",
+    "apContact":"JENNIFER",
+    "branchId":"1",
+    "accountId":"26818"
+  }
+
+*********************************************************************
+
+curl http://localhost:8080/bedlogic/accounts?zip=91775&activityStatus=active
+
+[
+  {
+    "accountId":"7725",
+    "accountName":"CONTRACTORS TILE MART",
+    "companyName":"",
+    "creditStatus":"OPEN",
+    "activityStatus":"ACTIVE",
+    "addressStreeLine1":"8261 BEVERLY DR",
+    "addressStreeLine2":"",
+    "city":"SAN GABRIEL",
+    "state":"CA",
+    "zip":"91775",
+    "country":"USA",
+    "ownerFirstName":"",
+    "ownerLastName":"",
+    "ownerDriverLicenseNo":"",
+    "treatAsStore":"N",
+    "isSlabStore":"N",
+    "vendor":"N",
+    "apContact":"KELLY/FAX",
+    "apPhone":"6262876483",
+    "apExt":"0",
+    "apCellphone":"0",
+    "apFax":"6266426500",
+    "apEmail":"",
+    "apNotes":"",
+    "accountManager":"EVA CARNERO",
+    "accountBranches":
+                     [
+                       {"branchId":"1"}
+                     ]
+  },
+  {
+    "accountId":"412932",
+    "accountName":"DESIGN INSPIRATION GROUP, INC.",
+    "companyName":"",
+    "creditStatus":"CASH",
+    "activityStatus":"ACTIVE",
+    "addressStreeLine1":"8730 HUNTINGTON DRIVE",
+    "addressStreeLine2":"",
+    "city":"SAN GABRIEL",
+    "state":"CA",
+    "zip":"91775",
+    "country":"USA",
+    "ownerFirstName":"",
+    "ownerLastName":"",
+    "ownerDriverLicenseNo":"",
+    "treatAsStore":"N",
+    "isSlabStore":"N",
+    "vendor":"N",
+    "apContact":"ALEX W CHANG- ARCHITECT",
+    "apPhone":"6262871859",
+    "apExt":"",
+    "apCellphone":"",
+    "apFax":"",
+    "apEmail":"DIGARCHAC@SBCGLOBAL.NET",
+    "apNotes":"",
+    "accountManager":"",
+    "accountBranches":
+                     [
+                       {"branchId":"1"}
+                     ]
+    }
+ ]
+
+*************************************************************************************
+
+curl http://localhost:8080/bedlogic/accounts?state=CA&zip=90640&ownerFirstName=THOMAS
+[
+  {
+     "accountId":"408523",
+     "accountName":"ATL TRADING, INC.",
+     "companyName":"",
+     "creditStatus":"OPEN",
+     "activityStatus":"ACTIVE",
+     "addressStreeLine1":"7653 TELEGRAPH ROAD",
+     "addressStreeLine2":"",
+     "city":"MONTEBELLO","state":"CA",
+     "zip":"90640",
+     "country":"USA",
+     "ownerFirstName":"THOMAS",
+     "ownerLastName":"CHUNG",
+     "ownerDriverLicenseNo":"",
+     "treatAsStore":"N",
+     "isSlabStore":"N",
+     "vendor":"N",
+     "apContact":"",
+     "apPhone":"3237209938",
+     "apExt":"",
+     "apCellphone":"",
+     "apFax":"3237201607",
+     "apEmail":"ATLE1689@YAHOO.COM",
+     "apNotes":"",
+     "accountManager":"",
+     "accountBranches":
+                    [
+                      {"branchId":"1"}
+                    ]
+  }
+]
+
+***********************************************************
+
+curl http://localhost:8080/bedlogic/accounts?apContact=ARIANA
+
+[
+  {
+    "accountId":"397506",
+    "accountName":"PRIMARY GENERAL INC",
+    "companyName":"",
+    "creditStatus":"OPEN",
+    "activityStatus":"INACTIVE",
+    "addressStreeLine1":"PO BO 1077",
+    "addressStreeLine2":"",
+    "city":"LA MESA",
+    "state":"CA",
+    "zip":"91944",
+    "country":"USA",
+    "ownerFirstName":"BERT & LORI",
+    "ownerLastName":"FAYE",
+    "ownerDriverLicenseNo":"",
+    "treatAsStore":"N",
+    "isSlabStore":"N",
+    "vendor":"N",
+    "apContact":"ARIANA",
+    "apPhone":"6196987751",
+    "apExt":"",
+    "apCellphone":"",
+    "apFax":"6196987755",
+    "apEmail":"",
+    "apNotes":"",
+    "accountManager":"",
+    "accountBranches":
+                     [
+                       {"branchId":"1"}
+                     ]
+  }
+ ]
