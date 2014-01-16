@@ -2,7 +2,13 @@ package com.bedrosians.bedlogic.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,7 +17,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
@@ -33,20 +38,18 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
-	@Transactional
+	//@Transactional
 	public PK save(T newInstance) {
 		return (PK)currentSession().save(newInstance);
 	}
 	
 	@Override
-	//@Transactional
 	@SuppressWarnings("unchecked")
 	public T findById(final PK id) {
 		return (T)currentSession().get(type, id);
 	}
 			
 	@Override
-	//@Transactional
 	public synchronized void update(final T transientObject) {
 		try{
            Session session = currentSession();
@@ -57,8 +60,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		}
 		catch(DataException e){
 			throw e;
-		}
-		   
+		}		   
    	}
 	
 	public void delete(T persistentObject) {
@@ -132,7 +134,42 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 				criteria.add(Restrictions.like(parameterName, value.toUpperCase(), MatchMode.EXACT));
 	  	} 				
 	  	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-	  	return (List<T>)criteria.list();
-			
+	  	return (List<T>)criteria.list();			
 	 }
+	
+	@Override
+    public List<T> findByParameters(MultivaluedMap<String, String> queryParams){
+		
+		if(queryParams == null) 
+		   return null;
+		
+		Set<Map.Entry<String, List<String>>> set = queryParams.entrySet();
+	    Iterator it = set.iterator();
+	    Criteria criteria = currentSession().createCriteria(type);
+	  	criteria.setReadOnly(true);
+	  	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+   	   	String key, value = null;
+	  	while(it.hasNext()) {
+   	    	Entry<String, List<String>> entry = (Entry<String, List<String>>)it.next();
+   		   	key = (String)entry.getKey();
+   	    	value = ((List<String>)entry.getValue()).get(0);
+   	    	if("activityStatus".equalsIgnoreCase(key)) {
+   	            if ("active".equalsIgnoreCase(value))
+   	 		        criteria.add(Restrictions.eq(key, "").ignoreCase());
+   	 		    else if ("inactive".equalsIgnoreCase(value))
+   	 		        criteria.add(Restrictions.in(key, new String[] {"F", "Y", "D", "I"})); 
+   	    	}  
+   	    	  	
+   	    	//if(value != null && value.length() > 0)
+  		    //   value = value.toUpperCase();
+   	    	//System.out.printf(" key = %s, value = %s", key, value);
+   	    	//System.out.println();
+   	    	else {
+   	    		criteria.add(Restrictions.eq(key, value).ignoreCase());
+   	    	}
+   		
+   	    }	  	
+	  	System.out.println("creiteria = " +criteria.toString());
+		return (List<T>)criteria.list();			
+	}
 }

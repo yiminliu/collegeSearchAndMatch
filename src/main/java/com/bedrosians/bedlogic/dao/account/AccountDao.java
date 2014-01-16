@@ -12,7 +12,7 @@ public interface AccountDao extends GenericDao<Account, String>{
   public List<Account> getAccountsByActivityStatus(String activityStatus);	
   public List<Account> getAccountsByOwnerName(String firstName, String lastName);
   List<Account> getAccountsByParameters(String[] parameterNames, String[] values);
-  public List<Account> getAccounts(
+  /* public List<Account> getAccounts(
 			String accountName,
 			String addressStreetLine1,
 			String addressCity,
@@ -24,5 +24,5 @@ public interface AccountDao extends GenericDao<Account, String>{
 			String ownerDriverLicenseNo,
 			String phoneNo,
 			String activityStatus);
-	    
+   */	    
 }

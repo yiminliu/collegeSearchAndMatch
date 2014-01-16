@@ -2,6 +2,8 @@ package com.bedrosians.bedlogic.service;
 
 import java.util.List;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.springframework.stereotype.Service;
 
 import com.bedrosians.bedlogic.domain.account.Account;
@@ -34,11 +36,15 @@ public interface AccountService {
 	
 	public List<Account> getAccountsByZip(String zip);
 	
+	public List<Account> getByQueryParameters(MultivaluedMap<String, String> queryParams);
+	
 	public String createAccount(Account account);
 	
 	public void updateAccount(Account account);
 		
-	public List<Account> getAccounts(
+	public void updateAccount(String accountId, Account account);
+	
+	/*public List<Account> getAccounts(
 		String accountName,
 		String addressStreetLine1,
 		String addressCity,
@@ -50,7 +56,7 @@ public interface AccountService {
 		String ownerDriverLicenseNo,
 		String phoneNo,
 		String activityStatus);
-		
+	 */	
 	AccountBranch getAccountBranchById(String accountId, String branchId);
 	
 	AccountBranch getAccountBranchById(BranchPK branchId);

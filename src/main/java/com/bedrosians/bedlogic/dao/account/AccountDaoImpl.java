@@ -40,9 +40,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	@Transactional
 	public Account getAccountById(String accountId) {
 		
-		Account a = findById(accountId);
-		System.out.println("in AccountDaoImpl, account = " + a);
-		return a;
+		return findById(accountId);
 		//return findByParameter("accountId", accountId).get(0);
 	}
 	
@@ -170,7 +168,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		return accountSet;
 	 } 
 	 */
-   
+   /*
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly=true)
@@ -260,6 +258,6 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 
 		return crit.list();
 	} 		
-	   
+	 */  
 	
 }

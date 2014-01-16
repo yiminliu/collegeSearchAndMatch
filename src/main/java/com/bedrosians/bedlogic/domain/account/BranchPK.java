@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class BranchPK implements Serializable {
@@ -13,6 +16,8 @@ public class BranchPK implements Serializable {
 	private static final long serialVersionUID = -6402519899819097510L;
 	
 	@Column(name="custcd")
+	//@ManyToOne(fetch = FetchType.LAZY)
+	//@JoinColumn(name="custcd")
 	private String accountId;
 	
 	@Column(name="branchcd")
