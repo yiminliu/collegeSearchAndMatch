@@ -10,8 +10,7 @@
     <version>0.0.1</version>
     <name>bedlogic</name>   
     <!-- <url>http://cvs.bedrosians.com</url>-->
-    
-   
+        
   	<!-- JBoss repository for Hibernate -->
     <repositories>
       <repository>
@@ -23,9 +22,13 @@
     <properties>
        <jdkLevel>1.7</jdkLevel>
        <org.springframework-version>4.0.0.M3</org.springframework-version>
-       <jersey.version>1.18</jersey.version>
+       <hibernate.version>4.0.1.Final</hibernate.version>
+       <jersey.version>1.13</jersey.version>
        <jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
        <jaxb-api.version>2.2.4</jaxb-api.version>
+       <junit.version>4.11</junit.version>
+       <apache-commons-logging.version>1.1.1</apache-commons-logging.version>
+       <slf4j.version>1.7.5</slf4j.version>
     </properties>
     
     <build>
@@ -47,6 +50,16 @@
                 <version>2.12.4</version>
             </plugin>
             <!-- <plugin>
+	            <groupId>org.codehaus.mojo</groupId>
+            	<artifactId>tomcat-maven-plugin</artifactId>
+	            <configuration>
+		           <url>http://127.0.0.1:8080/manager</url>
+		           <server>TomcatServer</server>
+		           <path>C:/Program Files/Java/Apache/apache-tomcat-7.0.47/webapps</path>
+	            </configuration>
+           </plugin>-->
+           
+            <!-- <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>${jetty.version}</version>
@@ -61,20 +74,9 @@
             </plugin>-->
         </plugins>
     </build>
-                	
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>4.0.0.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
-	<dependencies>        
+        
+	<dependencies>        	
+	  <!-- Spring  -->
  		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -131,79 +133,104 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<dependency>
     		<groupId>org.springframework</groupId>
     		<artifactId>spring-test</artifactId>
     		<version>${org.springframework-version}</version>
 		</dependency>		
 		
-		  <dependency>
-           <groupId>com.sun.jersey</groupId>
-           <artifactId>jersey-json</artifactId>
-           <version>${jersey.version}</version>
-        </dependency>
-<!-- 
-        <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-servlet</artifactId>
-      <version>1.13</version>
- </dependency>
-		
-		<dependency>
+		<!--Jersey -->
+	    <dependency>
         	<groupId>com.sun.jersey</groupId>
 	        <artifactId>jersey-server</artifactId>
 	        <version>${jersey.version}</version>
         </dependency>
 
         <dependency>
+           <groupId>com.sun.jersey</groupId>
+           <artifactId>jersey-json</artifactId>
+           <version>${jersey.version}</version>
+        </dependency>
+                
+        <dependency>
+           <groupId>com.sun.jersey</groupId>
+	       <artifactId>jersey-client</artifactId>
+	       <version>${jersey.version}</version>
+        </dependency>
+  		
+        <!-- jersey minus spring -->
+        <dependency>
            <groupId>com.sun.jersey.contribs</groupId>
            <artifactId>jersey-spring</artifactId>
            <version>${jersey.version}</version>
+           <exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+			</exclusions>
         </dependency>
               		
-		<dependency>
+        <!-- jackson -->      		
+		<!-- <dependency>
 	       <groupId>org.codehaus.jackson</groupId>
 	       <artifactId>jackson-mapper-asl</artifactId>
 	       <version>1.9.13</version>
          </dependency>
-     -->   
-        <!--<dependency>
+         -->
+         <dependency>
+	      <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+       	  <version>2.0.2</version>
+         </dependency>
+      
+      <!-- JAXB -->
+       <!--  <dependency>
            <groupId>javax.xml.bind</groupId>
            <artifactId>jaxb-api</artifactId>
            <version>${jaxb-api.version}</version>
-           <scope>runtime</scope>
-        </dependency>-->
-       		
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.1-901.jdbc4</version>
+           </dependency>
+       	-->
+       	<!-- <dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>0.8.1</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.4</version>
-		</dependency>
-		
-		<dependency>
-	       <groupId>commons-logging</groupId>
-	       <artifactId>commons-logging</artifactId>
-           <version>1.1.1</version>
-        </dependency>
-
+		-->
+		 <!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<!-- <version>4.2.3.Final</version>-->
-			<version>4.0.1.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
-			
-		<!-- <dependency>
-           <groupId>org.hibernate</groupId>
-	       <artifactId>hibernate-entitymanager</artifactId>
-	       <version>4.2.3.Final</version>
-        </dependency>
-		-->
+				
+		<!-- jap -->
 		<dependency>
 	        <groupId>org.hibernate.javax.persistence</groupId>
 	        <artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -215,19 +242,22 @@
 	        <artifactId>hibernate-commons-annotations</artifactId>
 	        <version>4.0.1.Final</version>
         </dependency>
--->
-        <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
-			<version>4.0.1.Final</version>
+    -->
+    	
+       	<!-- postgresql -->	
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
 		</dependency>
 		
-        <dependency>
-          <groupId>c3p0</groupId>
-          <artifactId>c3p0</artifactId>
-          <version>0.9.1.2</version>
-        </dependency>  
-        		
+		<!-- Apache commons-dbcp -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		       
         <dependency>
 	       <groupId>javax.servlet</groupId>
 	       <artifactId>javax.servlet-api</artifactId>
@@ -239,19 +269,59 @@
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
 		</dependency>
-				
+					
+	    <!-- Apache common logging -->
 		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<version>0.8.1</version>
+	       <groupId>commons-logging</groupId>
+	       <artifactId>commons-logging</artifactId>
+           <version>${apache-commons-logging.version}</version>
+        </dependency>
+        
+        <dependency>
+	       <groupId>commons-lang</groupId>
+	       <artifactId>commons-lang</artifactId>
+	       <version>2.3</version>
+        </dependency>
+        
+        <dependency>
+	      <groupId>org.slf4j</groupId>
+	      <artifactId>slf4j-api</artifactId>
+	      <version>${slf4j.version}</version>
+        </dependency>
+        
+        <dependency>
+	      <groupId>org.slf4j</groupId>
+	      <artifactId>slf4j-log4j12</artifactId>
+          <version>${slf4j.version}</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+ 
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.11</version>
 		</dependency>
 		
+		
+            
+            <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>1.0.6</version>
+        <scope>runtime</scope>
+    </dependency>
+	    
+	    <!-- JUnit -->					
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>				
 	</dependencies>		
-	
-</project>
+ </project>
