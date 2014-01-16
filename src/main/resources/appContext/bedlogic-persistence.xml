@@ -41,7 +41,12 @@
             <props>  
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>  
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>  
+                <prop key="format_sql">${hibernate.format_sql}</prop>
                 <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <!--<prop key="hibernate.max.fetch.depth">${hibernate.max.fetch.depth}</prop>          
+                <prop key="hibernate.jdbc.fetch.size">${hibernate.jdbc.fetch.size}</prop>          
+                <prop key="hibernate.jdbc.batch.size">${hibernate.jdbc.bstch.size}</prop>-->          
             </props>  
         </property>  
     </bean>
@@ -63,6 +68,9 @@
     <!-- <context:component-scan base-package="com.bedrosians.bedlogic.service" />
     <context:component-scan base-package="com.bedrosians.bedlogic.dao" />
     -->  
+    
+    <!-- <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>-->
+    
     <!--  JDBC Config file -->
     <context:property-placeholder location="classpath:properties/jdbc.properties"/>
 
