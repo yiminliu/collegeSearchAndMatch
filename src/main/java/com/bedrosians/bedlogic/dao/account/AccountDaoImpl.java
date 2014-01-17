@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.dao.GenericDaoImpl;
 import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.domain.account.AccountPhone;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;

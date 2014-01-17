@@ -16,7 +16,7 @@ public interface GenericDao <T, PK extends Serializable>{
 	List<T> findByParameter(String parameterName, String value);
 	List<T> findByParameter(String parameterName, Long value);
 	List<T> findByParameter(String parameterName, String value, RestrictionOperation op);
-	List<T> findByParameterPatternMatch(String parameterName, String value, PatternMatchMode matchMode);
+	List<T> findByParameterPattern(String parameterName, String value, PatternMatchMode matchMode);
 	List<T> findByParameters(MultivaluedMap<String, String> queryParams);
 
 }

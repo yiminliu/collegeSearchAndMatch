@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bedrosians.bedlogic.domain.account.Account;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
 import com.bedrosians.bedlogic.domain.account.CheckPayment;
 
@@ -22,7 +23,7 @@ public interface AccountService {
 	
 	public Account getAccountById(String id);
 	
-	public List<Account> getAccountsByAccountName(String name);
+	public List<Account> getAccountsByAccountNamePattern(String name);
 	
 	public List<Account> getAccountsByPhoneNo(String phoneNo);
 	

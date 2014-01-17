@@ -16,6 +16,7 @@ import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
 import com.bedrosians.bedlogic.domain.account.CheckPayment;
 import com.bedrosians.bedlogic.exeception.DataNotFoundException;
+import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.logger.aspect.LogLevel;
 import com.bedrosians.bedlogic.util.logger.aspect.Loggable;
 
@@ -26,6 +27,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
 	AccountDao accountDao;
+    
+    @Autowired
+	AccountDao accountDetailDao;
 	
     @Autowired
 	AccountBranchDao accountBranchDao;
@@ -33,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
 	CheckPaymentDao checkPaymentDao;
 	    	
-    @Loggable(value = LogLevel.TRACE)
+    @Loggable(value = LogLevel.DEBUG)
     @Override
 	@Transactional(readOnly=true)
 	public Account getAccountById(String id) {
@@ -47,28 +51,12 @@ public class AccountServiceImpl implements AccountService {
 		//}
 		return  account;
 	}
-	
-    /*
-    @Override
-   	@Transactional(readOnly=true)
-   	public Account getAccountWithBranchIdByAccountId(String id) {
-       	Account account = null;
-   		//accountDao.getAccountById(id);
-   		List<Account> accountList = (List<Account>)accountDao.findByParameter("accountId", id);
-   		if(accountList != null && accountList.size() > 0)
-   		   account =  accountList.get(0);
-   		
-   		//if(account != null){	         		
-   		//	account.setCheckPayments(checkPaymentDao.getCheckPaymentsForAccount(id));
-   		//}
-   		return  account;
-   	}
-    */
-    
+	    
+    @Loggable(value = LogLevel.DEBUG)
 	@Override
 	@Transactional(readOnly=true)
-    public List<Account> getAccountsByAccountName(String name){
-		return accountDao.findByParameter("accountName", name);
+    public List<Account> getAccountsByAccountNamePattern(String name){
+		return accountDao.findByParameterPattern("accountName", name, PatternMatchMode.START);
 	}
 	
 	@Override
@@ -93,19 +81,19 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByCity(String city){
-		return accountDao.findByParameter("addressCity", city);
+		return accountDao.findByParameter("city", city);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByState(String state){
-   		return accountDao.findByParameter("addressState", state);
+   		return accountDao.findByParameter("state", state);
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByZip(String zip){
-     	return accountDao.findByParameter("addressZip", zip);
+     	return accountDao.findByParameter("zip", zip);
 	}
 		
 	@Loggable(value = LogLevel.TRACE)

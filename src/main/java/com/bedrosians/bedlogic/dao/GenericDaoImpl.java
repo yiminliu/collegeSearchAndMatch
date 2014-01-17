@@ -118,7 +118,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
-    public List<T> findByParameterPatternMatch(final String parameterName, String value, final PatternMatchMode matchMode){
+    public List<T> findByParameterPattern(final String parameterName, String value, final PatternMatchMode matchMode){
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	switch(matchMode){
 	  		case START:

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.bedrosians.bedlogic.dao.GenericDao;
 import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountDetail;
 
 public interface AccountDao extends GenericDao<Account, String>{
   
