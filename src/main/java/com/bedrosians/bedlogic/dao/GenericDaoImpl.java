@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
+import com.bedrosians.bedlogic.util.logger.aspect.LogLevel;
+import com.bedrosians.bedlogic.util.logger.aspect.Loggable;
 
 
 public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
@@ -28,7 +30,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	protected Session currentSession() {
+	//thread-safe session
+	protected synchronized Session currentSession() {
 	    return sessionFactory.getCurrentSession();
 	    
 	}
@@ -39,6 +42,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	//@Transactional
+	@SuppressWarnings("unchecked")
 	public PK save(T newInstance) {
 		return (PK)currentSession().save(newInstance);
 	}
@@ -50,6 +54,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 			
 	@Override
+	@SuppressWarnings("unchecked")
 	public synchronized void update(final T transientObject) {
 		try{
            Session session = currentSession();
@@ -63,11 +68,14 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		}		   
    	}
 	
+	@Override
+	@SuppressWarnings("unchecked")
 	public void delete(T persistentObject) {
 		
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
     public List<T> findByParameter(final String parameterName, String value){
 		if(value != null && value.length() > 0)
 		   value = value.toUpperCase();
@@ -79,6 +87,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
     public List<T> findByParameter(final String parameterName, String value, final RestrictionOperation op){
 		if(value != null && value.length() > 0)
 		   value = value.toUpperCase();
@@ -109,6 +118,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
     public List<T> findByParameter(final String parameterName, Long value){
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	criteria.setReadOnly(true);
@@ -118,6 +128,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
     public List<T> findByParameterPattern(final String parameterName, String value, final PatternMatchMode matchMode){
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	switch(matchMode){
@@ -137,7 +148,9 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	  	return (List<T>)criteria.list();			
 	 }
 	
+	//@Loggable(value=LogLevel.DEBUG)
 	@Override
+	@SuppressWarnings("unchecked")
     public List<T> findByParameters(MultivaluedMap<String, String> queryParams){
 		
 		if(queryParams == null) 
@@ -155,7 +168,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
    	    	value = ((List<String>)entry.getValue()).get(0);
    	    	if("activityStatus".equalsIgnoreCase(key)) {
    	            if ("active".equalsIgnoreCase(value))
-   	 		        criteria.add(Restrictions.eq(key, "").ignoreCase());
+   	 		        criteria.add(Restrictions.eq(key, ""));
    	 		    else if ("inactive".equalsIgnoreCase(value))
    	 		        criteria.add(Restrictions.in(key, new String[] {"F", "Y", "D", "I"})); 
    	    	}  
@@ -165,11 +178,11 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
    	    	//System.out.printf(" key = %s, value = %s", key, value);
    	    	//System.out.println();
    	    	else {
+   	    		//criteria.add(Restrictions.eq("activityStatus", "")); //return only active accounts
    	    		criteria.add(Restrictions.eq(key, value).ignoreCase());
    	    	}
    		
    	    }	  	
-	  	System.out.println("creiteria = " +criteria.toString());
 		return (List<T>)criteria.list();			
 	}
 }
