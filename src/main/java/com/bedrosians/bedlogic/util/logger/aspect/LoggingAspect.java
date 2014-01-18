@@ -47,14 +47,13 @@ public class LoggingAspect {
 	 * This class is used to store the start times of nested method calls. These values are used to calculate the total
 	 * time it took to process the method.
 	 * 
-	 * @author Tachikoma
+	 * @author
 	 * 
 	 */
 	private class StartTimeStack extends Stack<Long> {
 		private static final long serialVersionUID = 1L;
 
-		public boolean add(
-				Long time) {
+		public boolean add(Long time) {
 			return super.add(time);
 		}
 
@@ -69,9 +68,7 @@ public class LoggingAspect {
 	}
 
 	@Before(value = "@annotation(trace)", argNames = "joinPoint, trace")
-	public void before(
-			JoinPoint joinPoint,
-			Loggable loggable) {
+	public void before(JoinPoint joinPoint, Loggable loggable) {
 		start = System.currentTimeMillis();
 		startTimeStack.add(start);
 
@@ -86,10 +83,8 @@ public class LoggingAspect {
 		}
 	}
 
-	@AfterThrowing(value = "@annotation(com.bedrosians.bedlogic.util.logger.aspect.Loggable)", throwing = "throwable", argNames = "joinPoint, throwable")
-	public void afterThrowing(
-			JoinPoint joinPoint,
-			Throwable throwable) {
+	@AfterThrowing(value = "@annotation(Loggable)", throwing = "throwable", argNames = "joinPoint, throwable")
+	public void afterThrowing(JoinPoint joinPoint, Throwable throwable) {
 		Class<? extends Object> clazz = joinPoint.getTarget().getClass();
 		String name = joinPoint.getSignature().getName();
 		// logger.log(LogLevel.ERROR, clazz, throwable, AFTER_THROWING,
@@ -99,10 +94,7 @@ public class LoggingAspect {
 	}
 
 	@AfterReturning(value = "@annotation(trace)", returning = "returnValue", argNames = "joinPoint, trace, returnValue")
-	public void afterReturning(
-			JoinPoint joinPoint,
-			Loggable loggable,
-			Object returnValue) {
+	public void afterReturning(JoinPoint joinPoint, Loggable loggable, Object returnValue) {
 		elapsedTime = System.currentTimeMillis() - startTimeStack.pop();
 		Class<? extends Object> clazz = joinPoint.getTarget().getClass();
 		String name = joinPoint.getSignature().getName();
@@ -133,15 +125,11 @@ public class LoggingAspect {
 		}
 	}
 
-	private String format(
-			String pattern,
-			Object... args) {
+	private String format(String pattern, Object... args) {
 		return MessageFormat.format(pattern, args);
 	}
 
-	private String constructArgString(
-			Class<?> clazz,
-			Object... args) {
+	private String constructArgString(Class<?> clazz, Object... args) {
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < args.length; i++) {
 			buffer.append(constructArg(args[i]));
@@ -152,8 +140,7 @@ public class LoggingAspect {
 		return buffer.toString();
 	}
 
-	private String constructArg(
-			List<Object> args) {
+	private String constructArg(List<Object> args) {
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < args.size(); i++) {
 			buffer.append(constructArg(args.get(i)));
@@ -166,8 +153,7 @@ public class LoggingAspect {
 
 	@SuppressWarnings("unchecked")
 	@Deprecated
-	private String constructArg(
-			Object arg) {
+	private String constructArg(Object arg) {
 		StringBuffer buffer = new StringBuffer();
 		Object clazz = null;
 		String id = null;
@@ -204,6 +190,5 @@ public class LoggingAspect {
 		}
 		return buffer.toString();
 	}
-
 	
 }

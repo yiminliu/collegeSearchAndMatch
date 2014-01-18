@@ -1,5 +1,22 @@
 package com.bedrosians.bedlogic.util.logger.aspect;
 
 public enum LogLevel {
-  DEBUG, ERROR, FATAL, INFO, TRACE, WARN
+  
+	TRACE("TRACE"), 
+	DEBUG("DEBUG"), 
+	WARN("WARN"),
+	ERROR("ERROR"),
+	INFO("INFO"), 
+	FATAL("FATAL");	
+  
+  public final String name;
+
+  private LogLevel(String name) {
+		this.name = name;
+  }
+
+  public String getName() {
+		return name;
+  }
+    
 }
