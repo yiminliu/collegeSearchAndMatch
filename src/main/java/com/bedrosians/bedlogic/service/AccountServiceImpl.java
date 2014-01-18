@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bedrosians.bedlogic.dao.account.AccountBranchDao;
 import com.bedrosians.bedlogic.dao.account.AccountDao;
 import com.bedrosians.bedlogic.dao.account.CheckPaymentDao;
+import com.bedrosians.bedlogic.dao.miscellaneous.ObmhDao;
 import com.bedrosians.bedlogic.domain.account.Account;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
@@ -32,12 +33,15 @@ public class AccountServiceImpl implements AccountService {
 	AccountDao accountDetailDao;
 	
     @Autowired
+    ObmhDao obmhDao;
+    
+    @Autowired
 	AccountBranchDao accountBranchDao;
 	
     @Autowired
 	CheckPaymentDao checkPaymentDao;
 	    	
-    @Loggable(value = LogLevel.DEBUG)
+    @Loggable(value = LogLevel.TRACE)
     @Override
 	@Transactional(readOnly=true)
 	public Account getAccountById(String id) {
@@ -52,19 +56,21 @@ public class AccountServiceImpl implements AccountService {
 		return  account;
 	}
 	    
-    @Loggable(value = LogLevel.DEBUG)
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
     public List<Account> getAccountsByAccountNamePattern(String name){
 		return accountDao.findByParameterPattern("accountName", name, PatternMatchMode.START);
 	}
 	
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
     public List<Account> getAccountsByOwnerName(String firstName, String lastName){
 		return accountDao.getAccountsByOwnerName(firstName, lastName);
 	}
 
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByPhoneNo(String phoneNo){
@@ -72,24 +78,28 @@ public class AccountServiceImpl implements AccountService {
 		return null;
 	}
 	
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByAddress(String streetAddress){
 		return accountDao.findByParameter("addressStreeLine1", streetAddress);
 	}
 	
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByCity(String city){
 		return accountDao.findByParameter("city", city);
 	}
 	
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByState(String state){
    		return accountDao.findByParameter("state", state);
 	}
 	
+    @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByZip(String zip){
@@ -103,7 +113,9 @@ public class AccountServiceImpl implements AccountService {
 		return accountBranchDao.findById(branchPK);
 	}
 	
+	@Loggable(value = LogLevel.TRACE)
 	@Override
+	@Transactional(readOnly=true)
 	public AccountBranch getAccountBranchById(BranchPK branchPK) {
 		return accountBranchDao.findById(branchPK);
 	}
@@ -112,12 +124,14 @@ public class AccountServiceImpl implements AccountService {
 		return checkPaymentDao.getCheckPaymentsForAccount(custcd);
 	}
 	
+	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccounts(){
 		return accountDao.getAccountsByActivityStatus("all");
 	}
 	
+	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<Account> getAccountsByActivityStatus(String status){
@@ -129,6 +143,37 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional(readOnly=true)
 	public List<Account> getByQueryParameters(MultivaluedMap<String, String> queryParams){
 		return accountDao.findByParameters(queryParams);
+	}
+		
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public String createAccount(Account account){
+		return accountDao.save(account); 
+	}
+	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public void updateAccount(String accountId, Account account){
+		Account retrievedAccount = null;
+		try{
+		   retrievedAccount = getAccountById(accountId);
+		   if(retrievedAccount == null)
+			  throw new DataNotFoundException("No data found"); 
+		}
+		catch(Exception e){
+			throw e;
+			
+		}
+		accountDao.update(account); 
+	}
+	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public void updateAccount(Account account){
+		accountDao.update(account); 
 	}
 	
 	/*@Override
@@ -159,32 +204,4 @@ public class AccountServiceImpl implements AccountService {
 					activityStatus);
 	}
 	*/	
-	@Override
-	@Transactional
-	public String createAccount(Account account){
-		return accountDao.save(account); 
-	}
-	
-	@Override
-	@Transactional
-	public void updateAccount(String accountId, Account account){
-		Account retrievedAccount = null;
-		try{
-		   retrievedAccount = getAccountById(accountId);
-		   if(retrievedAccount == null)
-			  throw new DataNotFoundException("No data found"); 
-		}
-		catch(Exception e){
-			throw e;
-			
-		}
-		accountDao.update(account); 
-	}
-	
-	@Override
-	@Transactional
-	public void updateAccount(Account account){
-		accountDao.update(account); 
-	}
-	    
 }
