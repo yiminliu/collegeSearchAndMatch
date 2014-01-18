@@ -9,11 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.bedrosians.bedlogic.util.ActivityStatus;
@@ -25,8 +29,9 @@ import com.bedrosians.bedlogic.util.FormatUtil;
  * 
  */
 @XmlRootElement(name = "account")
-//@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 @Entity(name = "account")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+//@DiscriminatorFormula("CASE WHEN accountId IS NULL THEN accountId ELSE accountId END")
 @Table(name = "arm")
 public class Account {
 
@@ -51,13 +56,7 @@ public class Account {
 	private String isSlabStore;
 	private String vendor;
   
-	private String apContact;
-	private String apPhone;
-	private String apExt;
-	private String apCellphone;
-	private String apFax;
-	private String apEmail;
-	private String apNotes;
+	
     
 	private String accountManager;
 
@@ -96,14 +95,7 @@ public class Account {
 
 	@Id
 	@GeneratedValue(generator = "account_id_generator")
-	// strategy = GenerationType.IDENTITY)
-	// @GeneratedValue()//strategy = GenerationType.AUTO)//,
-	// generator="my_entity_seq_gen")
-	// @SequenceGenerator(name="my_entity_seq_gen",
-	// sequenceName="arm_crapp_seqnbr_seq")
 	@GenericGenerator(name = "account_id_generator", strategy = "com.bedrosians.bedlogic.util.IdGenerator")
-	// @GenericGenerator(name="account_id_generator",
-	// strategy="com.bedrosians.bedlogic.dao.account.IdGenerator")
 	@Column(name = "CustCd")
 	public String getAccountId() {
 		if (accountId != null)
@@ -279,69 +271,7 @@ public class Account {
 	 * this.accountPhones = accountPhones; }
 	 */
 
-	@Column(name = "apcontact")
-	public String getApContact() {
-		return FormatUtil.trimAndReplicate(apContact);
-	}
-
-	public void setApContact(String apContact) {
-		this.apContact = apContact;
-	}
-
-	@Column(name = "apphone")
-	public String getApPhone() {
-		return FormatUtil.trimAndReplicate(apPhone);
-	}
-
-	public void setApPhone(String apPhone) {
-		this.apPhone = apPhone;
-	}
-
-	@Column(name = "apext")
-	public String getApExt() {
-		return FormatUtil.trimAndReplicate(apExt);
-	}
-
-	public void setApExt(String apExt) {
-		this.apExt = apExt;
-	}
-
-	@Column(name = "apcellphone")
-	public String getApCellphone() {
-		return FormatUtil.trimAndReplicate(apCellphone);
-	}
-
-	public void setApCellphone(String apCellphone) {
-		this.apCellphone = apCellphone;
-	}
-
-	@Column(name = "apfax")
-	public String getApFax() {
-		return FormatUtil.trimAndReplicate(apFax);
-	}
-
-	public void setApFax(String apFax) {
-		this.apFax = apFax;
-	}
-
-	@Column(name = "apemail")
-	public String getApEmail() {
-		return FormatUtil.trimAndReplicate(apEmail);
-	}
-
-	public void setApEmail(String apEmail) {
-		this.apEmail = apEmail;
-	}
-
-	@Column(name = "apnotes")
-	public String getApNotes() {
-		return FormatUtil.trimAndReplicate(apNotes);
-	}
-
-	public void setApNotes(String apNotes) {
-		this.apNotes = apNotes;
-	}
-    
+	
 	@Column(name = "OurArContact")
 	public String getAccountManager() {
 		return FormatUtil.trimAndReplicate(accountManager);
@@ -483,10 +413,10 @@ public class Account {
 				+ ownerLastName + ", ownerDriverLicenseNo="
 				+ ownerDriverLicenseNo + ", treatAsStore=" + treatAsStore
 				+ ", isSlabStore=" + isSlabStore + ", vendor=" + vendor
-				+ ", apContact=" + apContact + ", apPhone=" + apPhone
-				+ ", apExt=" + apExt + ", apCellphone=" + apCellphone
-				+ ", apFax=" + apFax + ", apEmail=" + apEmail + ", apNotes="
-				+ apNotes + ", accountManager=" + accountManager
+				//+ ", apContact=" + apContact + ", apPhone=" + apPhone
+				//+ ", apExt=" + apExt + ", apCellphone=" + apCellphone
+				//+ ", apFax=" + apFax + ", apEmail=" + apEmail + ", apNotes="
+				//+ apNotes + ", accountManager=" + accountManager
 				+ ", accountBranches=" + accountBranches + "]";
 	}
 
