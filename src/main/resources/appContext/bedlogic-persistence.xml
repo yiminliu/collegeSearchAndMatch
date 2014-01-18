@@ -18,20 +18,15 @@
         <property name="url" value="${database.url}" />  
         <property name="username" value="${database.user}" />  
         <property name="password" value="${database.password}" />
-          
-        <!-- these are C3P0 properties -->
-        <!-- <property name="acquireIncrement" value="${acquireIncrement}" />
-        <property name="minPoolSize" value="${minPoolSize}" />
-        <property name="maxPoolSize" value="${maxPoolSize}" />
-        <property name="maxIdleTime" value="${maxIdleTime}" />
-        <property name="timeout" value="${timeout}" />-->
-           
+        <!-- dbcp -->    
         <property name="initialSize" value="${minPoolSize}" />
         <property name="maxActive" value="${maxPoolSize}" />
         <!-- <property name="acquireIncrement" value="${acquireIncrement}" />-->
-        <property name="maxWait" value="10000" />
+        <property name="maxWait" value="5000" />
         <property name="minIdle" value="10" />
         <property name="removeAbandoned" value="true" />
+        <property name="validationQuery" value="select name from Obmh" />
+        <property name="testOnBorrow" value="true"/>
     </bean>
  
     <!-- SessionFactory -->   
@@ -73,6 +68,6 @@
     <!-- <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>-->
     
     <!--  JDBC Config file -->
-    <context:property-placeholder location="classpath:properties/jdbc.properties"/>
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
 
 </beans>
