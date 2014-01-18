@@ -15,7 +15,9 @@
 	<mvc:annotation-driven />
 	
 	<tx:annotation-driven />
-	    
+
+    <context:component-scan base-package="com.bedrosians.bedlogic" />
+    	    
     <bean id="dataSource"  
         class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
         <property name="driverClassName" value="${database.driver}" />  
@@ -52,11 +54,10 @@
        </property>
    </bean>
    
-    <!-- <context:component-scan base-package="com.bedrosians.bedlogic" />-->
-    <context:component-scan base-package="com.bedrosians.bedlogic.service" />
-    <context:component-scan base-package="com.bedrosians.bedlogic.dao" />
-    <context:component-scan base-package="com.bedrosians.bedlogic.util" />
-    <context:component-scan base-package="com.bedrosians.test" />
+    <!-- <context:component-scan base-package="com.bedrosians.bedlogic" />
+    <context:component-scan base-package="com.bedrosians.bedlogic.service" />-->
+    <context:component-scan base-package="com.bedrosians.bedlogic.dao.miscellaneous" />
+     <context:component-scan base-package="com.bedrosians.test" />
     
  
 </beans>
