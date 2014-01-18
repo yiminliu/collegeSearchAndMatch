@@ -30,8 +30,10 @@ public class AccountBranchId implements Serializable {
 	}
     */
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "custcd", nullable = false)
 	public String getBranchId() {
-		return FormatUtil.trimAndReplicate(branchPK.getBranchId());
+		return FormatUtil.trimAndReplicate(branchPK == null? "" : branchPK.getBranchId());
 	}
 	
 		
