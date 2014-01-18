@@ -262,7 +262,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		
 	}
 
-	@Test
+	/*@Test
 	@Transactional
 	public void testGenerateId(){
 		System.out.println("test generate a new id ...");
@@ -270,9 +270,10 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
         System.out.printf("Got the new id,  %d", newId);		
 	    assertNotNull(newId);
 	    assertNotEquals(0, newId);
+	    System.out.println("Done with test generate a new id.");
 	}
-	
-	//@Test
+	*/
+	@Test
 	@Transactional
 	public void testCreateAccount(){
 		System.out.println("test create account ...");
