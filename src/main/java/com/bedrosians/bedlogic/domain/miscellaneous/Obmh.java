@@ -3,9 +3,15 @@ package com.bedrosians.bedlogic.domain.miscellaneous;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+
 @Entity
+@NamedQuery(
+		name = "findLastCustCd",
+		query = "from Obmh"
+	)
 @Table(name="obmh")
 public class Obmh {
 		
