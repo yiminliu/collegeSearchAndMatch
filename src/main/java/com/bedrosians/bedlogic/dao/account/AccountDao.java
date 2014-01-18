@@ -13,6 +13,7 @@ public interface AccountDao extends GenericDao<Account, String>{
   public List<Account> getAccountsByActivityStatus(String activityStatus);	
   public List<Account> getAccountsByOwnerName(String firstName, String lastName);
   List<Account> getAccountsByParameters(String[] parameterNames, String[] values);
+  public String createAccount(Account account);
   /* public List<Account> getAccounts(
 			String accountName,
 			String addressStreetLine1,

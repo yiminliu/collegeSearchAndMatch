@@ -117,7 +117,6 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		return (List<Account>)criteria.list();	
 	 }
 	 */
-
 		
 	 @Override
 	 public List<Account> getAccountsByParameters(String[] parameterNames, String[] values){
@@ -134,10 +133,8 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		Query query = session.createQuery(queryString);
 		for(int i = 0; i < parameterNames.length; i++){
 		    query.setParameter(parameterNames[i], values[i]);
-		}
-			
+		}			
 		accountList = (List<Account>)query.list();
-			
 		return accountList;
 	  }
 	 
@@ -156,7 +153,11 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		 criteria.addOrder(Order.asc("ownerLastName"));
 		 return (List<Account>)criteria.list();
 	 }
-	 
+
+	 @Override
+	 public String createAccount(Account account){
+		 return save(account);
+	 }
 	 /*@SuppressWarnings("unchecked")
      @Override
 	 public Set<Account> getAccountsByPhoneNo(Long phoneNo){
