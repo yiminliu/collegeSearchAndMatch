@@ -1,195 +1,614 @@
+***********************************************
+Use case #1: 
+Retrieve account detail for a given account id.
+***********************************************
+Sample curl test and result: 
 
 curl http://localhost:8080/bedlogic/accounts/26818
 
 {
-  "accountId":"26818",
-  "accountName":"STONE AGE TILE",
-  "companyName":"",
-  "creditStatus":"OPEN",
-  "activityStatus":"ACTIVE",
-  "addressStreeLine1":"1701 SOUTH STATE COLLEGE",
-  addressStreeLine2":"BOULEVARD",
-  "city":"ANAHEIM",
-  "state":"CA",
-  "zip":"92806",
-  "country":"USA",
-  "ownerFirstName":"LARRY/ROGER/HAT",
-  "ownerLastName":"HAJALI",
-  "ownerDriverLicenseNo":"",
-  "treatAsStore":"N",
+ "accountId":"26818",
+ "accountName":"STONE AGE TILE",
+ "companyName":"",
+ "streeLine1":"1701 SOUTH STATE COLLEGE",
+ "streeLine2":"BOULEVARD",
+ "city":"ANAHEIM","state":"CA",
+ "zip":"92806",
+ "country":"USA",
+ "creditStatus":"OPEN",
+ "activityStatus":"ACTIVE",
+ "ownerFirstName":"LARRY/ROGER/HAT",
+ "ownerLastName":"HAJALI",
+ "ownerDriverLicenseNo":"",
+ "treatAsStore":"N",
+ "vendor":"Y",
+ "accountManager":"PATRICA",
+ "accountBranches":
+  [
+     {"branchId":"AEC"},
+     {"branchId":"1"},
+     {"branchId":"2"}
+  ],
+ "apContact":
+  {
+    "name":"SHAH / ARIANA",
+    "phone":
+     {
+       "phoneNumber":7147049293,
+       "extension":0,
+       "cellPhoneNumber":7149373949
+     },
+    "email":"AP@SATILE.COM",
+    "fax":7147049294
+  },
+ "ceoContact":
+  {
+   "name":"",
+   "phone":
+    {
+      "phoneNumber":0,
+      "extension":0,
+      "cellPhoneNumber":0
+    },
+    "email":"",
+    "fax":0
+  },
+ "cfoContact":
+  {
+    "name":"",
+    "phone":
+     {
+      "phoneNumber":0,
+      "extension":0,
+      "cellPhoneNumber":0
+     },
+     "email":"",
+     "fax":0
+   },
+ "purchaseContact":
+   {
+     "name":"",
+     "phone":
+       {
+        "phoneNumber":0,
+        "extension":0,
+        "cellPhoneNumber":0
+       },
+      "email":"",
+      "fax":0
+   },
+ "salesContact":
+   {
+     "name":"",
+     "phone":
+       {
+        "phoneNumber":0,
+        "extension":0,
+        "cellPhoneNumber":0
+       },
+       "email":"","fax":0
+  },
+  "b2Fax":0,
+  "b2Email":"",
+  "bizEstablishedDate":"2000-01-01",
+  "buyingGroup":"",
+  "cashDiscAllowed":"Y",
+  "isConsolidatedPayment":"N",
+  "creditLimit":"20000",
+  "credStatChgDate":0,
+  "credStatNote":"SEE SISTER ACCOUNT #411251",
+  "daysToPay":16,
+  "defBranchCd":"1",
+  "finChgCd":"N",
+  "latePaymentChargeRate":2,
+  "guaranteeSigned":"N",
+  "guaranteeExpdDte":0,
+  "highBalAmt":87058.43,
+  "highBalDate":"2008-11-06",
+  "invType":"E",
+  "jointCheck":"N",
+  "lastCreditApprovalDate":"2000-01-01",
+  "lastStmtAmt":0.0,
+  "lastStmtDate":"2013-12-31",
+  "ownershipType":"UNKN",
+  "paymentTerm":"10TH",
+  "preLienLimit":"7000.00",
+  "preLienRequired":"Y",
+  "priceOnInvoice":"Y",
+  "requireJobInfo":"Y",
+  "stmtnBr":25,
+  "stmtType":"E",
+  "totBalAmt":5848.3,
+  "crarNote":"OK",
+  "paperStatementMailingFrequency":"NO",
+  "emailStatementMailingFrequency":"EOM",
+  "paperInvoiceMailingFrequency":"NO",
+  "emailInvoiceMailingFrequency":"D1",
+  "stmtAmt":0.0,
+  "wDaysToPay":24,
+  "setupBy":"",
+  "ediReceiverId":0,
+  "emailServer":"B",
   "isSlabStore":"N",
-  "vendor":"Y",
-  "apContact":"SHAH / ARIANA",
-  "apPhone":"7147049293",
-  "apExt":"0",
-  "apCellphone":"7149373949",
-  "apFax":"7147049294",
-  "apEmail":"AP@SATILE.COM",
-  "apNotes":"",
-  "accountManager":"PATRICA",
-  "accountBranches":
-                   [ 
-                     {"branchId":"AEC"},
-                     {"branchId":"1"},
-                     {"branchId":"2"}
-                   ]
+  "cgCredit":"N",
+  "nonSufficientFundChecks":0,
+  "highBalance6Amt":22671.42,
+  "highBalance6Date":"2010-06-30",
+  "obNotes":"",
+  "isVoucherAccount":"N",
+  "judgementDate":0,
+  "lockHold":"N",
+  "obepeDate":"2011-02-27",
+  "contractStartDate":0,
+  "contractEndDate":0,
+  "frtRateCwt":0,
+  "printAltForms":"N",
+  "lastPmtAmt":153.33,
+  "lastPmtDate":"2013-08-05",
+  "poRequired":"N",
+  "stmtDate":0
 }
-************************************************************
+*******************************************************************
+Use case #2:
+Retrieve an account branch info for a given account id and branch id
+********************************************************************
+Sample curl test and result:
 
 curl http://localhost:8080/bedlogic/accounts/26818/1
-  {
-    "branchName":"STONE AGE TILE",
-    "addressLine1":"1701 SOUTH STATE COLLEGE",
-    "addressLine2":"BOULEVARD",
-    "city":"ANAHEIM",
-    "state":"CA",
-    "zip":"92806",
-    "country":"USA",
-    "activityStatus":"ACTIVE",
-    "apContact":"JENNIFER",
-    "branchId":"1",
-    "accountId":"26818"
-  }
 
-*********************************************************************
+{
+  "branchName":"STONE AGE TILE",
+  "address":
+    {
+      "streeLine1":"1701 SOUTH STATE COLLEGE",
+      "streeLine2":"BOULEVARD",
+      "city":"ANAHEIM",
+      "state":"CA",
+      "zip":"92806"
+    },
+  "activityStatus":"ACTIVE",
+  "apContact":
+    {
+     "name":"JENNIFER",
+     "phone":
+       {
+        "phoneNumber":7147049293,
+        "extension":0,
+        "cellPhoneNumber":0
+       },
+     "email":"AP@SATILE.COM",
+     "fax":0,"notes":""
+    },
+  "managerContact":
+    {
+     "name":"",
+     "phone":
+       {
+        "phoneNumber":0,
+        "extension":0,
+        "cellPhoneNumber":0
+       },
+     "email":"",
+     "fax":0,
+     "notes":""
+    },
+  "purchaseContact":
+    {
+     "name":"",
+     "phone":
+       {
+        "phoneNumber":0,
+        "extension":0,
+        "cellPhoneNumber":0
+       },
+     "email":"",
+     "fax":0,
+     "notes":""
+   },
+  "salesContact":
+    {
+     "name":"",
+     "phone":
+       {
+        "phoneNumber":0,
+        "extension":0,
+        "cellPhoneNumber":0
+       },
+     "email":"",
+     "fax":0,
+     "notes":""
+   },
+  "authOnly":"N",
+  "b2Email":"",
+  "b2Fax":0,
+  "b2FromCorp":"N",
+  "branchSalesNBr":2722,
+  "contractLicNBr":"",
+  "daysToPay":16,
+  "firstSoldDate":0,
+  "highBalAmt":72046.05,
+  "highBalDate":"2008-12-05",
+  "invType":"E","lastStmtAmt":22895.29,
+  "lastStmtDate":"2008-05-31",
+  "accountManager":"",
+  "resalEnBr":"97886555",
+  "setupDate":"1999-09-07",
+  "stmtNBr":"25",
+  "stmtType":"E",
+  "storeNBr":125,
+  "taxClass":"R",
+  "totbalAmt":0.0,
+  "invLasteDate":"2013-12-07",
+  "batchInv":"Y",
+  "printStmt":"Y",
+  "custGroup":0,
+  "pricegroup":"_SCG",
+  "invLastMDate":"2008-06-11",
+  "stmtLastEDate":"2013-12-31",
+  "apEmail2":"",
+  "stmtlastEAmt":446.5,
+  "wDaysToPay":24,
+  "setupBy":"",
+  "notBlockCheck":"Y",
+  "resaleNBrExpDate":0,
+  "groupId":"DL",
+  "userId":"LISACO",
+  "infoEmail1":"",
+  "infoEmail2":"",
+  "infoEmail3":"",
+  "infoEmail4":"",
+  "infoEmail5":"",
+  "infoEmail6":"",
+  "infoEmail7":"",
+  "infoEmail8":"",
+  "infoEmail9":"",
+  "resaleNB2":0,
+  "resaleNB2ExpDate":0,
+  "resaleNB3":"",
+  "resaleNB3ExpDate":0,
+  "resaleNB4":"",
+  "resaleNB4ExpDate":0,
+  "resaleNB5":"",
+  "resaleNB5ExpDate":0,
+  "resalenbr1StateCd":"",
+  "resalenbr2StateCd":"",
+  "resalenbr3StateCd":"",
+  "resalenbr4StateCd":"",
+  "resalenbr5StateCd":"",
+  "taxStateCd":"",
+  "taxLocalCd":"",
+  "branchsalesNBrDate":"2012-10-06",
+  "priceGroupDate":"2011-02-27",
+  "accountId":"26818","branchId":"1"
+}
 
-curl http://localhost:8080/bedlogic/accounts?zip=91775&activityStatus=active
+*******************************************************************
+Use case #3:
+Retrieve accounts for a given query
+********************************************************************
+Sample Curl test and result
+
+curl http://localhost:8080/bedlogic/accounts?state=CA&city=arcadia&activityStatus=active
 
 [
   {
-    "accountId":"7725",
-    "accountName":"CONTRACTORS TILE MART",
-    "companyName":"",
-    "creditStatus":"OPEN",
-    "activityStatus":"ACTIVE",
-    "addressStreeLine1":"8261 BEVERLY DR",
-    "addressStreeLine2":"",
-    "city":"SAN GABRIEL",
+    "accountId":"411321",
+    "accountName":"MILLION DECOR DESIGN, INC.",
+    "companyName":"","streeLine1":"124 LAS TUNAS DRIVE",
+    "streeLine2":"",
+    "city":"ARCADIA",
     "state":"CA",
-    "zip":"91775",
+    "zip":"91007",
     "country":"USA",
-    "ownerFirstName":"",
-    "ownerLastName":"",
-    "ownerDriverLicenseNo":"",
-    "treatAsStore":"N",
-    "isSlabStore":"N",
-    "vendor":"N",
-    "apContact":"KELLY/FAX",
-    "apPhone":"6262876483",
-    "apExt":"0",
-    "apCellphone":"0",
-    "apFax":"6266426500",
-    "apEmail":"",
-    "apNotes":"",
-    "accountManager":"EVA CARNERO",
-    "accountBranches":
-                     [
-                       {"branchId":"1"}
-                     ]
-  },
-  {
-    "accountId":"412932",
-    "accountName":"DESIGN INSPIRATION GROUP, INC.",
-    "companyName":"",
     "creditStatus":"CASH",
     "activityStatus":"ACTIVE",
-    "addressStreeLine1":"8730 HUNTINGTON DRIVE",
-    "addressStreeLine2":"",
-    "city":"SAN GABRIEL",
-    "state":"CA",
-    "zip":"91775",
-    "country":"USA",
-    "ownerFirstName":"",
-    "ownerLastName":"",
+    "ownerFirstName":"BENSON",
+    "ownerLastName":"TSE",
     "ownerDriverLicenseNo":"",
     "treatAsStore":"N",
-    "isSlabStore":"N",
     "vendor":"N",
-    "apContact":"ALEX W CHANG- ARCHITECT",
-    "apPhone":"6262871859",
-    "apExt":"",
-    "apCellphone":"",
-    "apFax":"",
-    "apEmail":"DIGARCHAC@SBCGLOBAL.NET",
-    "apNotes":"",
-    "accountManager":"",
+    "accountManager":"PATRICA",
     "accountBranches":
-                     [
-                       {"branchId":"1"}
-                     ]
-    }
- ]
+      [
+        {
+         "branchId":"1"
+        }
+      ]
+   },
+   {
+     "accountId":"413067",
+     "accountName":"LANDTEC DEVELOPMENT, INC.",
+     "companyName":"",
+     "streeLine1":"1010 PARK AVENUE",
+     "streeLine2":"",
+     "city":"ARCADIA",
+     "state":"CA",
+     "zip":"91007",
+     "country":"USA",
+     "creditStatus":"CASH",
+     "activityStatus":"ACTIVE",
+     "ownerFirstName":"",
+     "ownerLastName":"",
+     "ownerDriverLicenseNo":"",
+     "treatAsStore":"N",
+     "vendor":"N",
+     "accountManager":"",
+     "accountBranches":
+       [
+         {
+          "branchId":"1"
+         }
+       ]
+   },
+   {
+     "accountId":"392552",
+     "accountName":"PAYLESS FLOORING WAREHOUSE",
+     "companyName":"",
+     "streeLine1":"900 SOUTH ANITA AVE",
+     "streeLine2":"",
+     "city":"ARCADIA",
+     "state":"CA",
+     "zip":"91006",
+     "country":"USA",
+     "creditStatus":"CASH",
+     "activityStatus":"ACTIVE",
+     "ownerFirstName":"HANY",
+     "ownerLastName":"ATCHAN",
+     "ownerDriverLicenseNo":"",
+     "treatAsStore":"N",
+     "vendor":"N",
+     "accountManager":"",
+     "accountBranches":
+       [
+         {
+          "branchId":"1"
+         }
+       ]
+   },
+   {
+     "accountId":"406609",
+     "accountName":"AHK CONSTRUCTION, INC.",
+     "companyName":"",
+     "streeLine1":"630 W. DUARTE RD. STE 204",
+     "streeLine2":"",
+     "city":"ARCADIA",
+     "state":"CA",
+     "zip":"91007",
+     "country":"USA",
+     "creditStatus":"CASH",
+     "activityStatus":"ACTIVE",
+     "ownerFirstName":"YUNG ZU","ownerLastName":"YANG",
+     "ownerDriverLicenseNo":"34932342",
+     "treatAsStore":"N",
+     "vendor":"N",
+     "accountManager":"",
+     "accountBranches":
+       [
+         {
+          "branchId":"1"
+         }
+       ]
+    },
+    {
+      "accountId":"407712",
+      "accountName":"HOWARD'S RUG CO.",
+      "companyName":"",
+      "streeLine1":"AVENUE",
+      "streeLine2":"",
+      "city":"ARCADIA",
+      "state":"CA",
+      "zip":"91007",
+      "country":"USA",
+      "creditStatus":"CASH",
+      "activityStatus":"ACTIVE",
+      "ownerFirstName":"",
+      "ownerLastName":"",
+      "ownerDriverLicenseNo":"",
+      "treatAsStore":"N",
+      "vendor":"N",
+      "accountManager":"",
+      "accountBranches":
+        [
+          {
+           "branchId":"1"
+          }
+        ]
+     },
+     {
+       "accountId":"397318",
+       "accountName":"KEY-HORN INC",
+       "companyName":"",
+       "streeLine1":"422 E CALIFORNIA ST, # A",
+       "streeLine2":"",
+       "city":"ARCADIA",
+       "state":"CA",
+       "zip":"91006",
+       "country":"USA",
+       "creditStatus":"CASH",
+       "activityStatus":"ACTIVE",
+       "ownerFirstName":"VICTOR",
+       "ownerLastName":"KIM",
+       "ownerDriverLicenseNo":"A8520725",
+       "treatAsStore":"N",
+       "vendor":"N",
+       "accountManager":"",
+       "accountBranches":
+         [
+           {
+            "branchId":"1"
+           }
+         ]
+     },
+     {
+       "accountId":"404926",
+       "accountName":"RAGERS ABBEY FLOORING & WINDOW",
+       "companyName":"",
+       "streeLine1":"52 E HUNTINGTON DR",
+       "streeLine2":"",
+       "city":"ARCADIA",
+       "state":"CA",
+       "zip":"91006",
+       "country":"USA",
+       "creditStatus":"OPEN",
+       "activityStatus":"ACTIVE",
+       "ownerFirstName":"",
+       "ownerLastName":"",
+       "ownerDriverLicenseNo":"",
+       "treatAsStore":"N",
+       "vendor":"N",
+       "accountManager":"",
+       "accountBranches":
+         [
+           {
+            "branchId":"1"
+           }
+         ]
+      }
+    ]
 
 *************************************************************************************
 
 curl http://localhost:8080/bedlogic/accounts?state=CA&zip=90640&ownerFirstName=THOMAS
 [
   {
-     "accountId":"408523",
-     "accountName":"ATL TRADING, INC.",
-     "companyName":"",
-     "creditStatus":"OPEN",
-     "activityStatus":"ACTIVE",
-     "addressStreeLine1":"7653 TELEGRAPH ROAD",
-     "addressStreeLine2":"",
-     "city":"MONTEBELLO","state":"CA",
-     "zip":"90640",
-     "country":"USA",
-     "ownerFirstName":"THOMAS",
-     "ownerLastName":"CHUNG",
-     "ownerDriverLicenseNo":"",
-     "treatAsStore":"N",
-     "isSlabStore":"N",
-     "vendor":"N",
-     "apContact":"",
-     "apPhone":"3237209938",
-     "apExt":"",
-     "apCellphone":"",
-     "apFax":"3237201607",
-     "apEmail":"ATLE1689@YAHOO.COM",
-     "apNotes":"",
-     "accountManager":"",
-     "accountBranches":
-                    [
-                      {"branchId":"1"}
-                    ]
-  }
-]
-
-***********************************************************
-
-curl http://localhost:8080/bedlogic/accounts?apContact=ARIANA
-
-[
-  {
-    "accountId":"397506",
-    "accountName":"PRIMARY GENERAL INC",
-    "companyName":"",
-    "creditStatus":"OPEN",
-    "activityStatus":"INACTIVE",
-    "addressStreeLine1":"PO BO 1077",
-    "addressStreeLine2":"",
-    "city":"LA MESA",
+    "accountId":"408523",
+    "accountName":"ATL TRADING, INC.",
+    "streeLine1":"7653 TELEGRAPH ROAD",
+    "streeLine2":"",
+    "city":"MONTEBELLO",
     "state":"CA",
-    "zip":"91944",
+    "zip":"90640",
     "country":"USA",
-    "ownerFirstName":"BERT & LORI",
-    "ownerLastName":"FAYE",
+    "creditStatus":"OPEN",
+    "activityStatus":"ACTIVE",
+    "ownerFirstName":"THOMAS",
+    "ownerLastName":"CHUNG",
     "ownerDriverLicenseNo":"",
     "treatAsStore":"N",
-    "isSlabStore":"N",
     "vendor":"N",
-    "apContact":"ARIANA",
-    "apPhone":"6196987751",
-    "apExt":"",
-    "apCellphone":"",
-    "apFax":"6196987755",
-    "apEmail":"",
-    "apNotes":"",
     "accountManager":"",
     "accountBranches":
-                     [
-                       {"branchId":"1"}
-                     ]
+      [
+        {
+          "branchId":"1"
+        }
+      ]
   }
- ]
+]
+ 
+ ****************************************************************************
+Use case #4:
+Retrieve accounts by account name pattern. All returned account's name matches 
+the given account name through pattern matches
+******************************************************************************
+Sample Curl test and result
+
+curl http://localhost:8080/bedlogic/accounts/accountName/Ston
+ 
+ 
+ [ 
+   {
+     "accountId":"411420",
+     "accountName":"STONE TILE INTERNATIONAL, INC.",
+     "streeLine1":"1451 CASTLEFIELD AVENUE","streeLine2":"",
+     "city":"TORONTO",
+     "state":"BC",
+     "zip":"M6M1Y3",
+     "country":"BC",
+     "creditStatus":"CASH",
+     "activityStatus":"ACTIVE",
+     "ownerFirstName":"SYLVIA",
+     "ownerLastName":"BENCHIMOL",
+     "ownerDriverLicenseNo":"",
+     "treatAsStore":"N",
+     "vendor":"N",
+     "accountManager":"",
+     "accountBranches":
+       [
+         {
+          "branchId":"1"
+         }
+       ]
+    },
+    {
+      "accountId":"26878",
+      "accountName":"STONECRAFT ENTERPRISES",
+      "streeLine1":"2820 N. SAN FERNANDO BLVD.",
+      "streeLine2":"",
+      "city":"BURBANK",
+      "state":"CA",
+      "zip":"91504",
+      "country":"USA",
+      "creditStatus":"HOLD",
+      "activityStatus":"ACTIVE",
+      "ownerFirstName":"",
+      "ownerLastName":"",
+      "ownerDriverLicenseNo":"",
+      "treatAsStore":"N",
+      "vendor":"N",
+      "accountManager":"LISA/ OEUN",
+      "accountBranches":
+        [
+          {
+           "branchId":"1"
+          }
+        ]
+     },
+     {
+       "accountId":"394782",
+       "accountName":"STONE CRAFT",
+       "streeLine1":"6818 S AIRPORT RD",
+       "streeLine2":"UNIT A",
+       "city":"WEST JORDAN",
+       "state":"UT",
+       "zip":"84084",
+       "country":"USA",
+       "creditStatus":"CASH",
+       "activityStatus":"ACTIVE",
+       "ownerFirstName":"CHRISTOPHER",
+       "ownerLastName":"MORRIS",
+       "ownerDriverLicenseNo":"",
+       "treatAsStore":"N",
+       "vendor":"N",
+       "accountManager":"",
+       "accountBranches":
+         [
+           {
+             "branchId":"1"
+           }
+         ]
+      },
+      {
+        "accountId":"407094",
+        "accountName":"STONE FOREST KITCHEN & BATH",
+        "streeLine1":"1611 SOUTH BURLINGTON",
+        "streeLine2":"BOULEVARD",
+        "city":"BURLINGTON",
+        "state":"WA",
+        "zip":"98233",
+        "country":"USA",
+        "creditStatus":"CASH",
+        "activityStatus":"ACTIVE",
+        "ownerFirstName":"MARTY",
+        "ownerLastName":"STOWELL",
+        "ownerDriverLicenseNo":"",
+        "treatAsStore":"N",
+        "vendor":"N",
+        "accountManager":"",
+        "accountBranches":
+          [
+            {
+             "branchId":"1"
+            }
+          ]
+       },
+       .
+       .
+       .
+       .
+       .
+       .
+       .
+       .
+  ]
+      
