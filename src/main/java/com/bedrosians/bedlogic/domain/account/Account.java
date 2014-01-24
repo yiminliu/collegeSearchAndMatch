@@ -5,334 +5,217 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.annotations.DiscriminatorFormula;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
 
 import com.bedrosians.bedlogic.util.ActivityStatus;
 import com.bedrosians.bedlogic.util.FormatUtil;
 
-
-/**
- * @author
- * 
- */
-@XmlRootElement(name = "account")
-@Entity(name = "account")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-//@DiscriminatorFormula("CASE WHEN accountId IS NULL THEN accountId ELSE accountId END")
-@Table(name = "arm")
-public class Account {
-
-	private String accountId="";
-	private String accountName="";
-	private String companyName="";
-	private String creditStatus="";
-	private String activityStatus="";
-	private String addressStreeLine1="";
-	private String addressStreeLine2="";
-	private String city="";
-	private String state="";
-	private String zip="";
-	private String country="";
-	
-	private String ownerFirstName="";
-	private String ownerLastName="";
-	private String ownerDriverLicenseNo="";
-
-	
-	private String treatAsStore;
-	private String isSlabStore;
-	private String vendor;
-  
-	
-    
-	private String accountManager;
-
-	/*
-	 * private String slsContact; private String slsPhone; private String
-	 * slsExt; private String slsCellphone; private String slsFax; private
-	 * String slsEmail; private String slsNotes;
-	 */
-
-	// private String bankcruptcyCaseNo;
-	// private List<CheckPayment> checkPayments = new
-	// ArrayList<CheckPayment>(0);
-	// private Set<AccountPhone> accountPhones = new HashSet<AccountPhone>(0);
-	// private Set<User> accountUsers = new HashSet<User>(0);
-	// private Set<BranchPK> brancheIds = new HashSet<>(0);
-	// private Set<AccountBranch> accountBranches = new
-	// HashSet<AccountBranch>(0);
-
-	private Set<AccountBranchId> accountBranches = new HashSet<>(0);
-
-	public Account() {
-	}
-
-	public Account(String accountId, String accountName, String creditStatus,
-			String activityStatus, String city, String state,
-			String zip) {
-		super();
-		this.accountId = accountId;
-		this.accountName = accountName;
-		this.creditStatus = creditStatus;
-		this.activityStatus = activityStatus;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
-	}
-
+@Component
+@MappedSuperclass
+public abstract class Account {
+//avoid to be instantiated
 	@Id
 	@GeneratedValue(generator = "account_id_generator")
 	@GenericGenerator(name = "account_id_generator", strategy = "com.bedrosians.bedlogic.util.IdGenerator")
 	@Column(name = "CustCd")
-	public String getAccountId() {
-		if (accountId != null)
-			accountId = accountId.trim();
-		return accountId;
+	private String accountId="";
+	@Column(name = "CoName", nullable = false)
+	private String accountName="";
+		
+	@Column(name = "CoAddr1", nullable=false)
+	protected String streeLine1;	
+	@Column(name = "CoAddr2")
+	protected String streeLine2;	
+	@Column(name = "CoCity", nullable=false)
+	protected String city;	
+	@Column(name = "CoStateCd", nullable=false)
+	protected String state;
+	@Column(name = "CoZip")
+	protected String zip;		
+	@Column(name = "CoCountryCd")
+	protected String country;
+		
+	@Column(name = "CreditStatus")
+	private String creditStatus="";
+	@Column(name = "InactiveCd")
+	private String activityStatus="";
+	@Column(name = "OwnerFirstName")
+	private String ownerFirstName="";
+	@Column(name = "OwnerLastName")
+	private String ownerLastName="";
+	@Column(name = "OwnerDriverLicNbr")
+	private String ownerDriverLicenseNo="";
+	@Column(name = "TreatAsStore")
+	private String treatAsStore;
+	@Column(name = "vendor")
+	private String vendor;
+	@Column(name = "OurArContact")
+    private String accountManager;
+	
+	@OneToMany(mappedBy = "branchPK.accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<AccountBranchId> accountBranches = new HashSet<>(0);
+
+	//@Embedded
+    //protected Address address=null;
+	
+	// private String bankcruptcyCaseNo;
+	// private List<CheckPayment> checkPayments = new ArrayList<CheckPayment>(0);
+	// private Set<AccountPhone> accountPhones = new HashSet<AccountPhone>(0);
+	// private Set<User> accountUsers = new HashSet<User>(0);
+	// private Set<BranchPK> brancheIds = new HashSet<>(0);
+	
+	protected Account() {
 	}
 
-	public void setAccountId(String accountId) {
+	public String getAccountId() {
+		return FormatUtil.process(accountId);
+	}
+
+	private void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 
-	@Column(name = "CoName")
+	//@Column(name = "CoName", nullable = false)
 	public String getAccountName() {
-		if (accountName != null)
-			accountName = accountName.trim();
-		return new String(accountName);
+		return FormatUtil.process(accountName);
 	}
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
-
 	
-	@Column(name="Dba") 
-	public String getCompanyName() { return
-	   FormatUtil.trimAndReplicate(companyName); 
-	}
-	
-	public void setCompanyName(String companyName) { this.companyName =
-	 companyName; 
-	}
-	
-	@Column(name = "CreditStatus")
-	public String getCreditStatus() {
-		return FormatUtil.trimAndReplicate(creditStatus);
+	public String getStreeLine1() {
+		return FormatUtil.process(streeLine1);
 	}
 
-	public void setCreditStatus(String creditStatus) {
-		this.creditStatus = creditStatus;
+	public void setStreeLine1(String streeLine1) {
+		this.streeLine1 = streeLine1;
 	}
 
-	@Column(name = "InactiveCd")
-	public String getActivityStatus() {
-		if (activityStatus == null || activityStatus.trim().length() < 1)
-			activityStatus = ActivityStatus.ACTIVE.getName();
-		else
-			activityStatus = ActivityStatus.INACTIVE.getName();
-		return activityStatus;
+	public String getStreeLine2() {
+		return FormatUtil.process(streeLine2);
 	}
 
-	public void setActivityStatus(String activityStatus) {
-		this.activityStatus = activityStatus;
+	public void setStreeLine2(String streeLine2) {
+		this.streeLine2 = streeLine2;
 	}
 
-	@Column(name = "CoAddr1")
-	public String getAddressStreeLine1() {
-		return FormatUtil.trimAndReplicate(addressStreeLine1);
-	}
-
-	public void setAddressStreeLine1(String addressStreeLine1) {
-		this.addressStreeLine1 = addressStreeLine1;
-	}
-
-	@Column(name = "CoAddr2")
-	public String getAddressStreeLine2() {
-		return FormatUtil.trimAndReplicate(addressStreeLine2);
-	}
-
-	public void setAddressStreeLine2(String addressStreeLine2) {
-		this.addressStreeLine2 = addressStreeLine2;
-	}
-
-	@Column(name = "CoCity")
 	public String getCity() {
-		return FormatUtil.trimAndReplicate(city);
+		return FormatUtil.process(city);
 	}
 
 	public void setCity(String city) {
 		this.city = city;
 	}
 
-	@Column(name = "CoStateCd")
 	public String getState() {
-		return FormatUtil.trimAndReplicate(state);
+		return FormatUtil.process(state);
 	}
 
 	public void setState(String state) {
 		this.state = state;
 	}
 
-	@Column(name = "CoZip")
 	public String getZip() {
-		return FormatUtil.trimAndReplicate(zip);
+		return FormatUtil.process(zip);
 	}
 
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
 
-	@Column(name = "CoCountryCd")
 	public String getCountry() {
-		return FormatUtil.trimAndReplicate(country);
+		return FormatUtil.process(country);
 	}
 
 	public void setCountry(String country) {
 		this.country = country;
 	}
 
-	@Column(name = "TreatAsStore")
+	//@Column(name = "CreditStatus")
+	public String getCreditStatus() {
+		return FormatUtil.process(creditStatus);
+	}
+
+	public void setCreditStatus(String creditStatus) {
+		this.creditStatus = creditStatus;
+	}
+
+	//@Column(name = "InactiveCd")
+	public String getActivityStatus() {
+		if (activityStatus == null || activityStatus.trim().length() < 1)
+			activityStatus = ActivityStatus.ACTIVE.getName();
+		else
+			activityStatus = ActivityStatus.INACTIVE.getName();
+		return FormatUtil.process(activityStatus);
+	}
+
+	public void setActivityStatus(String activityStatus) {
+		this.activityStatus = activityStatus;
+	}
+  
+	//@Column(name = "TreatAsStore")
 	public String getTreatAsStore() {
-		return FormatUtil.trimAndReplicate(treatAsStore);
+		return FormatUtil.process(treatAsStore);
 	}
 
 	public void setTreatAsStore(String treatAsStore) {
 		this.treatAsStore = treatAsStore;
 	}
 
-	@Column(name = "Slab")
-	public String getIsSlabStore() {
-		return FormatUtil.trimAndReplicate(isSlabStore);
-	}
-
-	public void setIsSlabStore(String isSlabStore) {
-		this.isSlabStore = isSlabStore;
-	}
-
-	@Column(name = "vendor")
+	//@Column(name = "vendor")
 	public String getVendor() {
-		return FormatUtil.trimAndReplicate(vendor);
+		return FormatUtil.process(vendor);
 	}
 
 	public void setVendor(String vendor) {
 		this.vendor = vendor;
 	}
     
-	@Column(name = "OwnerFirstName")
+	//@Column(name = "OwnerFirstName")
 	public String getOwnerFirstName() {
-		return FormatUtil.trimAndReplicate(ownerFirstName);
+		return FormatUtil.process(ownerFirstName);
 	}
 
 	public void setOwnerFirstName(String ownerFirstName) {
 		this.ownerFirstName = ownerFirstName;
 	}
 
-	@Column(name = "OwnerLastName")
+	//@Column(name = "OwnerLastName")
 	public String getOwnerLastName() {
-		return FormatUtil.trimAndReplicate(ownerLastName);
+		return FormatUtil.process(ownerLastName);
 	}
 
 	public void setOwnerLastName(String ownerLastName) {
 		this.ownerLastName = ownerLastName;
 	}
 
-	@Column(name = "OwnerDriverLicNbr")
+	//@Column(name = "OwnerDriverLicNbr")
 	public String getOwnerDriverLicenseNo() {
-		return FormatUtil.trimAndReplicate(ownerDriverLicenseNo);
+		return FormatUtil.process(ownerDriverLicenseNo);
 	}
 
 	public void setOwnerDriverLicenseNo(String ownerDriverLicenseNo) {
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
-	/*
-	 * @OneToMany(mappedBy="account", fetch=FetchType.EAGER, cascade =
-	 * CascadeType.ALL, orphanRemoval=true) public Set<AccountPhone>
-	 * getAccountPhones() { return accountPhones; }
-	 * 
-	 * public void addPhone(AccountPhone newPhone){ if(accountPhones != null) {
-	 * newPhone.setAccount(this); accountPhones.add(newPhone);
-	 * //setPhoneNumbers(phoneNumbers); } }
-	 * 
-	 * public void setAccountPhones(Set<AccountPhone> accountPhones) {
-	 * this.accountPhones = accountPhones; }
-	 */
-
-	
-	@Column(name = "OurArContact")
+	//@Column(name = "OurArContact")
 	public String getAccountManager() {
-		return FormatUtil.trimAndReplicate(accountManager);
+		return FormatUtil.process(accountManager);
 	}
 
 	public void setAccountManager(String accountManager) {
 		this.accountManager = accountManager;
 	}
 
-	/*
-	 * @Column(name="slscontact") public String getSlsContact() { return
-	 * FormatUtil.trimAndReplicate(slsContact); }
-	 * 
-	 * public void setSlsContact(String slsContact) { this.slsContact =
-	 * slsContact; }
-	 * 
-	 * @Column(name="slsphone") public String getSlsPhone() { return
-	 * FormatUtil.trimAndReplicate(slsPhone); }
-	 * 
-	 * public void setSlsPhone(String slsPhone) { this.slsPhone = slsPhone; }
-	 * 
-	 * @Column(name="slsext") public String getSlsExt() { return
-	 * FormatUtil.trimAndReplicate(slsExt); }
-	 * 
-	 * public void setSlsExt(String slsext) { this.slsExt = slsExt; }
-	 * 
-	 * @Column(name="slscellphone") public String getSlsCellphone() { return
-	 * FormatUtil.trimAndReplicate(slsCellphone); }
-	 * 
-	 * public void setSlsCellphone(String slsCellphone) { this.slsCellphone =
-	 * slsCellphone; }
-	 * 
-	 * @Column(name="slsfax") public String getSlsFax() { return
-	 * FormatUtil.trimAndReplicate(slsFax); }
-	 * 
-	 * public void setSlsFax(String slsFax) { this.slsFax = slsFax; }
-	 * 
-	 * @Column(name="slsemail") public String getSlsEmail() { return
-	 * FormatUtil.trimAndReplicate(slsEmail); }
-	 * 
-	 * public void setSlsEmail(String slsEmail) { this.slsEmail = slsEmail; }
-	 * 
-	 * @Column(name="slsnotes") public String getSlsNotes() { return
-	 * FormatUtil.trimAndReplicate(slsNotes); }
-	 * 
-	 * public void setSlsNotes(String slsNotes) { this.slsNotes = slsNotes; }
-	 */
-
-	/*
-	 * public Set<User> getAccountUsers() { return accountUsers; }
-	 * 
-	 * public void setAccountUsers(Set<User> accountUsers) { this.accountUsers =
-	 * accountUsers; }
-	 * 
-	 * @Transient public List<CheckPayment> getCheckPayments() { return
-	 * checkPayments; }
-	 * 
-	 * public void setCheckPayments(List<CheckPayment> checkPayments) {
-	 * this.checkPayments = checkPayments; }
-	 */
-	@OneToMany(mappedBy = "branchPK.accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//@OneToMany(mappedBy = "branchPK.accountId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public Set<AccountBranchId> getAccountBranches() {
 		return accountBranches;
 	}
@@ -340,34 +223,30 @@ public class Account {
 	public void setAccountBranches(Set<AccountBranchId> accountBranches) {
 		this.accountBranches = accountBranches;
 	}
-
+		
 	/*
-	 * @OneToMany(mappedBy = "branchPK.accountId", fetch = FetchType.EAGER,
-	 * cascade = CascadeType.ALL) public Set<AccountBranch> getAccountBranches()
-	 * { return accountBranches; }
-	 * 
-	 * public void setAccountBranches(Set<AccountBranch> accountBranches) {
-	 * this.accountBranches = accountBranches; }
-	 */
+	 public Set<User> getAccountUsers() { return accountUsers; }
+	  
+	 public void setAccountUsers(Set<User> accountUsers) { this.accountUsers =
+	 accountUsers; }
+	  
+	 @Transient public List<CheckPayment> getCheckPayments() { return
+	 checkPayments; }
+	 
+	 public void setCheckPayments(List<CheckPayment> checkPayments) {
+	 this.checkPayments = checkPayments; }
+	 
+		
+	 @Column(name="caseNo")
+	 public String getBankcruptcyCaseNo() {
+	 return bankcruptcyCaseNo;
+	 }
 
-	/*
-	 * @OneToMany(mappedBy = "branchPK.accountId", fetch = FetchType.EAGER,
-	 * cascade = CascadeType.ALL) public Set<BranchPK> getBrancheIds() { return
-	 * brancheIds; }
-	 * 
-	 * public void setBrancheds(Set<BranchPK> brancheIds) { this.brancheIds =
-	 * brancheIds; }
-	 */
-
-	// @Column(name="caseNo")
-	// public String getBankcruptcyCaseNo() {
-	// return bankcruptcyCaseNo;
-	// }
-
-	// public void setBankcruptcyCaseNo(String bankcruptcyCaseNo) {
-	// this.bankcruptcyCaseNo = bankcruptcyCaseNo;
-	// }
-
+	 public void setBankcruptcyCaseNo(String bankcruptcyCaseNo) {
+	 this.bankcruptcyCaseNo = bankcruptcyCaseNo;
+	 }
+	*/	 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -403,20 +282,25 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [accountId=" + accountId + ", accountName="
-				+ accountName + ", companyName=" + companyName
-				+ ", creditStatus=" + creditStatus + ", activityStatus="
-				+ activityStatus + ", addressStreeLine1=" + addressStreeLine1
-				+ ", addressStreeLine2=" + addressStreeLine2 + ", city=" + city
-				+ ", state=" + state + ", zip=" + zip + ", country=" + country
-				+ ", ownerFirstName=" + ownerFirstName + ", ownerLastName="
-				+ ownerLastName + ", ownerDriverLicenseNo="
-				+ ownerDriverLicenseNo + ", treatAsStore=" + treatAsStore
-				+ ", isSlabStore=" + isSlabStore + ", vendor=" + vendor
+		return "Account [accountId=" + accountId + ", "
+				+ "accountName=" + accountName
+				+ ", creditStatus=" + creditStatus 
+				+ ", activityStatus=" + activityStatus
+				+ ", streeLine1=" + streeLine1
+				+ ", streeLine2=" + streeLine2
+				+", city=" + city
+				+ ", state=" + state
+				+ ", zip=" + zip
+				+ ", country=" + country
+				+ ", ownerFirstName=" + ownerFirstName 
+				+ ", ownerLastName=" + ownerLastName 
+				+ ", ownerDriverLicenseNo=" + ownerDriverLicenseNo
+				//+ ", treatAsStore=" + treatAsStore
+				//+ ", isSlabStore=" + isSlabStore + ", vendor=" + vendor
 				//+ ", apContact=" + apContact + ", apPhone=" + apPhone
 				//+ ", apExt=" + apExt + ", apCellphone=" + apCellphone
-				//+ ", apFax=" + apFax + ", apEmail=" + apEmail + ", apNotes="
-				//+ apNotes + ", accountManager=" + accountManager
+				//+ ", apFax=" + apFax + ", apEmail=" + apEmail + ", apNotes="	+ apNotes
+				+  ", accountManager=" + accountManager
 				+ ", accountBranches=" + accountBranches + "]";
 	}
 
