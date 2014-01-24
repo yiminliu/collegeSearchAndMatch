@@ -22,18 +22,20 @@ public class AccountBranchId implements Serializable {
 
 	@EmbeddedId
 	private BranchPK branchPK;
-				
+		
+	public AccountBranchId(){}
+	
 	/*@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "custcd", nullable = false)
 	public String getAccountId() {
-		return FormatUtil.trimAndReplicate(branchPK.getAccountId());
+		return FormatUtil.process(branchPK.getAccountId());
 	}
     */
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "custcd", nullable = false)
 	public String getBranchId() {
-		return FormatUtil.trimAndReplicate(branchPK == null? "" : branchPK.getBranchId());
+		return FormatUtil.process(branchPK == null? "" : branchPK.getBranchId());
 	}
 	
 		
