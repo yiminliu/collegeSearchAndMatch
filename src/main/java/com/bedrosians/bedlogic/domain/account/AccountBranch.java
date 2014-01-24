@@ -20,8 +20,7 @@ import com.bedrosians.bedlogic.util.FormatUtil;
 
 @Component
 @MappedSuperclass
-public abstract class AccountBranch implements Serializable {
-	//avoid to be instantiated
+public class AccountBranch implements Serializable {
 	
 	private static final long serialVersionUID = 5137707010951170389L;
 
@@ -42,6 +41,9 @@ public abstract class AccountBranch implements Serializable {
 	})
 	private Address address;
 
+	public AccountBranch(){
+	}
+		
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "custcd", nullable = false)
 	public String getAccountId() {

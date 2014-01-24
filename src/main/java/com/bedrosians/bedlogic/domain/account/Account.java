@@ -19,8 +19,8 @@ import com.bedrosians.bedlogic.util.FormatUtil;
 
 @Component
 @MappedSuperclass
-public abstract class Account {
-//avoid to be instantiated
+public class Account {
+
 	@Id
 	@GeneratedValue(generator = "account_id_generator")
 	@GenericGenerator(name = "account_id_generator", strategy = "com.bedrosians.bedlogic.util.IdGenerator")
