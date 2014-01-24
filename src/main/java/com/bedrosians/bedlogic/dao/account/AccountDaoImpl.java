@@ -16,11 +16,13 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.dao.GenericDaoImpl;
 import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.domain.account.AccountPhone;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
@@ -28,7 +30,7 @@ import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 
 @Repository("accountDao")
-public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements AccountDao {
+public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> implements AccountDao {
 	
 
 	//@Autowired
@@ -45,19 +47,20 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		//return findByParameter("accountId", accountId).get(0);
 	}
 	
+	@Cacheable("accounts")
 	@Override
-	public List<Account> getAccountsByActivityStatus(String status){
+	public List<SimplifiedAccount> getAccountsByActivityStatus(String status){
 		String queryString = "";
 		if ("all".equalsIgnoreCase(status) || status == null || status.length() == 0)
-			queryString = "from Account";
+			queryString = "from SimplifiedAccount";
 		else if ("active".equalsIgnoreCase(status))
-			queryString = "from Account a where activityStatus = ' '";
+			queryString = "from SimplifiedAccount a where activityStatus = ' '";
 		else if ("inactive".equalsIgnoreCase(status))
-		    queryString = "from Account a where activityStatus is not null";
+		    queryString = "from SimplifiedAccount a where activityStatus is not null";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		query.setReadOnly(true);
-		return (List<Account>)query.list();
+		return (List<SimplifiedAccount>)query.list();
 	}
 	
 	
@@ -119,9 +122,9 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 	 */
 		
 	 @Override
-	 public List<Account> getAccountsByParameters(String[] parameterNames, String[] values){
+	 public List<SimplifiedAccount> getAccountsByParameters(String[] parameterNames, String[] values){
 	    String condition = "";
-	    List<Account> accountList = null;
+	    List<SimplifiedAccount> accountList = null;
 	    for(int i = 0; i < parameterNames.length; i++){
 	    	if(i < parameterNames.length - 1)
 	      	    condition.concat(parameterNames[i].concat(" = :")).concat(parameterNames[i]).concat(" AND ");
@@ -134,14 +137,14 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		for(int i = 0; i < parameterNames.length; i++){
 		    query.setParameter(parameterNames[i], values[i]);
 		}			
-		accountList = (List<Account>)query.list();
+		accountList = (List<SimplifiedAccount>)query.list();
 		return accountList;
 	  }
 	 
 	 
 	 @Override
-	 public List<Account> getAccountsByOwnerName(String firstName, String lastName){
-		 Criteria criteria = currentSession().createCriteria(Account.class);
+	 public List<SimplifiedAccount> getAccountsByOwnerName(String firstName, String lastName){
+		 Criteria criteria = currentSession().createCriteria(SimplifiedAccount.class);
 		 if(firstName != null){
 			 criteria.add(Restrictions.like("ownerFirstName",  firstName, MatchMode.START).ignoreCase());
 		 }
@@ -151,13 +154,20 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, String> implements A
 		 criteria.setReadOnly(true);
 		 criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		 criteria.addOrder(Order.asc("ownerLastName"));
-		 return (List<Account>)criteria.list();
+		 return (List<SimplifiedAccount>)criteria.list();
 	 }
 
 	 @Override
-	 public String createAccount(Account account){
-		 return save(account);
+	 public String createAccount(SimplifiedAccount simplifiedAccount){
+		 return save(simplifiedAccount);
+	}
+	 
+	 @Override
+	 public void updateAccount(SimplifiedAccount account){
+		 updateAccount(account);
 	 }
+	 
+	
 	 /*@SuppressWarnings("unchecked")
      @Override
 	 public Set<Account> getAccountsByPhoneNo(Long phoneNo){

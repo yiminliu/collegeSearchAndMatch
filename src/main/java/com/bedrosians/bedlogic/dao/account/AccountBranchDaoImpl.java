@@ -9,22 +9,31 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.bedrosians.bedlogic.dao.GenericDaoImpl;
-import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccountBranch;
 
 @Repository
-public class AccountBranchDaoImpl extends GenericDaoImpl<AccountBranch, BranchPK> implements AccountBranchDao {
+public class AccountBranchDaoImpl extends GenericDaoImpl<SimplifiedAccountBranch, BranchPK> implements AccountBranchDao {
 
 	@Override
-	public AccountBranch getAccountBranchById(String accountId, String branchId){
+	public SimplifiedAccountBranch getAccountBranchById(String accountId, String branchId){
+		if(branchId != null && branchId.length() > 0)
+			branchId.toUpperCase();	
 		BranchPK branchPK = new BranchPK(accountId, branchId);
+		return findById(branchPK);
+		
+	}
+	
+	@Override
+	public SimplifiedAccountBranch getAccountBranchByBranchPK(BranchPK branchPK){
 		return findById(branchPK);
 		
 	}
    
 	@Override
-	public List<AccountBranch> getAccountBranchByName(String name){
+	public List<SimplifiedAccountBranch> getAccountBranchByName(String name){
         return null;
    	   		
    	 }
