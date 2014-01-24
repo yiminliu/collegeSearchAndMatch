@@ -8,59 +8,41 @@ import org.springframework.stereotype.Service;
 
 import com.bedrosians.bedlogic.domain.account.Account;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
-import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
 import com.bedrosians.bedlogic.domain.account.CheckPayment;
 
 @Service
 public interface AccountService {
 	
-    public List<Account> getAccounts();
+    public List<? extends Account> getAccounts();
 	
-	//List<Account> getActiveAccounts();
-	
-	public List<Account> getAccountsByActivityStatus(String status);
+	public List<? extends Account> getAccountsByActivityStatus(String status);
 	
 	public Account getAccountById(String id);
 	
-	public List<Account> getAccountsByAccountNamePattern(String name);
+	public List<? extends Account> getAccountsByAccountNamePattern(String name);
 	
-	public List<Account> getAccountsByPhoneNo(String phoneNo);
+	public List<? extends Account> getAccountsByOwnerName(String firstName, String lastName);
 	
-	public List<Account> getAccountsByOwnerName(String firstName, String lastName);
+	public List<? extends Account> getAccountsByAddress(String address);
 	
-	public List<Account> getAccountsByAddress(String address);
+	public List<? extends Account> getAccountsByCity(String city);
 	
-	public List<Account> getAccountsByCity(String city);
+	public List<? extends Account> getAccountsByState(String city);
 	
-	public List<Account> getAccountsByState(String city);
+	public List<? extends Account> getAccountsByZip(String zip);
 	
-	public List<Account> getAccountsByZip(String zip);
-	
-	public List<Account> getByQueryParameters(MultivaluedMap<String, String> queryParams);
+	public List<? extends Account> getByQueryParameters(MultivaluedMap<String, String> queryParams);
 	
 	public String createAccount(Account account);
 	
 	public void updateAccount(Account account);
-		
-	public void updateAccount(String accountId, Account account);
 	
-	/*public List<Account> getAccounts(
-		String accountName,
-		String addressStreetLine1,
-		String addressCity,
-		String addressState,
-		String addressZip,
-		String caseNo,
-		String ownerFirstName,
-		String ownerLastName,
-		String ownerDriverLicenseNo,
-		String phoneNo,
-		String activityStatus);
-	 */	
+	public void updateAccount(String accountId, Account account);
+		
 	AccountBranch getAccountBranchById(String accountId, String branchId);
 	
-	AccountBranch getAccountBranchById(BranchPK branchId);
+	AccountBranch getAccountBranchByBranchPK(BranchPK branchId);
 	
 	List<CheckPayment> getCheckPaymentsForAccount(String custcd);
 }
