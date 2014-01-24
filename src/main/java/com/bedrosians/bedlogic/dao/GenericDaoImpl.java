@@ -20,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
-import com.bedrosians.bedlogic.util.logger.aspect.LogLevel;
-import com.bedrosians.bedlogic.util.logger.aspect.Loggable;
 
 
 public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
@@ -30,7 +28,6 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	//thread-safe session
 	protected synchronized Session currentSession() {
 	    return sessionFactory.getCurrentSession();
 	    
@@ -50,6 +47,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	@Override
 	@SuppressWarnings("unchecked")
 	public T findById(final PK id) {
+		System.out.println("id = " + id);
 		return (T)currentSession().get(type, id);
 	}
 			
