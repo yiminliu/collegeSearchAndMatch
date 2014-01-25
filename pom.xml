@@ -24,13 +24,16 @@
        <jdkLevel>1.7</jdkLevel>
        <org.springframework-version>4.0.0.M3</org.springframework-version>
        <aspectj.version>1.6.11</aspectj.version>
-       <hibernate.version>4.0.1.Final</hibernate.version>
+       <hibernate.version>4.2.8.Final</hibernate.version>
+       <ehcache.version>2.8.0</ehcache.version>
        <jersey.version>1.13</jersey.version>
        <jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>
        <jaxb-api.version>2.2.4</jaxb-api.version>
        <junit.version>4.11</junit.version>
        <apache-commons-logging.version>1.1.1</apache-commons-logging.version>
+       <servlet.version>3.0.1</servlet.version>
        <slf4j.version>1.7.5</slf4j.version>
+       <logback.version>0.1.1</logback.version>
        <jetty.version>6.1.10</jetty.version>
     </properties>
     
@@ -264,7 +267,13 @@
 			<!-- <version>4.2.3.Final</version>-->
 			<version>${hibernate.version}</version>
 		</dependency>
-				
+		
+		<!-- <dependency>
+	        <groupId>org.hibernate.common</groupId>
+	        <artifactId>hibernate-commons-annotations</artifactId>
+	        <version>4.0.1.Final</version>
+        </dependency>-->
+        		
 		<!-- jpa -->
 		<dependency>
 	        <groupId>org.hibernate.javax.persistence</groupId>
@@ -272,11 +281,7 @@
 	        <version>1.0.1.Final</version>
         </dependency>
         
-        <dependency>
-	        <groupId>org.hibernate.common</groupId>
-	        <artifactId>hibernate-commons-annotations</artifactId>
-	        <version>4.0.1.Final</version>
-        </dependency>
+        
        	
        	<!-- postgresql -->	
 		<dependency>
@@ -295,7 +300,8 @@
         <dependency>
 	       <groupId>javax.servlet</groupId>
 	       <artifactId>javax.servlet-api</artifactId>
-	       <version>3.0.1</version>
+	       <version>${servlet.version}</version>
+	       <scope>provided</scope>
         </dependency>
               	
 		<dependency>
@@ -337,17 +343,17 @@
            <version>1.0.13</version>
          </dependency>
          
-                <dependency>
-	<groupId>org.slf4j</groupId>
-	<artifactId>jcl-over-slf4j</artifactId>
-	<version>1.7.5</version>
-</dependency>
+         <dependency>
+	        <groupId>org.slf4j</groupId>
+	        <artifactId>jcl-over-slf4j</artifactId>
+	        <version>${slf4j.version}</version>
+         </dependency>
        
-   <dependency>
-	<groupId>org.logback-extensions</groupId>
-	<artifactId>logback-ext-spring</artifactId>
-	<version>0.1.1</version>
-</dependency>
+         <dependency>
+         	<groupId>org.logback-extensions</groupId>
+	        <artifactId>logback-ext-spring</artifactId>
+	        <version>${logback.version}</version>
+         </dependency>
     
         <dependency>
 			<groupId>org.aspectj</groupId>
@@ -360,7 +366,31 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
-		        	    
+		
+		 <dependency>
+	       <groupId>net.sf.ehcache</groupId>
+	       <artifactId>ehcache</artifactId>
+           <version>${ehcache.version}</version>
+           <exclusions>
+ <exclusion>
+  <groupId>net.sf.ehcache</groupId>
+  <artifactId>ehcache-core</artifactId>
+ </exclusion>
+</exclusions>
+        </dependency>
+       
+        <dependency>
+<artifactId>hibernate-ehcache</artifactId>
+<groupId>org.hibernate</groupId>
+<version>4.1.9.Final</version>
+ <exclusions>
+ <exclusion>
+  <groupId>net.sf.ehcache</groupId>
+  <artifactId>ehcache-core</artifactId>
+ </exclusion>
+</exclusions>
+</dependency>
+        		        	    
 	    <!-- JUnit -->					
 		<dependency>
 			<groupId>junit</groupId>
