@@ -10,13 +10,13 @@ import com.bedrosians.bedlogic.util.FormatUtil;
 @Embeddable
 public class Address{
 
-	@Column(name = "CoAddr1", nullable=false)
+	@Column(name = "CoAddr1")
 	protected String streeLine1;	
 	@Column(name = "CoAddr2")
 	protected String streeLine2;	
-	@Column(name = "CoCity", nullable=false)
+	@Column(name = "CoCity")
 	protected String city;	
-	@Column(name = "CoStateCd", nullable=false)
+	@Column(name = "CoStateCd")
 	protected String state;
 	@Column(name = "CoZip")
 	protected String zip;		
