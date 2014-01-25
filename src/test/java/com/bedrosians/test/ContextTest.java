@@ -11,17 +11,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.SessionFactory;
 import org.hibernate.collection.internal.PersistentSet;
 import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.bedrosians.bedlogic.dao.account.AccountDao;
-import com.bedrosians.bedlogic.dao.miscellaneous.ObmhDao;
-import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.AccountPhone;
-import com.bedrosians.bedlogic.domain.user.User;
+
 import com.bedrosians.bedlogic.service.AccountService;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 
@@ -34,14 +34,19 @@ public class ContextTest extends AbstractTransactionalJUnit4SpringContextTests {
 	@Autowired
 	private ApplicationContext appContext;
 	
-
+    @Autowired
+    private SessionFactory sessionFactory;
 	
 	@Before
 	public void setup(){
 	
 	}
 	
-	 
+	@Test
+	public void testGetCurrentSession(){
+		assert sessionFactory.getCurrentSession()==sessionFactory.getCurrentSession();
+	}
+	
 	@Test
 	public void testGetAccountDao(){
 		System.out.println("test if the account is returned for some search criteria...");
@@ -63,16 +68,5 @@ public class ContextTest extends AbstractTransactionalJUnit4SpringContextTests {
 		//assertEquals("Account", accountDao.getClass().getName());
 	}
 	
-	@Test
-	public void testGetObmhDao(){
-		System.out.println("test if the Obmh dao is returned...");
-		ObmhDao aDao = (ObmhDao)appContext.getBean("obmhDao");
-		assertNotNull(aDao);
-		//try{
-		//assertEquals(AccountDao.class, ((org.springframework.aop.framework.Advised)accountDao).getTargetSource().getTarget());
-		//}
-		//catch(Exception e){
-		//e.printStackTrace();
-		//}
-	}
+	
 }
