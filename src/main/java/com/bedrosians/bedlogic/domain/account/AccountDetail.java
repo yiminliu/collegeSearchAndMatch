@@ -13,10 +13,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import com.bedrosians.bedlogic.util.FormatUtil;
 
 @Entity(name="accountDetail")
 @Table(name="arm")
+@DynamicUpdate(value=true)
+@SelectBeforeUpdate(value=true)
+@DynamicInsert(value=true)
+//@org.hibernate.annotations.Entity(dynamicUpdate = true, selectBeforeUpdate = true)
 public class AccountDetail extends Account implements Serializable {
 	
 	private static final long serialVersionUID = 674944990758703320L;
@@ -90,7 +98,7 @@ public class AccountDetail extends Account implements Serializable {
  	@Column(name="ConsolidStmt")
 	private String isConsolidatedPayment;
 	@Column(name="CreditLimit")
-	private String creditLimit;
+	private Float creditLimit;
 	//@Column(name="CreditStatus")
 	//private String creditStatus;
 	@Temporal(TemporalType.DATE)
@@ -137,7 +145,7 @@ public class AccountDetail extends Account implements Serializable {
 	@Column(name="PoRequired")
 	private String PoRequired;    
 	@Column(name="PreLienLimit")
-	private String preLienLimit;
+	private Float preLienLimit;
 	@Column(name="PreLienReq")
 	private String preLienRequired;
 	@Column(name="PrintPricingOnInv")
@@ -326,11 +334,11 @@ public class AccountDetail extends Account implements Serializable {
 		this.isConsolidatedPayment = isConsolidatedPayment;
 	}
 
-	public String getCreditLimit() {
+	public Float getCreditLimit() {
 		return FormatUtil.process(creditLimit);
 	}
 
-	public void setCreditLimit(String creditLimit) {
+	public void setCreditLimit(Float creditLimit) {
 		this.creditLimit = creditLimit;
 	}
 
@@ -478,11 +486,11 @@ public class AccountDetail extends Account implements Serializable {
 		PoRequired = poRequired;
 	}
 
-	public String getPreLienLimit() {
+	public Float getPreLienLimit() {
 		return FormatUtil.process(preLienLimit);
 	}
 
-	public void setPreLienLimit(String preLienLimit) {
+	public void setPreLienLimit(Float preLienLimit) {
 		this.preLienLimit = preLienLimit;
 	}
 

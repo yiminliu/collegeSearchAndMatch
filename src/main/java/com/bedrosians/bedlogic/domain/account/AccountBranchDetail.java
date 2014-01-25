@@ -12,11 +12,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import com.bedrosians.bedlogic.util.FormatUtil;
 
 
 @Entity(name="accountBranchDetail")
 @Table(name="armbr")
+@DynamicUpdate
+@SelectBeforeUpdate
+@DynamicInsert(value=true)
 public class AccountBranchDetail extends AccountBranch implements Serializable {
 	
 	private static final long serialVersionUID = 5137707010951170389L;

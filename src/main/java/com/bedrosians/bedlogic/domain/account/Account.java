@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.stereotype.Component;
 
 import com.bedrosians.bedlogic.util.ActivityStatus;
@@ -19,23 +21,24 @@ import com.bedrosians.bedlogic.util.FormatUtil;
 
 @Component
 @MappedSuperclass
+
 public class Account {
 
 	@Id
 	@GeneratedValue(generator = "account_id_generator")
 	@GenericGenerator(name = "account_id_generator", strategy = "com.bedrosians.bedlogic.util.IdGenerator")
 	@Column(name = "CustCd")
-	private String accountId="";
-	@Column(name = "CoName", nullable = false)
-	private String accountName="";
+	private String accountId;
+	@Column(name = "CoName")
+	private String accountName;
 		
-	@Column(name = "CoAddr1", nullable=false)
+	@Column(name = "CoAddr1")
 	protected String streeLine1;	
 	@Column(name = "CoAddr2")
 	protected String streeLine2;	
-	@Column(name = "CoCity", nullable=false)
+	@Column(name = "CoCity")
 	protected String city;	
-	@Column(name = "CoStateCd", nullable=false)
+	@Column(name = "CoStateCd")
 	protected String state;
 	@Column(name = "CoZip")
 	protected String zip;		
@@ -43,15 +46,15 @@ public class Account {
 	protected String country;
 		
 	@Column(name = "CreditStatus")
-	private String creditStatus="";
+	private String creditStatus;
 	@Column(name = "InactiveCd")
-	private String activityStatus="";
+	private String activityStatus;
 	@Column(name = "OwnerFirstName")
-	private String ownerFirstName="";
+	private String ownerFirstName;
 	@Column(name = "OwnerLastName")
-	private String ownerLastName="";
+	private String ownerLastName;
 	@Column(name = "OwnerDriverLicNbr")
-	private String ownerDriverLicenseNo="";
+	private String ownerDriverLicenseNo;
 	@Column(name = "TreatAsStore")
 	private String treatAsStore;
 	@Column(name = "vendor")
