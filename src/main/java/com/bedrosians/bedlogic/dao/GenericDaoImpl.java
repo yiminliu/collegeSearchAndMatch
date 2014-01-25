@@ -17,6 +17,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
@@ -56,10 +57,10 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	public synchronized void update(final T transientObject) {
 		try{
            Session session = currentSession();
-           if(session.contains(transientObject))
-        	  session.saveOrUpdate(transientObject);
-           else
-        	  session.merge(transientObject);
+          // if(session.contains(transientObject))
+        	  session.update(transientObject);
+           //else
+        	 // session.merge(transientObject);
 		}
 		catch(DataException e){
 			throw e;

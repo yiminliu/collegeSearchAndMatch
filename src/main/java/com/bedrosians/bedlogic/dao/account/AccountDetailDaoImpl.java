@@ -23,6 +23,6 @@ public class AccountDetailDaoImpl extends GenericDaoImpl<AccountDetail, String> 
 	  
 	@Override
 	public String createAccount(AccountDetail account){
-		return save(account);  
+		return (String)save(account);  
 	}
 }
