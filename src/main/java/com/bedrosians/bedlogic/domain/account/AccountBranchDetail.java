@@ -142,7 +142,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	private Date invLasteDate;
 	
 	@Column(name="batchinv")
-	private String  batchInv;
+	private String batchInv;
 	
 	@Column(name="printstmt")
 	private String printStmt ;

@@ -57,7 +57,7 @@ public class Account {
 	private String ownerDriverLicenseNo;
 	@Column(name = "TreatAsStore")
 	private String treatAsStore;
-	@Column(name = "vendor")
+	@Column(name = "vendor", columnDefinition = "char default 'N'")
 	private String vendor;
 	@Column(name = "OurArContact")
     private String accountManager;
@@ -84,8 +84,7 @@ public class Account {
 	private void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
-
-	//@Column(name = "CoName", nullable = false)
+	
 	public String getAccountName() {
 		return FormatUtil.process(accountName);
 	}
@@ -151,7 +150,6 @@ public class Account {
 		this.creditStatus = creditStatus;
 	}
 
-	//@Column(name = "InactiveCd")
 	public String getActivityStatus() {
 		if (activityStatus == null || activityStatus.trim().length() < 1)
 			activityStatus = ActivityStatus.ACTIVE.getName();
@@ -164,7 +162,6 @@ public class Account {
 		this.activityStatus = activityStatus;
 	}
   
-	//@Column(name = "TreatAsStore")
 	public String getTreatAsStore() {
 		return FormatUtil.process(treatAsStore);
 	}
@@ -173,7 +170,6 @@ public class Account {
 		this.treatAsStore = treatAsStore;
 	}
 
-	//@Column(name = "vendor")
 	public String getVendor() {
 		return FormatUtil.process(vendor);
 	}
@@ -182,7 +178,6 @@ public class Account {
 		this.vendor = vendor;
 	}
     
-	//@Column(name = "OwnerFirstName")
 	public String getOwnerFirstName() {
 		return FormatUtil.process(ownerFirstName);
 	}
@@ -191,7 +186,6 @@ public class Account {
 		this.ownerFirstName = ownerFirstName;
 	}
 
-	//@Column(name = "OwnerLastName")
 	public String getOwnerLastName() {
 		return FormatUtil.process(ownerLastName);
 	}
@@ -200,7 +194,6 @@ public class Account {
 		this.ownerLastName = ownerLastName;
 	}
 
-	//@Column(name = "OwnerDriverLicNbr")
 	public String getOwnerDriverLicenseNo() {
 		return FormatUtil.process(ownerDriverLicenseNo);
 	}
@@ -209,7 +202,6 @@ public class Account {
 		this.ownerDriverLicenseNo = ownerDriverLicenseNo;
 	}
 
-	//@Column(name = "OurArContact")
 	public String getAccountManager() {
 		return FormatUtil.process(accountManager);
 	}

@@ -6,11 +6,13 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
 
 @XmlRootElement(name="simplifiedAccount")
 @Entity(name="simplifiedAccount")
-@DynamicUpdate
+@DynamicUpdate(value=true)
+@SelectBeforeUpdate(value=true)
 @Table(name = "arm")
 public class SimplifiedAccount extends Account {
 
