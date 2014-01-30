@@ -10,9 +10,9 @@
   </appender>
     
   <appender name="AOP_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../bedlogic/logs/bedlogic.log</File>
+    <File>../logs/bedlogic.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../bedlogic/logs/bedlogic/bedlogic.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/bedlogic/bedlogic.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -26,7 +26,7 @@
     <appender-ref ref="AOP_ROLLINGFILE" />
   </logger>
 
-  <root level="trace">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="aspect" />    
   </root>

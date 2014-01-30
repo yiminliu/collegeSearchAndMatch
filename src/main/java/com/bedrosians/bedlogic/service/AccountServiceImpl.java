@@ -14,11 +14,13 @@ import com.bedrosians.bedlogic.dao.account.AccountDao;
 import com.bedrosians.bedlogic.dao.account.AccountDetailDao;
 import com.bedrosians.bedlogic.dao.account.CheckPaymentDao;
 import com.bedrosians.bedlogic.domain.account.Account;
+import com.bedrosians.bedlogic.domain.account.AccountBranchDetail;
 import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
 import com.bedrosians.bedlogic.domain.account.CheckPayment;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccountBranch;
 import com.bedrosians.bedlogic.exeception.DataNotFoundException;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.logger.aspect.LogLevel;
@@ -107,6 +109,13 @@ public class AccountServiceImpl implements AccountService {
 		return accountBranchDetailDao.findById(branchPK);
 	}
 	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	public List<SimplifiedAccountBranch> getAccountBranches(String accountId) {
+		return accountBranchDao.getAccountBranches(accountId);
+	}
+	
+	
 	public List<CheckPayment> getCheckPaymentsForAccount(String custcd) {
 		return checkPaymentDao.getCheckPaymentsForAccount(custcd);
 	}
@@ -135,19 +144,14 @@ public class AccountServiceImpl implements AccountService {
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional
-	public String createAccount(Account account){
-		String id = "";
-		if(account instanceof AccountDetail)
-		   id = accountDetailDao.createAccount((AccountDetail)account); 
-		else if(account instanceof SimplifiedAccount)
-		   id = accountDao.createAccount((SimplifiedAccount)account);
-		return id;
+	public String createAccount(AccountDetail account){
+		return accountDetailDao.createAccount(account); 
 	}
 	
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional
-	public void updateAccount(String accountId, Account account){
+	public void updateAccount(String accountId, AccountDetail account){
 		Account retrievedAccount = null;
 		try{
 		   retrievedAccount = getAccountById(accountId);
@@ -158,20 +162,20 @@ public class AccountServiceImpl implements AccountService {
 			throw e;
 			
 		}
-		if(account instanceof AccountDetail)
+		//if(account instanceof AccountDetail)
 		   accountDetailDao.updateAccount((AccountDetail)account); 
-		else if(account instanceof SimplifiedAccount)
-		   accountDao.update((SimplifiedAccount)account); 
+		//else if(account instanceof SimplifiedAccount)
+		  // accountDao.update((SimplifiedAccount)account); 
 	}
 	
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional
-	public void updateAccount(Account account){
-		if(account instanceof AccountDetail)
-		   accountDetailDao.updateAccount((AccountDetail)account); 
-		else if(account instanceof SimplifiedAccount)
-		   accountDao.update((SimplifiedAccount)account);
+	public void updateAccount(AccountDetail account){
+		//if(account instanceof AccountDetail)
+		   accountDetailDao.updateAccount(account); 
+		//else if(account instanceof SimplifiedAccount)
+		  // accountDao.update((SimplifiedAccount)account);
 	}	
 	
 }

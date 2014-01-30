@@ -76,6 +76,7 @@ public class Address{
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+
 	
 	/*public String getCountry() {
 		return FormatUtil.process(country);
@@ -86,5 +87,16 @@ public class Address{
 		this.country = country;
 	}
 	*/
+
+	@Override
+	public String toString() {
+		return "Address ["
+				+ "streeLine1=" + streeLine1 
+				+ ", streeLine2=" + streeLine2 
+				+ ", city=" + city 
+				+ ", state=" + state 
+				+ ", zip="
+				+ zip + "]";
+	}
 	
 }

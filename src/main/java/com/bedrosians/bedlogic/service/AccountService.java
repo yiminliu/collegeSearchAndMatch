@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bedrosians.bedlogic.domain.account.Account;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
 import com.bedrosians.bedlogic.domain.account.CheckPayment;
 
@@ -16,11 +17,11 @@ public interface AccountService {
 	
     public List<? extends Account> getAccounts();
 	
-	public List<? extends Account> getAccountsByActivityStatus(String status);
-	
 	public Account getAccountById(String id);
 	
 	public List<? extends Account> getAccountsByAccountNamePattern(String name);
+	
+	public List<? extends Account> getAccountsByActivityStatus(String status);
 	
 	public List<? extends Account> getAccountsByOwnerName(String firstName, String lastName);
 	
@@ -34,12 +35,14 @@ public interface AccountService {
 	
 	public List<? extends Account> getByQueryParameters(MultivaluedMap<String, String> queryParams);
 	
-	public String createAccount(Account account);
+	public String createAccount(AccountDetail account);
 	
-	public void updateAccount(Account account);
+	public void updateAccount(AccountDetail account);
 	
-	public void updateAccount(String accountId, Account account);
+	public void updateAccount(String accountId, AccountDetail account);
 		
+	public List<? extends AccountBranch> getAccountBranches(String accountId);
+	
 	AccountBranch getAccountBranchById(String accountId, String branchId);
 	
 	AccountBranch getAccountBranchByBranchPK(BranchPK branchId);

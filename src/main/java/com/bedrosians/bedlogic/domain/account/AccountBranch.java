@@ -85,4 +85,39 @@ public class AccountBranch implements Serializable {
 		this.activityStatus = activityStatus;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((branchName == null) ? 0 : branchName.hashCode());
+		result = prime * result
+				+ ((branchPK == null) ? 0 : branchPK.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountBranch other = (AccountBranch) obj;
+		if (branchName == null) {
+			if (other.branchName != null)
+				return false;
+		} else if (!branchName.equals(other.branchName))
+			return false;
+		if (branchPK == null) {
+			if (other.branchPK != null)
+				return false;
+		} else if (!branchPK.equals(other.branchPK))
+			return false;
+		return true;
+	}
+	
+	
+
 }
