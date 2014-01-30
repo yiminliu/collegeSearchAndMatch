@@ -48,7 +48,6 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	@Override
 	@SuppressWarnings("unchecked")
 	public T findById(final PK id) {
-		System.out.println("id = " + id);
 		return (T)currentSession().get(type, id);
 	}
 			

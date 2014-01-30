@@ -12,5 +12,4 @@ public interface AccountBranchDetailDao extends GenericDao<AccountBranchDetail, 
 	public AccountBranchDetail getAccountBranchById(String accountId, String branchId); 
 	public AccountBranchDetail getAccountBranchByBranchPK(BranchPK branchPK);
     public List<AccountBranchDetail> getAccountBranchByName(String name);
-
 }

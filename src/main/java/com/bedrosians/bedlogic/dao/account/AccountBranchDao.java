@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bedrosians.bedlogic.dao.GenericDao;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.AccountBranchDetail;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
 import com.bedrosians.bedlogic.domain.account.SimplifiedAccountBranch;
 
@@ -12,5 +13,6 @@ public interface AccountBranchDao extends GenericDao<SimplifiedAccountBranch, Br
 	public SimplifiedAccountBranch getAccountBranchById(String accountId, String branchId); 
 	public SimplifiedAccountBranch getAccountBranchByBranchPK(BranchPK branchPK);
     public List<SimplifiedAccountBranch> getAccountBranchByName(String name);
+    public List<SimplifiedAccountBranch> getAccountBranches(String accountId);
 
 }

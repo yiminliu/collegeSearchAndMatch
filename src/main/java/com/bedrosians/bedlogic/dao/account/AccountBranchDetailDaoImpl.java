@@ -37,5 +37,5 @@ public class AccountBranchDetailDaoImpl extends GenericDaoImpl<AccountBranchDeta
         return null;
    	   		
    	 }
-    
+   
 }

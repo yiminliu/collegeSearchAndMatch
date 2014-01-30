@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.bedrosians.bedlogic.dao.GenericDaoImpl;
+import com.bedrosians.bedlogic.domain.account.AccountBranchDetail;
 import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
@@ -17,6 +18,11 @@ import com.bedrosians.bedlogic.domain.account.SimplifiedAccountBranch;
 @Repository
 public class AccountBranchDaoImpl extends GenericDaoImpl<SimplifiedAccountBranch, BranchPK> implements AccountBranchDao {
 
+	@Override
+	public List<SimplifiedAccountBranch> getAccountBranches(String accountId){
+		return (List<SimplifiedAccountBranch>)findByParameter("branchPK.accountId", accountId);
+	}
+	
 	@Override
 	public SimplifiedAccountBranch getAccountBranchById(String accountId, String branchId){
 		if(branchId != null && branchId.length() > 0)

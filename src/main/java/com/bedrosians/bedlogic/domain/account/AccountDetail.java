@@ -223,6 +223,10 @@ public class AccountDetail extends Account implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name="last_pmt_date")
 	private Date lastPaymentDate;
+	
+	public AccountDetail(){		
+	}
+			
 	public Contact getApContact() {
 		return apContact;
 	}

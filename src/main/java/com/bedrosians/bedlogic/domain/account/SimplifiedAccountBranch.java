@@ -13,4 +13,14 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class SimplifiedAccountBranch extends AccountBranch implements Serializable {
 	public SimplifiedAccountBranch(){}
+
+	@Override
+	public String toString() {
+		return "SimplifiedAccountBranch [getAccountId()=" + getAccountId()
+				+ ", getBranchId()=" + getBranchId() + ", getBranchName()="
+				+ getBranchName() + ", getAddress()=" + getAddress()
+				+ ", getActivityStatus()=" + getActivityStatus() + "]";
+	}
+	
+	
 }

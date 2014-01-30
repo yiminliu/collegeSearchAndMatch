@@ -52,11 +52,11 @@ public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> im
 	public List<SimplifiedAccount> getAccountsByActivityStatus(String status){
 		String queryString = "";
 		if ("all".equalsIgnoreCase(status) || status == null || status.length() == 0)
-			queryString = "from SimplifiedAccount";
+			queryString = "from Account";
 		else if ("active".equalsIgnoreCase(status))
-			queryString = "from SimplifiedAccount a where activityStatus = ' '";
+			queryString = "from Account a where activityStatus = ' '";
 		else if ("inactive".equalsIgnoreCase(status))
-		    queryString = "from SimplifiedAccount a where activityStatus is not null";
+		    queryString = "from Account a where activityStatus is not null";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		query.setReadOnly(true);
@@ -119,7 +119,7 @@ public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> im
 		criteria.add(Restrictions.eq(parameterName, value.toUpperCase()));
 		return (List<Account>)criteria.list();	
 	 }
-	 */
+	
 		
 	 @Override
 	 public List<SimplifiedAccount> getAccountsByParameters(String[] parameterNames, String[] values){
@@ -140,9 +140,9 @@ public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> im
 		accountList = (List<SimplifiedAccount>)query.list();
 		return accountList;
 	  }
+	  */ 
 	 
-	 
-	 @Override
+	 //@Override
 	 public List<SimplifiedAccount> getAccountsByOwnerName(String firstName, String lastName){
 		 Criteria criteria = currentSession().createCriteria(SimplifiedAccount.class);
 		 if(firstName != null){
