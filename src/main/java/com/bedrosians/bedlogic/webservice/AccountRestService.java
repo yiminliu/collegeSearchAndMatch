@@ -9,7 +9,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -22,12 +21,22 @@ import org.springframework.stereotype.Component;
 
 import com.bedrosians.bedlogic.domain.account.Account;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
+import com.bedrosians.bedlogic.domain.account.AccountDetail;
 import com.bedrosians.bedlogic.exeception.DataNotFoundException;
 import com.bedrosians.bedlogic.service.AccountService;
 import com.bedrosians.bedlogic.util.JsonUtil;
 import com.bedrosians.bedlogic.util.logger.aspect.LogLevel;
 import com.bedrosians.bedlogic.util.logger.aspect.Loggable;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+
+
+/**
+ * This is a restful web service class. It acts as the logical resource of Account Service to provide CRUD actopms on accounts and branches.
+ * The resource is used via HTTP request method (GET, POST, PUT, DELETE). JSON is the only format supported for message exchange.
+ * This class uses /accounts as its endpoint. Account branches are logically mapped to the /accounts endpoint.
+ *
+ */
 
 @Component
 @Path("/accounts")
@@ -36,8 +45,7 @@ public class AccountRestService {
 
 	@Autowired
     AccountService accountService;
-			
-	
+				
     @GET
     @Path("{accountId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,40 +65,20 @@ public class AccountRestService {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
 	}
-         
         
-    @GET
-    @Path("{accountId}/{branchId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Loggable(value = LogLevel.TRACE)
-	public Response getAccountBranchById(@PathParam("accountId") String accountId, @PathParam("branchId") String branchId) throws WebApplicationException{
-		if (accountId == null || accountId.length() == 0 || branchId == null || branchId.length() == 0) {
-    	    throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Valid account Id and Branch Id are required").build());
-    	}    
-		try {
-    	    AccountBranch accountBranch = accountService.getAccountBranchById(accountId, branchId);
-		    if (accountBranch == null)
-				return Response.status(Response.Status.NOT_FOUND).build();
-		    else
-		    	return Response.status(Response.Status.OK).entity(JsonUtil.toJson(accountBranch)).build();
-		}
-		catch(Exception e){
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-	}
-     
-    
     @GET
   	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable(value = LogLevel.TRACE)
   	public Response getAccounts(@Context UriInfo uriInfo) throws WebApplicationException{
     	MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    	if(queryParams == null || queryParams.isEmpty()) {
-    		throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Please specify your query.").build());	
+       	if(queryParams == null || queryParams.isEmpty()) {
+    		//throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Please specify your query.").build());	
+    		queryParams = new MultivaluedMapImpl();
+	        queryParams.add("activityStatus", "all");
     	}
     	try{
-    	    List<Account> accounts = (List<Account>)accountService.getByQueryParameters(queryParams);
+    		List<Account> accounts = (List<Account>)accountService.getByQueryParameters(queryParams);
 		    if (accounts == null || accounts.size() <= 0)
 		        return Response.status(Response.Status.NOT_FOUND).build();				
 		    else
@@ -121,10 +109,50 @@ public class AccountRestService {
 		}
     }
     
+    @GET
+    @Path("{accountId}/{branchId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Loggable(value = LogLevel.TRACE)
+	public Response getAccountBranchById(@PathParam("accountId") String accountId, @PathParam("branchId") String branchId) throws WebApplicationException{
+		if (accountId == null || accountId.length() == 0 || branchId == null || branchId.length() == 0) {
+    	    throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Valid account Id and Branch Id are required").build());
+    	}    
+		try {
+    	    AccountBranch accountBranch = accountService.getAccountBranchById(accountId, branchId);
+		    if (accountBranch == null)
+				return Response.status(Response.Status.NOT_FOUND).build();
+		    else
+		    	return Response.status(Response.Status.OK).entity(JsonUtil.toJson(accountBranch)).build();
+		}
+		catch(Exception e){
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+	}
+    
+    @GET
+    @Path("{accountId}/branches")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Loggable(value = LogLevel.TRACE)
+	public Response getAccountBranches(@PathParam("accountId") String accountId) throws WebApplicationException{
+		if (accountId == null || accountId.length() == 0) {
+    	    throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Valid account Id is required").build());
+    	}    
+		try {
+    	    List<AccountBranch> accountBranches = (List<AccountBranch>)accountService.getAccountBranches(accountId);
+		    if (accountBranches == null || accountBranches.size() <= 0 )
+				return Response.status(Response.Status.NOT_FOUND).build();
+		    else
+		    	return Response.status(Response.Status.OK).entity(JsonUtil.toJson(accountBranches)).build();
+		}
+		catch(Exception e){
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+	}
+    
     @PUT
     @Path("{accountId}")
     @Produces(MediaType.APPLICATION_JSON)
-	public Response updateAccount(@PathParam("accountId") final String accountId, final Account account) throws Exception{
+	public Response updateAccount(@PathParam("accountId") final String accountId, final AccountDetail account) throws Exception{
         try{
 			accountService.updateAccount(accountId, account);
 		}
@@ -137,11 +165,10 @@ public class AccountRestService {
     @Loggable(value=LogLevel.TRACE)
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAccount(Account account) throws Exception{
+    @Produces(MediaType.APPLICATION_JSON)
+	public Response updateAccount(AccountDetail account) throws Exception{
 		if (account == null){
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
-	        //return Response.status(Response.Status.NOT_FOUND).entity("Data not found for account id: " + accountId).build();
 		}
 		System.out.println("In updateAccount, input account: "+ account.toString());
 		try {
@@ -158,42 +185,21 @@ public class AccountRestService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-	public Response createAccount(Account account){
+	public Response createAccount(AccountDetail account){
 		
 		if (account == null){
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
-	        //return Response.status(Response.Status.NOT_FOUND).entity("Data not found for account id: " + accountId).build();
-		}
+	 	}
 		try {
-		    accountService.createAccount(account);
+			accountService.createAccount(account);
 		}
 		catch(Exception e){
-			e.printStackTrace();
 			throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
 		}
 		
 		return Response.status(Response.Status.NO_CONTENT).entity(JsonUtil.toJson(account)).build();
-	}
-			
-    	// Set set = queryParams.entrySet();
-        //    	 Iterator it = set.iterator();
-    	//   	while(it.hasNext()) {
-    		//Entry e = (Entry)it.next();
-    		//System.out.printf(" key = %s, value = %s", e.getKey(), e.getValue());
-    	//    	}
+	}		    
       
-      
-    
-    /*@GET
-    @Produces(MediaType.APPLICATION_JSON)
-	public Response getAccounts() throws Exception{
-		List<Account> accountList = accountService.getAccountsByActivityStatus("active");
-		if (accountList == null || accountList.size() < 1){
-			//throw new WebApplicationException(Response.Status.NOT_FOUND);
-			return Response.status(Response.Status.NOT_FOUND).build();
-	   	}
-		return Response.status(Response.Status.OK).entity(JsonUtil.toJson(accountList)).build();
-	}*/
     
     /*
     @GET
