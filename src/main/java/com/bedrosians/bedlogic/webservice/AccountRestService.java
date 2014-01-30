@@ -32,9 +32,9 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 
 /**
- * This is a restful web service class. It acts as the logical resource of Account Service to provide CRUD actopms on accounts and branches.
- * The resource is used via HTTP request method (GET, POST, PUT, DELETE). JSON is the only format supported for message exchange.
- * This class uses /accounts as its endpoint. Account branches are logically mapped to the /accounts endpoint.
+ * This is a restful web service resource class. It acts as the logical resource of Account Service to provide CRUD operations on accounts and branches.
+ * This web service resource is used via HTTP request method (GET, POST, PUT, DELETE). JSON is the only format supported for message exchange by this resource.
+ * This class uses "/accounts" as its endpoint. Account branches are logically mapped to the "/accounts" endpoint.
  *
  */
 
@@ -46,6 +46,13 @@ public class AccountRestService {
 	@Autowired
     AccountService accountService;
 				
+	/**
+	   * This method retrieves an account for the given account id.
+	   * @param  accountId   account id string. 
+	   * @return Response    object to include the status and a json object.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @GET
     @Path("{accountId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +73,14 @@ public class AccountRestService {
 		}
 	}
         
+    
+    /**
+	   * This method retrieves a list of accounts for the given query condition, or a list of all accounts if no query condition is specified .
+	   * @param  UriInfo     represents query condition in the form of name/value pairs. 
+	   * @return Response    object to include the status and a json object.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @GET
   	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -89,6 +104,13 @@ public class AccountRestService {
 		}
     }
     
+    /**
+	   * This method retrieves a list of accounts for the given query condition, or a list of all accounts if no query condition is specified .
+	   * @param accountName   a string of account name. 
+	   * @return Response     object to include the status and a json object.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @GET
     @Path("accountName/{accountName}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -109,6 +131,15 @@ public class AccountRestService {
 		}
     }
     
+   
+    /**
+	   * This method retrieves an account branch for the given account id and branch id.
+	   * @param accountId   account id. 
+	   * @param accountId   branch id. 
+	   * @return Response     object to include the status and a json object.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @GET
     @Path("{accountId}/{branchId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +160,13 @@ public class AccountRestService {
 		}
 	}
     
+    /**
+	   * This method retrieves a list of account branches associated with the given account.
+	   * @param accountId   account id. 
+	   * @return Response   object to include the status and a json object.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @GET
     @Path("{accountId}/branches")
     @Produces(MediaType.APPLICATION_JSON)
@@ -162,6 +200,14 @@ public class AccountRestService {
 		return Response.status(Response.Status.NO_CONTENT).entity(JsonUtil.toJson(accountId)).build();
 	}
     
+    
+    /**
+	   * This method updates an account based on the given account info.
+	   * @param accountId   account object. 
+	   * @return Response   object to include the status and a json object representing the updated account.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @Loggable(value=LogLevel.TRACE)
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -181,6 +227,13 @@ public class AccountRestService {
 		return Response.status(Response.Status.NO_CONTENT).entity(JsonUtil.toJson(account)).build();
 	}
     	
+    /**
+	   * This method creates an account based on the given account info.
+	   * @param accountId   account object. 
+	   * @return Response   object to include the status and a json object representing the updated account.
+	   * @exception WebApplicationException on input error and server side condition errors as well.
+	   * @see WebApplicationException
+	   */
     @Loggable(value=LogLevel.TRACE)
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
