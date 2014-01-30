@@ -27,6 +27,7 @@ import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.AccountBranchId;
 import com.bedrosians.bedlogic.domain.account.AccountPhone;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccountBranch;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -127,6 +128,18 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		assertNotNull("should not be null", account);
 		System.out.println("account = " + account.toString());
 		assertEquals("account should have "+ testZip + " as account zip ", testZip, account.getZip().trim());
+	}
+	
+	@Test
+	public void testGetBranches(){
+		System.out.println("test if the account branches are returned by searching account ID...");
+		List<SimplifiedAccountBranch> branches = (List<SimplifiedAccountBranch>)accountBranchDao.getAccountBranches(testAccountId);
+		
+		assertNotNull("should not be null", branches);
+		for(AccountBranch branch : branches){
+			System.out.println("branch = " + branch.toString());
+		    assertEquals("Account id should be " + testAccountId, testAccountId, branch.getAccountId());
+		}    
 	}
 	
 	@Test
@@ -352,7 +365,7 @@ public class AccountDaoTest extends AbstractTransactionalJUnit4SpringContextTest
 		System.out.println("An new account created in memory");
 		System.out.println("account = "+ account.toString());
 		System.out.println("Now, save the account.");
-		System.out.println("New account ID = " + accountDetailDao.createAccount(account));
+		System.out.println("The newly created account ID = " + accountDetailDao.createAccount(account));
        	Account newAccount = accountDao.getAccountById(account.getAccountId());
        	//System.out.println("retrieved the saved account  = "+ newAccount.toString());
 		//assertNotEquals(testState, account.getAddressState());

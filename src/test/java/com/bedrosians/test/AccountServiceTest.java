@@ -23,6 +23,7 @@ import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
 import com.bedrosians.bedlogic.domain.account.AccountBranchId;
 import com.bedrosians.bedlogic.domain.account.BranchPK;
+import com.bedrosians.bedlogic.domain.account.SimplifiedAccountBranch;
 import com.bedrosians.bedlogic.service.AccountService;
 
 import static org.junit.Assert.*;
@@ -182,6 +183,19 @@ public class AccountServiceTest {
     	//assertEquals("account should have " + testZip + " as account zip ", testZip, account.getZip());
 	}
 	*/
+	
+	@Test
+	public void testGetBranches(){
+		System.out.println("test if the account branches are returned by searching account ID...");
+		List<SimplifiedAccountBranch> branches = (List<SimplifiedAccountBranch>)accountService.getAccountBranches(testAccountId);
+		
+		assertNotNull("should not be null", branches);
+		for(AccountBranch branch : branches){
+			System.out.println("branch = " + branch.toString());
+		    assertEquals("Account id should be " + testAccountId, testAccountId, branch.getAccountId());
+		}    
+	}
+	
 	
 	@Test
 	public void testGetBranchesByBranchId(){
