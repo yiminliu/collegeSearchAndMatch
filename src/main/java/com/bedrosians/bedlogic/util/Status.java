@@ -1,12 +1,14 @@
 package com.bedrosians.bedlogic.util;
 
-public enum ActivityStatus {
+public enum Status {
 
 	ACTIVE("ACTIVE"),
-	INACTIVE("INACTIVE");
+	INACTIVE("INACTIVE"),
+	DISCONTINUED("DISCONTINUED"),
+	DELETED("DELETED");
 		
 	private String name;
-	private ActivityStatus(String name) {
+	private Status(String name) {
 		this.name = name;
 	}
 
