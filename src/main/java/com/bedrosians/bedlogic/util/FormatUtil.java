@@ -1,5 +1,6 @@
 package com.bedrosians.bedlogic.util;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,6 +38,22 @@ public class FormatUtil {
 		}    
 	}
 	
+    public static Character process(Character data){
+		
+		if (data == null)
+			return new Character(' ');
+		else {
+			    return Character.toString(data).trim().charAt(0);
+		}    
+	}
+
+    public static Byte process(Byte data){
+		Byte newByte = (byte)Integer.parseInt("0");
+		if (data != null)
+			newByte = (byte)Integer.parseInt(String.valueOf(data).trim());
+	    return newByte;
+	}
+    
 	public static Integer process(Integer data){
 		Integer newInt = Integer.valueOf(0);
 		if (data != null)
@@ -55,6 +72,14 @@ public class FormatUtil {
 		Float newData = Float.valueOf(0);
 		if (data != null)
 			newData = Float.valueOf((String.valueOf(data).trim()));
+	    return newData;
+	}
+	
+	public static BigDecimal process(BigDecimal data){
+		BigDecimal newData = BigDecimal.valueOf(0);
+		if (data != null)
+			//newData = BigDecimal.valueOf((String.valueOf(data).trim()));
+			newData = data;
 	    return newData;
 	}
 		
