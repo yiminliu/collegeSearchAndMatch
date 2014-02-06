@@ -15,13 +15,13 @@ import com.bedrosians.bedlogic.domain.account.CheckPayment;
 @Service
 public interface AccountService {
 	
-    public List<? extends Account> getAccounts();
+    public List<? extends Account> getAllAccounts();
 	
 	public Account getAccountById(String id);
 	
 	public List<? extends Account> getAccountsByAccountNamePattern(String name);
 	
-	public List<? extends Account> getAccountsByActivityStatus(String status);
+	public List<? extends Account> getAccountsByStatus(String status);
 	
 	public List<? extends Account> getAccountsByOwnerName(String firstName, String lastName);
 	

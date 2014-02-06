@@ -64,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	@Transactional(readOnly=true)
     public List<SimplifiedAccount> getAccountsByOwnerName(String firstName, String lastName){
-		return accountDao.getAccountsByOwnerName(firstName, lastName);
+		return (List<SimplifiedAccount>)accountDao.getAccountsByOwnerName(firstName, lastName);
 	}
 	
     @Loggable(value = LogLevel.TRACE)
@@ -123,15 +123,15 @@ public class AccountServiceImpl implements AccountService {
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
-	public List<SimplifiedAccount> getAccounts(){
-		return accountDao.getAccountsByActivityStatus("all");
+	public List<SimplifiedAccount> getAllAccounts(){
+		return (List<SimplifiedAccount>)accountDao.getAllAccounts();
 	}
 	
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
-	public List<SimplifiedAccount> getAccountsByActivityStatus(String status){
-		return accountDao.getAccountsByActivityStatus(status);
+	public List<SimplifiedAccount> getAccountsByStatus(String status){
+		return (List<SimplifiedAccount>)accountDao.getAccountsByStatus(status);
 	}
 	
 	@Loggable(value = LogLevel.TRACE)
