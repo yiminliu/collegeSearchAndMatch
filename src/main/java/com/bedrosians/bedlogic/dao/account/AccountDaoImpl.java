@@ -8,25 +8,15 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bedrosians.bedlogic.dao.GenericDaoImpl;
 import com.bedrosians.bedlogic.domain.account.Account;
 import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
-import com.bedrosians.bedlogic.domain.account.AccountDetail;
-import com.bedrosians.bedlogic.domain.account.AccountPhone;
-import com.bedrosians.bedlogic.util.PatternMatchMode;
-import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 
 @Repository("accountDao")
@@ -39,7 +29,6 @@ public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> im
 	}
 	
 	@Override
-	//@Transactional
 	public Account getAccountById(String accountId) {
 		SimplifiedAccount account = (SimplifiedAccount)findById(accountId);
 		//account.setAccountBranches(account.getAccountBranches());
@@ -168,109 +157,5 @@ public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> im
 		 updateAccount(account);
 	 }
 	 
-	
-	 /*@SuppressWarnings("unchecked")
-     @Override
-	 public Set<Account> getAccountsByPhoneNo(Long phoneNo){
-	 	 List<AccountPhone> accountPhones = accountPhoneDao.findByParameter("number", phoneNo);
-		 //List<Account> accountList = new ArrayList<Account>();
-		 Set<Account> accountSet = new HashSet<Account>();
-		 for (AccountPhone phone : accountPhones){
-			 accountSet.add(phone.getAccount());
-		 }
-		return accountSet;
-	 } 
-	 */
-   /*
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(readOnly=true)
-	public List<Account> getAccounts(
-			String accountName,
-			String addressStreetLine1,
-			String addressCity,
-			String addressState,
-			String addressZip,
-			String caseNo,
-			String ownerFirstName,
-			String ownerLastName,
-			String ownerDriverLicenseNo,
-			String phoneNo,
-			String activityStatus){
-		
-		ProjectionList projList = Projections.projectionList()
-				.add(Projections.property("accountId"), "accountId")
-				.add(Projections.property("accountName"), "accountName")
-				.add(Projections.property("creditStatus"), "creditStatus")
-				.add(Projections.property("activityStatus"), "activityStatus")
-				.add(Projections.property("addressCity"), "addressCity")
-				.add(Projections.property("addressState"), "addressState")
-				.add(Projections.property("addressZip"), "addressZip");
-		Criteria crit = currentSession().createCriteria(Account.class)
-			.setProjection(Projections.distinct(projList))
-				.setResultTransformer(Transformers.aliasToBean(Account.class));
-		if (accountName != null) {
-			crit.add(Restrictions.like("accountName", "%".concat(accountName).concat("%")).ignoreCase());
-		}
-		
-		if (addressStreetLine1 != null){
-			crit.add(Restrictions.like("addressStreetLine1", "%".concat(addressStreetLine1).concat("%")).ignoreCase());
-		}
-
-		if (addressCity != null){
-			crit.add(Restrictions.eq("addressCity", addressCity).ignoreCase());
-		}
-		
-		if (addressState != null){
-			crit.add(Restrictions.eq("addressState", addressState).ignoreCase());
-		}
-		
-		if (addressZip != null){
-			crit.add(Restrictions.eq("addressZip", addressZip).ignoreCase());
-		}
-		
-		if (caseNo != null){
-			crit.add(Restrictions.eq("caseNo", caseNo).ignoreCase());
-		}
-		
-		if (ownerFirstName != null){
-			crit.add(Restrictions.eq("ownerFirstName", ownerDriverLicenseNo).ignoreCase());
-		}
-		
-		if (ownerLastName != null){
-			crit.add(Restrictions.eq("ownerLastName", ownerLastName).ignoreCase());
-		}
-		
-		if (ownerDriverLicenseNo != null){
-			crit.add(Restrictions.eq("ownerDriverLicenseNo", ownerLastName).ignoreCase());
-		}
-		
-		if (activityStatus != null){
-			activityStatus = activityStatus.toLowerCase();
-			if (activityStatus.compareTo("all") != 0){
-				if (activityStatus.equals("active")) {
-					activityStatus = "Y";
-				} else if (activityStatus.equals("inactive")){
-					activityStatus = "D";
-				}
-				crit.add(Restrictions.eq("activityStatus", activityStatus).ignoreCase());
-			}
-		}
-		
-		if (phoneNo != null){
-			StringBuilder phoneSb = new StringBuilder();
-			for (int i = 0 ; i < phoneNo.length() ; i++){
-				char c = phoneNo.charAt(i);
-				if (c >= 0 && c <= '9'){
-					phoneSb.append(c);
-				}
-			}
-			crit.createCriteria("phoneNumbers")
-				.add(Restrictions.eq("number", Long.valueOf(phoneSb.toString())));
-		}
-
-		return crit.list();
-	} 		
-	 */  
 	
 }

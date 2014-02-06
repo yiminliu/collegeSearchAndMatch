@@ -30,8 +30,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	private SessionFactory sessionFactory;
 	
 	protected synchronized Session currentSession() {
-	    //return sessionFactory.getCurrentSession();
-		return sessionFactory.openSession();
+	    return sessionFactory.getCurrentSession();
+		//return sessionFactory.openSession();
 	    
 	}
 		
@@ -85,7 +85,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	  	Criteria criteria = currentSession().createCriteria(type);
 	  	criteria.setReadOnly(true);
 	  	criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.add(Restrictions.eq(parameterName, value));
+		criteria.add(Restrictions.eq(parameterName, value).ignoreCase());
 		return (List<T>)criteria.list();			
 	}
 	
@@ -175,12 +175,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
    	 		    else if ("inactive".equalsIgnoreCase(value))
    	 		        criteria.add(Restrictions.in(key, new String[] {"F", "Y", "D", "I"})); 
    	    	}  
-   	    	  	
-   	    	//if(value != null && value.length() > 0)
-  		    //   value = value.toUpperCase();
-   	    	//System.out.printf(" key = %s, value = %s", key, value);
-   	    	//System.out.println();
-   	    	else {
+   	       	else {
    	    		//criteria.add(Restrictions.eq("activityStatus", "")); //return only active accounts
    	    		criteria.add(Restrictions.eq(key, value).ignoreCase());
    	    	}

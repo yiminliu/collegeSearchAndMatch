@@ -20,7 +20,6 @@ import org.junit.Test;
 import com.bedrosians.bedlogic.dao.account.AccountDao;
 import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
 import com.bedrosians.bedlogic.domain.account.AccountBranch;
-import com.bedrosians.bedlogic.domain.account.AccountPhone;
 
 import com.bedrosians.bedlogic.service.AccountService;
 import com.bedrosians.bedlogic.util.PatternMatchMode;
