@@ -9,14 +9,16 @@ import com.bedrosians.bedlogic.util.PatternMatchMode;
 import com.bedrosians.bedlogic.util.RestrictionOperation;
 
 public interface GenericDao <T, PK extends Serializable>{
-	PK save(T newInstance);
+	
 	T findById(PK id);
-	void update(T transientObject);
-	void delete(T persistentObject);
+	List<T> findAll();
 	List<T> findByParameter(String parameterName, String value);
 	List<T> findByParameter(String parameterName, Long value);
 	List<T> findByParameter(String parameterName, String value, RestrictionOperation op);
 	List<T> findByParameterPattern(String parameterName, String value, PatternMatchMode matchMode);
 	List<T> findByParameters(MultivaluedMap<String, String> queryParams);
+	PK save(T newInstance);
+	void update(T transientObject);
+	void delete(T persistentObject);
 
 }

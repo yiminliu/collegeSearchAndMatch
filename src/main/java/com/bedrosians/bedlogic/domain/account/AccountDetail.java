@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,11 +20,13 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 
 import com.bedrosians.bedlogic.util.FormatUtil;
 
-@Entity(name="accountDetail")
+@XmlRootElement
+@Entity
 @Table(name="arm")
 @DynamicUpdate(value=true)
 @SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
+//@org.hibernate.annotations.Entity(selectBeforeUpdate = true, dynamicInsert = true, dynamicUpdate = true)
 //@OptimisticLock = OptimisticLockType.ALL
 public class AccountDetail extends Account implements Serializable {
 	
@@ -153,7 +156,7 @@ public class AccountDetail extends Account implements Serializable {
 	@Column(name="RequireJobInfo")
 	private String requireJobInfo;
 	@Column(name="stmtnbr")
-	private Integer statementnBr;
+	private Integer statementNo;
 	@Column(name="stmttype")
 	private String statementType;             
 	//@Column(name = "TreatAsStore")
@@ -437,11 +440,11 @@ public class AccountDetail extends Account implements Serializable {
 	public void setRequireJobInfo(String requireJobInfo) {
 		this.requireJobInfo = requireJobInfo;
 	}
-	public Integer getStatementnBr() {
-		return FormatUtil.process(statementnBr);
+	public Integer getStatementNo() {
+		return FormatUtil.process(statementNo);
 	}
-	public void setStatementnBr(Integer statementnBr) {
-		this.statementnBr = statementnBr;
+	public void setStatementNo(Integer statementNo) {
+		this.statementNo = statementNo;
 	}
 	public String getStatementType() {
 		return FormatUtil.process(statementType);

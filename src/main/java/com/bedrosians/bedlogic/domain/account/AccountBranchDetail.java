@@ -21,8 +21,8 @@ import com.bedrosians.bedlogic.util.FormatUtil;
 
 @Entity(name="accountBranchDetail")
 @Table(name="armbr")
-@DynamicUpdate
-@SelectBeforeUpdate
+@DynamicUpdate(value=true)
+@SelectBeforeUpdate(value=true)
 @DynamicInsert(value=true)
 public class AccountBranchDetail extends AccountBranch implements Serializable {
 	
@@ -83,10 +83,10 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	private String b2FromCorp;
 	
 	@Column(name="branchsalesnbr")
-	private Integer branchSalesNBr;
+	private Integer branchSalesNo;
 	
 	@Column(name="contractLicnbr")
-	private String contractLicNBr;
+	private String contractLicenseNo;
 	
 	@Column(name="daystopay")
 	private Integer daysToPay;
@@ -106,66 +106,66 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	private String invType;
 	
 	@Column(name="laststmtamt")
-	private Float lastStmtAmt;
+	private Float lastStatementAmount;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="laststmtdate")
-	private Date lastStmtDate;
+	private Date lastStatmentDate;
 	
 	@Column(name="ourarcontact")
 	private String accountManager;
 	
 	@Column(name="resalenbr")
-	private String resalEnBr;
+	private String resaleNo;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="setupdate")
 	private Date setupDate;
 	
 	@Column(name="stmtnbr")
-	private String stmtNBr;
+	private String statementNo;
 	
 	@Column(name="stmttype")
-	private String  stmtType;
+	private String  statementType;
 	
 	@Column(name="storenbr")
-	private Integer storeNBr;
+	private Integer storeNo;
 		
 	@Column(name="taxclass")
 	private String taxClass;
 	
 	@Column(name="totbalamt")
-	private Float totbalAmt;
+	private Float totbalAmount;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="invlaste_date")
 	private Date invLasteDate;
 	
 	@Column(name="batchinv")
-	private String batchInv;
+	private String batchInventory;
 	
 	@Column(name="printstmt")
-	private String printStmt ;
+	private String printStatement ;
 	
 	@Column(name="custgroup")
-	private Integer custGroup;
+	private Integer customerGroup;
 	
 	@Column(name="pricegroup")
-	private String pricegroup;	
+	private String priceGroup;	
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="invlastm_date")
-	private Date invLastMDate;
+	private Date inventoryLastMDate;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="stmtlaste_date")
-	private Date stmtLastEDate;
+	private Date statementLastEDate;
 		
 	@Column(name="apemail2")
 	private String  apEmail2;
 	
 	@Column(name="stmtlaste_amt")
-	private Float stmtlastEAmt;
+	private Float statementLastEAmount;
 	
 	@Column(name="wdaystopay")
 	private Integer wDaysToPay;
@@ -178,7 +178,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="resalenbr_expdate")
-	private Date resaleNBrExpDate;
+	private Date resaleNumberExpDate;
 	
 	@Column(name="groupcd")
 	private String groupId;
@@ -186,67 +186,67 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	@Column(name="usercd")
 	private String userId;
 	
-	@Column(name="infoemail1")
+	@Column(name="infoEmail1")
 	private String infoEmail1;
-	@Column(name="infoemail2")
+	@Column(name="infoEmail2")
 	private String infoEmail2;
-	@Column(name="infoemail3")
+	@Column(name="infoEmail3")
 	private String infoEmail3;
-	@Column(name="infoemail4")
+	@Column(name="infoEmail4")
 	private String infoEmail4;
-	@Column(name="infoemail5")
+	@Column(name="infoEmail5")
 	private String infoEmail5;
-	@Column(name="infoemail6")
+	@Column(name="infoEmail6")
 	private String infoEmail6;
-	@Column(name="infoemail7")
+	@Column(name="infoEmail7")
 	private String infoEmail7;
-	@Column(name="infoemail8")
+	@Column(name="infoEmail8")
 	private String infoEmail8;
-	@Column(name="infoemail9")
+	@Column(name="infoEmail9")
 	private String infoEmail9;
 		
 	@Column(name="resalenbr2")
-	private Integer resaleNB2;
+	private Integer resaleNumber2;
 	@Temporal(TemporalType.DATE)
 	@Column(name="resalenbr2_expdate")
-	private Date resaleNB2ExpDate;
+	private Date resaleNumber2ExpDate;
 	
 	@Column(name="resalenbr3")
-	private String resaleNB3;
+	private String resaleNumber3;
 	@Temporal(TemporalType.DATE)
 	@Column(name="resalenbr3_expdate")
-	private Date resaleNB3ExpDate;
+	private Date resaleNumber3ExpDate;
 	@Column(name="resalenbr4")
-	private String resaleNB4;
+	private String resaleNumnber4;
 	@Temporal(TemporalType.DATE)
 	@Column(name="resalenbr4_expdate")
-	private Date resaleNB4ExpDate;
+	private Date resaleNumber4ExpDate;
 	@Column(name="resalenbr5")
-	private String resaleNB5;
+	private String resaleNumber5;
 	@Temporal(TemporalType.DATE)
 	@Column(name="resalenbr5_expdate")
-	private Date resaleNB5ExpDate;
+	private Date resaleNumber5ExpDate;
 		
 	@Column(name="resaleNBr1_statecd")
-	private String resalenbr1StateCd;
+	private String resaleNumber1StateCode;
 		
 	@Column(name="resaleNBr2_statecd")
-	private String resalenbr2StateCd;
+	private String resaleNumber2StateCode;
 	@Column(name="resaleNBr3_statecd")
-	private String resalenbr3StateCd;
+	private String resaleNumber3StateCode;
 	@Column(name="resaleNBr4_statecd")
-	private String resalenbr4StateCd;
+	private String resaleNumber4StateCode;
 	@Column(name="resaleNBr5_statecd")
-	private String resalenbr5StateCd;
+	private String resaleNumber5StateCode;
 	
 	@Column(name="taxstatecd")
-	private String taxStateCd;
+	private String taxStateId;
 	@Column(name="taxlocalcd")
-	private String taxLocalCd;
+	private String taxLocalId;
 		
 	@Temporal(TemporalType.DATE)
 	@Column(name="branchSalesnbrdate")
-	private Date branchsalesNBrDate;
+	private Date branchSalesNumberDate;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="pricegroupdate")
@@ -262,7 +262,6 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	})
 	private Address physicalAddress;
 
-	     
 	public Contact getApContact() {
 		return apContact;
 	}
@@ -270,15 +269,15 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	public void setApContact(Contact apContact) {
 		this.apContact = apContact;
 	}
-   
+
 	public Contact getManagerContact() {
-		 return managerContact;
+		return managerContact;
 	}
 
 	public void setManagerContact(Contact managerContact) {
 		this.managerContact = managerContact;
 	}
-	
+
 	public Contact getPurchaseContact() {
 		return purchaseContact;
 	}
@@ -294,9 +293,9 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	public void setSalesContact(Contact salesContact) {
 		this.salesContact = salesContact;
 	}
-	
+
 	public String getAuthOnly() {
-		return FormatUtil.process(authOnly);
+		return authOnly;
 	}
 
 	public void setAuthOnly(String authOnly) {
@@ -304,7 +303,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getB2Email() {
-		return FormatUtil.process(b2Email);
+		return b2Email;
 	}
 
 	public void setB2Email(String b2Email) {
@@ -312,7 +311,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public Long getB2Fax() {
-		return FormatUtil.process(b2Fax);
+		return b2Fax;
 	}
 
 	public void setB2Fax(Long b2Fax) {
@@ -320,31 +319,31 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getB2FromCorp() {
-		return FormatUtil.process(b2FromCorp);
+		return b2FromCorp;
 	}
 
 	public void setB2FromCorp(String b2FromCorp) {
 		this.b2FromCorp = b2FromCorp;
 	}
 
-	public Integer getBranchSalesNBr() {
-		return FormatUtil.process(branchSalesNBr);
+	public Integer getBranchSalesNo() {
+		return branchSalesNo;
 	}
 
-	public void setBranchSalesNBr(Integer branchSalesNBr) {
-		this.branchSalesNBr = branchSalesNBr;
+	public void setBranchSalesNo(Integer branchSalesNo) {
+		this.branchSalesNo = branchSalesNo;
 	}
 
-	public String getContractLicNBr() {
-		return FormatUtil.process(contractLicNBr);
+	public String getContractLicenseNo() {
+		return contractLicenseNo;
 	}
 
-	public void setContractLicNBr(String contractLicNBr) {
-		this.contractLicNBr = contractLicNBr;
+	public void setContractLicenseNo(String contractLicenseNo) {
+		this.contractLicenseNo = contractLicenseNo;
 	}
 
 	public Integer getDaysToPay() {
-		return FormatUtil.process(daysToPay);
+		return daysToPay;
 	}
 
 	public void setDaysToPay(Integer daysToPay) {
@@ -352,7 +351,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public Date getFirstSoldDate() {
-		return FormatUtil.process(firstSoldDate);
+		return firstSoldDate;
 	}
 
 	public void setFirstSoldDate(Date firstSoldDate) {
@@ -360,7 +359,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public Float getHighBalAmt() {
-		return FormatUtil.process(highBalAmt);
+		return highBalAmt;
 	}
 
 	public void setHighBalAmt(Float highBalAmt) {
@@ -368,7 +367,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public Date getHighBalDate() {
-		return FormatUtil.process(highBalDate);
+		return highBalDate;
 	}
 
 	public void setHighBalDate(Date highBalDate) {
@@ -376,167 +375,167 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInvType() {
-		return FormatUtil.process(invType);
+		return invType;
 	}
 
 	public void setInvType(String invType) {
 		this.invType = invType;
 	}
 
-	public Float getLastStmtAmt() {
-		return FormatUtil.process(lastStmtAmt);
+	public Float getLastStatementAmount() {
+		return lastStatementAmount;
 	}
 
-	public void setLastStmtAmt(Float lastStmtAmt) {
-		this.lastStmtAmt = lastStmtAmt;
+	public void setLastStatementAmount(Float lastStatementAmount) {
+		this.lastStatementAmount = lastStatementAmount;
 	}
 
-	public Date getLastStmtDate() {
-		return FormatUtil.process(lastStmtDate);
+	public Date getLastStatmentDate() {
+		return lastStatmentDate;
 	}
 
-	public void setLastStmtDate(Date lastStmtDate) {
-		this.lastStmtDate = lastStmtDate;
+	public void setLastStatmentDate(Date lastStatmentDate) {
+		this.lastStatmentDate = lastStatmentDate;
 	}
 
 	public String getAccountManager() {
-		return FormatUtil.process(accountManager);
+		return accountManager;
 	}
 
 	public void setAccountManager(String accountManager) {
 		this.accountManager = accountManager;
 	}
 
-	public String getResalEnBr() {
-		return FormatUtil.process(resalEnBr);
+	public String getResaleNo() {
+		return resaleNo;
 	}
 
-	public void setResalEnBr(String resalEnBr) {
-		this.resalEnBr = resalEnBr;
+	public void setResaleNo(String resaleNo) {
+		this.resaleNo = resaleNo;
 	}
 
 	public Date getSetupDate() {
-		return FormatUtil.process(setupDate);
+		return setupDate;
 	}
 
 	public void setSetupDate(Date setupDate) {
 		this.setupDate = setupDate;
 	}
 
-	public String getStmtNBr() {
-		return FormatUtil.process(stmtNBr);
+	public String getStatementNo() {
+		return statementNo;
 	}
 
-	public void setStmtNBr(String stmtNBr) {
-		this.stmtNBr = stmtNBr;
+	public void setStatementNo(String statementNo) {
+		this.statementNo = statementNo;
 	}
 
-	public String getStmtType() {
-		return FormatUtil.process(stmtType);
+	public String getStatementType() {
+		return statementType;
 	}
 
-	public void setStmtType(String stmtType) {
-		this.stmtType = stmtType;
+	public void setStatementType(String statementType) {
+		this.statementType = statementType;
 	}
 
-	public Integer getStoreNBr() {
-		return FormatUtil.process(storeNBr);
+	public Integer getStoreNo() {
+		return storeNo;
 	}
 
-	public void setStoreNBr(Integer storeNBr) {
-		this.storeNBr = storeNBr;
+	public void setStoreNo(Integer storeNo) {
+		this.storeNo = storeNo;
 	}
 
 	public String getTaxClass() {
-		return FormatUtil.process(taxClass);
+		return taxClass;
 	}
 
 	public void setTaxClass(String taxClass) {
 		this.taxClass = taxClass;
 	}
 
-	public Float getTotbalAmt() {
-		return FormatUtil.process(totbalAmt);
+	public Float getTotbalAmount() {
+		return totbalAmount;
 	}
 
-	public void setTotbalAmt(Float totbalAmt) {
-		this.totbalAmt = totbalAmt;
+	public void setTotbalAmount(Float totbalAmount) {
+		this.totbalAmount = totbalAmount;
 	}
 
 	public Date getInvLasteDate() {
-		return FormatUtil.process(invLasteDate);
+		return invLasteDate;
 	}
 
 	public void setInvLasteDate(Date invLasteDate) {
 		this.invLasteDate = invLasteDate;
 	}
 
-	public String getBatchInv() {
-		return FormatUtil.process(batchInv);
+	public String getBatchInventory() {
+		return batchInventory;
 	}
 
-	public void setBatchInv(String batchInv) {
-		this.batchInv = batchInv;
+	public void setBatchInventory(String batchInventory) {
+		this.batchInventory = batchInventory;
 	}
 
-	public String getPrintStmt() {
-		return FormatUtil.process(printStmt);
+	public String getPrintStatement() {
+		return printStatement;
 	}
 
-	public void setPrintStmt(String printStmt) {
-		this.printStmt = printStmt;
+	public void setPrintStatement(String printStatement) {
+		this.printStatement = printStatement;
 	}
 
-	public Integer getCustGroup() {
-		return FormatUtil.process(custGroup);
+	public Integer getCustomerGroup() {
+		return customerGroup;
 	}
 
-	public void setCustGroup(Integer custGroup) {
-		this.custGroup = custGroup;
+	public void setCustomerGroup(Integer customerGroup) {
+		this.customerGroup = customerGroup;
 	}
 
-	public String getPricegroup() {
-		return FormatUtil.process(pricegroup);
+	public String getPriceGroup() {
+		return priceGroup;
 	}
 
-	public void setPricegroup(String pricegroup) {
-		this.pricegroup = pricegroup;
+	public void setPriceGroup(String priceGroup) {
+		this.priceGroup = priceGroup;
 	}
 
-	public Date getInvLastMDate() {
-		return FormatUtil.process(invLastMDate);
+	public Date getInventoryLastMDate() {
+		return inventoryLastMDate;
 	}
 
-	public void setInvLastMDate(Date invLastMDate) {
-		this.invLastMDate = invLastMDate;
+	public void setInventoryLastMDate(Date inventoryLastMDate) {
+		this.inventoryLastMDate = inventoryLastMDate;
 	}
 
-	public Date getStmtLastEDate() {
-		return FormatUtil.process(stmtLastEDate);
+	public Date getStatementLastEDate() {
+		return statementLastEDate;
 	}
 
-	public void setStmtLastEDate(Date stmtLastEDate) {
-		this.stmtLastEDate = stmtLastEDate;
+	public void setStatementLastEDate(Date statementLastEDate) {
+		this.statementLastEDate = statementLastEDate;
 	}
 
 	public String getApEmail2() {
-		return FormatUtil.process(apEmail2);
+		return apEmail2;
 	}
 
 	public void setApEmail2(String apEmail2) {
 		this.apEmail2 = apEmail2;
 	}
 
-	public Float getStmtlastEAmt() {
-		return FormatUtil.process(stmtlastEAmt);
+	public Float getStatementLastEAmount() {
+		return statementLastEAmount;
 	}
 
-	public void setStmtlastEAmt(Float stmtlastEAmt) {
-		this.stmtlastEAmt = stmtlastEAmt;
+	public void setStatementLastEAmount(Float statementLastEAmount) {
+		this.statementLastEAmount = statementLastEAmount;
 	}
 
 	public Integer getwDaysToPay() {
-		return FormatUtil.process(wDaysToPay);
+		return wDaysToPay;
 	}
 
 	public void setwDaysToPay(Integer wDaysToPay) {
@@ -544,7 +543,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getSetupBy() {
-		return FormatUtil.process(setupBy);
+		return setupBy;
 	}
 
 	public void setSetupBy(String setupBy) {
@@ -552,23 +551,23 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getNotBlockCheck() {
-		return FormatUtil.process(notBlockCheck);
+		return notBlockCheck;
 	}
 
 	public void setNotBlockCheck(String notBlockCheck) {
 		this.notBlockCheck = notBlockCheck;
 	}
 
-	public Date getResaleNBrExpDate() {
-		return FormatUtil.process(resaleNBrExpDate);
+	public Date getResaleNumberExpDate() {
+		return resaleNumberExpDate;
 	}
 
-	public void setResaleNBrExpDate(Date resaleNBrExpDate) {
-		this.resaleNBrExpDate = resaleNBrExpDate;
+	public void setResaleNumberExpDate(Date resaleNumberExpDate) {
+		this.resaleNumberExpDate = resaleNumberExpDate;
 	}
 
 	public String getGroupId() {
-		return FormatUtil.process(groupId);
+		return groupId;
 	}
 
 	public void setGroupId(String groupId) {
@@ -576,7 +575,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getUserId() {
-		return FormatUtil.process(userId);
+		return userId;
 	}
 
 	public void setUserId(String userId) {
@@ -584,7 +583,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail1() {
-		return FormatUtil.process(infoEmail1);
+		return infoEmail1;
 	}
 
 	public void setInfoEmail1(String infoEmail1) {
@@ -592,7 +591,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail2() {
-		return FormatUtil.process(infoEmail2);
+		return infoEmail2;
 	}
 
 	public void setInfoEmail2(String infoEmail2) {
@@ -600,7 +599,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail3() {
-		return FormatUtil.process(infoEmail3);
+		return infoEmail3;
 	}
 
 	public void setInfoEmail3(String infoEmail3) {
@@ -608,7 +607,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail4() {
-		return FormatUtil.process(infoEmail4);
+		return infoEmail4;
 	}
 
 	public void setInfoEmail4(String infoEmail4) {
@@ -616,7 +615,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail5() {
-		return FormatUtil.process(infoEmail5);
+		return infoEmail5;
 	}
 
 	public void setInfoEmail5(String infoEmail5) {
@@ -624,7 +623,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail6() {
-		return FormatUtil.process(infoEmail6);
+		return infoEmail6;
 	}
 
 	public void setInfoEmail6(String infoEmail6) {
@@ -632,7 +631,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail7() {
-		return FormatUtil.process(infoEmail7);
+		return infoEmail7;
 	}
 
 	public void setInfoEmail7(String infoEmail7) {
@@ -640,7 +639,7 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail8() {
-		return FormatUtil.process(infoEmail8);
+		return infoEmail8;
 	}
 
 	public void setInfoEmail8(String infoEmail8) {
@@ -648,143 +647,143 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	}
 
 	public String getInfoEmail9() {
-		return FormatUtil.process(infoEmail9);
+		return infoEmail9;
 	}
 
 	public void setInfoEmail9(String infoEmail9) {
 		this.infoEmail9 = infoEmail9;
 	}
 
-	public Integer getResaleNB2() {
-		return FormatUtil.process(resaleNB2);
+	public Integer getResaleNumber2() {
+		return resaleNumber2;
 	}
 
-	public void setResaleNB2(Integer resaleNB2) {
-		this.resaleNB2 = resaleNB2;
+	public void setResaleNumber2(Integer resaleNumber2) {
+		this.resaleNumber2 = resaleNumber2;
 	}
 
-	public Date getResaleNB2ExpDate() {
-		return FormatUtil.process(resaleNB2ExpDate);
+	public Date getResaleNumber2ExpDate() {
+		return resaleNumber2ExpDate;
 	}
 
-	public void setResaleNB2ExpDate(Date resaleNB2ExpDate) {
-		this.resaleNB2ExpDate = resaleNB2ExpDate;
+	public void setResaleNumber2ExpDate(Date resaleNumber2ExpDate) {
+		this.resaleNumber2ExpDate = resaleNumber2ExpDate;
 	}
 
-	public String getResaleNB3() {
-		return FormatUtil.process(resaleNB3);
+	public String getResaleNumber3() {
+		return resaleNumber3;
 	}
 
-	public void setResaleNB3(String resaleNB3) {
-		this.resaleNB3 = resaleNB3;
+	public void setResaleNumber3(String resaleNumber3) {
+		this.resaleNumber3 = resaleNumber3;
 	}
 
-	public Date getResaleNB3ExpDate() {
-		return FormatUtil.process(resaleNB3ExpDate);
+	public Date getResaleNumber3ExpDate() {
+		return resaleNumber3ExpDate;
 	}
 
-	public void setResaleNB3ExpDate(Date resaleNB3ExpDate) {
-		this.resaleNB3ExpDate = resaleNB3ExpDate;
+	public void setResaleNumber3ExpDate(Date resaleNumber3ExpDate) {
+		this.resaleNumber3ExpDate = resaleNumber3ExpDate;
 	}
 
-	public String getResaleNB4() {
-		return FormatUtil.process(resaleNB4);
+	public String getResaleNumnber4() {
+		return resaleNumnber4;
 	}
 
-	public void setResaleNB4(String resaleNB4) {
-		this.resaleNB4 = resaleNB4;
+	public void setResaleNumnber4(String resaleNumnber4) {
+		this.resaleNumnber4 = resaleNumnber4;
 	}
 
-	public Date getResaleNB4ExpDate() {
-		return FormatUtil.process(resaleNB4ExpDate);
+	public Date getResaleNumber4ExpDate() {
+		return resaleNumber4ExpDate;
 	}
 
-	public void setResaleNB4ExpDate(Date resaleNB4ExpDate) {
-		this.resaleNB4ExpDate = resaleNB4ExpDate;
+	public void setResaleNumber4ExpDate(Date resaleNumber4ExpDate) {
+		this.resaleNumber4ExpDate = resaleNumber4ExpDate;
 	}
 
-	public String getResaleNB5() {
-		return FormatUtil.process(resaleNB5);
+	public String getResaleNumber5() {
+		return resaleNumber5;
 	}
 
-	public void setResaleNB5(String resaleNB5) {
-		this.resaleNB5 = resaleNB5;
+	public void setResaleNumber5(String resaleNumber5) {
+		this.resaleNumber5 = resaleNumber5;
 	}
 
-	public Date getResaleNB5ExpDate() {
-		return FormatUtil.process(resaleNB5ExpDate);
+	public Date getResaleNumber5ExpDate() {
+		return resaleNumber5ExpDate;
 	}
 
-	public void setResaleNB5ExpDate(Date resaleNB5ExpDate) {
-		this.resaleNB5ExpDate = resaleNB5ExpDate;
+	public void setResaleNumber5ExpDate(Date resaleNumber5ExpDate) {
+		this.resaleNumber5ExpDate = resaleNumber5ExpDate;
 	}
 
-	public String getResalenbr1StateCd() {
-		return FormatUtil.process(resalenbr1StateCd);
+	public String getResaleNumber1StateCode() {
+		return resaleNumber1StateCode;
 	}
 
-	public void setResalenbr1StateCd(String resalenbr1StateCd) {
-		this.resalenbr1StateCd = resalenbr1StateCd;
+	public void setResaleNumber1StateCode(String resaleNumber1StateCode) {
+		this.resaleNumber1StateCode = resaleNumber1StateCode;
 	}
 
-	public String getResalenbr2StateCd() {
-		return FormatUtil.process(resalenbr2StateCd);
+	public String getResaleNumber2StateCode() {
+		return resaleNumber2StateCode;
 	}
 
-	public void setResalenbr2StateCd(String resalenbr2StateCd) {
-		this.resalenbr2StateCd = resalenbr2StateCd;
+	public void setResaleNumber2StateCode(String resaleNumber2StateCode) {
+		this.resaleNumber2StateCode = resaleNumber2StateCode;
 	}
 
-	public String getResalenbr3StateCd() {
-		return FormatUtil.process(resalenbr3StateCd);
+	public String getResaleNumber3StateCode() {
+		return resaleNumber3StateCode;
 	}
 
-	public void setResalenbr3StateCd(String resalenbr3StateCd) {
-		this.resalenbr3StateCd = resalenbr3StateCd;
+	public void setResaleNumber3StateCode(String resaleNumber3StateCode) {
+		this.resaleNumber3StateCode = resaleNumber3StateCode;
 	}
 
-	public String getResalenbr4StateCd() {
-		return FormatUtil.process(resalenbr4StateCd);
+	public String getResaleNumber4StateCode() {
+		return resaleNumber4StateCode;
 	}
 
-	public void setResalenbr4StateCd(String resalenbr4StateCd) {
-		this.resalenbr4StateCd = resalenbr4StateCd;
+	public void setResaleNumber4StateCode(String resaleNumber4StateCode) {
+		this.resaleNumber4StateCode = resaleNumber4StateCode;
 	}
 
-	public String getResalenbr5StateCd() {
-		return FormatUtil.process(resalenbr5StateCd);
+	public String getResaleNumber5StateCode() {
+		return resaleNumber5StateCode;
 	}
 
-	public void setResalenbr5StateCd(String resalenbr5StateCd) {
-		this.resalenbr5StateCd = resalenbr5StateCd;
+	public void setResaleNumber5StateCode(String resaleNumber5StateCode) {
+		this.resaleNumber5StateCode = resaleNumber5StateCode;
 	}
 
-	public String getTaxStateCd() {
-		return FormatUtil.process(taxStateCd);
+	public String getTaxStateId() {
+		return taxStateId;
 	}
 
-	public void setTaxStateCd(String taxStateCd) {
-		this.taxStateCd = taxStateCd;
+	public void setTaxStateId(String taxStateId) {
+		this.taxStateId = taxStateId;
 	}
 
-	public String getTaxLocalCd() {
-		return FormatUtil.process(taxLocalCd);
+	public String getTaxLocalId() {
+		return taxLocalId;
 	}
 
-	public void setTaxLocalCd(String taxLocalCd) {
-		this.taxLocalCd = taxLocalCd;
+	public void setTaxLocalId(String taxLocalId) {
+		this.taxLocalId = taxLocalId;
 	}
 
-	public Date getBranchsalesNBrDate() {
-		return FormatUtil.process(branchsalesNBrDate);
+	public Date getBranchSalesNumberDate() {
+		return branchSalesNumberDate;
 	}
 
-	public void setBranchsalesNBrDate(Date branchsalesNBrDate) {
-		this.branchsalesNBrDate = branchsalesNBrDate;
+	public void setBranchSalesNumberDate(Date branchSalesNumberDate) {
+		this.branchSalesNumberDate = branchSalesNumberDate;
 	}
 
 	public Date getPriceGroupDate() {
-		return FormatUtil.process(priceGroupDate);
+		return priceGroupDate;
 	}
 
 	public void setPriceGroupDate(Date priceGroupDate) {
@@ -798,7 +797,8 @@ public class AccountBranchDetail extends AccountBranch implements Serializable {
 	public void setPhysicalAddress(Address physicalAddress) {
 		this.physicalAddress = physicalAddress;
 	}
-	
+
+		
 }	
 	
 	

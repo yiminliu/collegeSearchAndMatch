@@ -30,7 +30,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	private SessionFactory sessionFactory;
 	
 	protected synchronized Session currentSession() {
-	    return sessionFactory.getCurrentSession();
+	    //return sessionFactory.getCurrentSession();
+		return sessionFactory.openSession();
 	    
 	}
 		
@@ -51,6 +52,10 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		return (T)currentSession().get(type, id);
 	}
 			
+	public List<T> findAll(){
+		return currentSession().createCriteria(type).list();
+	}
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public synchronized void update(final T transientObject) {

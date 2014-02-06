@@ -12,14 +12,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.stereotype.Component;
 
-import com.bedrosians.bedlogic.util.ActivityStatus;
+import com.bedrosians.bedlogic.util.Status;
 import com.bedrosians.bedlogic.util.FormatUtil;
 
 
 @Component
 @MappedSuperclass
+@DynamicUpdate(value=true)
+@SelectBeforeUpdate(value=true)
+@DynamicInsert(value=true)
 public class AccountBranch implements Serializable {
 	
 	private static final long serialVersionUID = 5137707010951170389L;
@@ -71,18 +77,18 @@ public class AccountBranch implements Serializable {
 	}
     
 	@Column(name="InactiveCd")
-	private String activityStatus;
+	private String status;
 			
-	public String getActivityStatus() {
-		if(activityStatus == null || activityStatus.trim().length()<1)
-			activityStatus = ActivityStatus.ACTIVE.getName();
+	public String getStatus() {
+		if(status == null || status.trim().length()<1)
+			status = Status.ACTIVE.getName();
 		else
-		    activityStatus = ActivityStatus.INACTIVE.getName();
-	    	return activityStatus;
+		    status = Status.INACTIVE.getName();
+	    	return status;
 	}
 			
-	public void setActivityStatus(String activityStatus) {
-		this.activityStatus = activityStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override

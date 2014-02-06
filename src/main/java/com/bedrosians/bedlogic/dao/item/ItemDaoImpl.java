@@ -37,15 +37,18 @@ public class ItemDaoImpl extends GenericDaoImpl<SimplifiedItem, String> implemen
 	//private SessionFactory sessionFactory;
 		
 	@Override
-	@Transactional
+	//@Transactional
 	public Item getItemById(String itemId) {
 		
 		return findById(itemId);
 		//return findByParameter("itemId", itemId).get(0);
 	}
-	
+		
+	@Override
 	//@Cacheable("items")
-	
+	public List<? extends Item> getItemsByIdPatternMatch(String id){
+		return (List<SimplifiedItem>)findByParameterPattern("itemId", id, PatternMatchMode.START);
+	}
 	
 /*
 	@Override
@@ -126,12 +129,10 @@ public class ItemDaoImpl extends GenericDaoImpl<SimplifiedItem, String> implemen
 	  */ 
 	 
 	 @Override
-	 public List<SimplifiedItem> getItems(){
-	    Session session = currentSession();
-		Query query = session.createQuery("from SimplifiedItem");
-		query.setReadOnly(true);
-		return (List<SimplifiedItem>)query.list();
+	 public List<SimplifiedItem> getAllItems(){
+	   return (List<SimplifiedItem>)findAll();
 	 }
+	 
 	 
 	 @Override
 		public List<SimplifiedItem> getItemByStatus(String status){
@@ -152,7 +153,7 @@ public class ItemDaoImpl extends GenericDaoImpl<SimplifiedItem, String> implemen
 	 
 
 	 @Override
-	 public List<SimplifiedItem> getItemsByDiscriptionPatternMath(String description){
+	 public List<SimplifiedItem> getItemsByDiscriptionPatternMatch(String description){
 		 return (List<SimplifiedItem>)findByParameterPattern("itemDescription", description, PatternMatchMode.START);
 	 }
 

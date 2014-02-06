@@ -11,22 +11,27 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.stereotype.Component;
 
-import com.bedrosians.bedlogic.util.ActivityStatus;
+import com.bedrosians.bedlogic.util.Status;
 import com.bedrosians.bedlogic.util.FormatUtil;
 
 @Component
 @MappedSuperclass
+@DynamicUpdate(value=true)
+@SelectBeforeUpdate(value=true)
+@DynamicInsert(value=true)
+//@org.hibernate.annotations.Entity(selectBeforeUpdate = true, dynamicInsert = true, dynamicUpdate = true)
 
 public class Account {
 
 	@Id
 	@GeneratedValue(generator = "account_id_generator")
-	@GenericGenerator(name = "account_id_generator", strategy = "com.bedrosians.bedlogic.util.IdGenerator")
+	@GenericGenerator(name = "account_id_generator", strategy = "com.bedrosians.bedlogic.util.AccountIdGenerator")
 	@Column(name = "CustCd")
 	private String accountId;
 	@Column(name = "CoName")
@@ -48,7 +53,7 @@ public class Account {
 	@Column(name = "CreditStatus")
 	private String creditStatus;
 	@Column(name = "InactiveCd")
-	private String activityStatus;
+	private String status;
 	@Column(name = "OwnerFirstName")
 	private String ownerFirstName;
 	@Column(name = "OwnerLastName")
@@ -81,7 +86,7 @@ public class Account {
 		return FormatUtil.process(accountId);
 	}
 
-	private void setAccountId(String accountId) {
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 	
@@ -150,16 +155,18 @@ public class Account {
 		this.creditStatus = creditStatus;
 	}
 
-	public String getActivityStatus() {
-		if (activityStatus == null || activityStatus.trim().length() < 1)
-			activityStatus = ActivityStatus.ACTIVE.getName();
-		else
-			activityStatus = ActivityStatus.INACTIVE.getName();
-		return FormatUtil.process(activityStatus);
+	public String getStatus() {
+		if (status == null || status.trim().length() < 1)
+			status = Status.ACTIVE.getName();
+		else if("Y".equalsIgnoreCase(status.trim()))
+			status = Status.INACTIVE.getName();
+		else if("D".equalsIgnoreCase(status.trim()))
+			status = Status.DELETED.getName();	
+		return FormatUtil.process(status);
 	}
 
-	public void setActivityStatus(String activityStatus) {
-		this.activityStatus = activityStatus;
+	public void setStatus(String status) {
+		this.status = status;
 	}
   
 	public String getTreatAsStore() {
@@ -280,7 +287,7 @@ public class Account {
 		return "Account [accountId=" + accountId + ", "
 				+ "accountName=" + accountName
 				+ ", creditStatus=" + creditStatus 
-				+ ", activityStatus=" + activityStatus
+				+ ", status=" + status
 				+ ", streeLine1=" + streeLine1
 				+ ", streeLine2=" + streeLine2
 				+", city=" + city
