@@ -37,101 +37,20 @@ public class ItemServiceImpl implements ItemService {
 		//	item.setCheckPayments(checkPaymentDao.getCheckPaymentsForItem(id));
 		//}
 	}
-/*	    
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-    public List<SimplifiedItem> getItemsByItemNamePattern(String name){
-		return itemDao.findByParameterPattern("itemName", name, PatternMatchMode.START);
-	}
-	
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-    public List<SimplifiedItem> getItemsByOwnerName(String firstName, String lastName){
-		return itemDao.getItemsByOwnerName(firstName, lastName);
-	}
-	
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<SimplifiedItem> getItemsByAddress(String streetAddress){
-		return itemDao.findByParameter("addressLine1", streetAddress);
-	}
-	
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<SimplifiedItem> getItemsByCity(String city){
-		return itemDao.findByParameter("city", city);
-	}
-	
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<SimplifiedItem> getItemsByState(String state){
-   		return itemDao.findByParameter("state", state);
-	}
-	
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<SimplifiedItem> getItemsByZip(String zip){
-     	return itemDao.findByParameter("zip", zip);
-	}
-		
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	public ItemBranch getItemBranchById(String itemId, String branchId) {
-		BranchPK branchPK = new BranchPK(itemId, branchId);
-		return itemBranchDetailDao.findById(branchPK);
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public ItemBranch getItemBranchByBranchPK(BranchPK branchPK) {
-		return itemBranchDetailDao.findById(branchPK);
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	public List<SimplifiedItemBranch> getItemBranches(String itemId) {
-		return itemBranchDao.getItemBranches(itemId);
-	}
-	
-	
-	public List<CheckPayment> getCheckPaymentsForItem(String custcd) {
-		return checkPaymentDao.getCheckPaymentsForItem(custcd);
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<SimplifiedItem> getItems(){
-		return itemDao.getItemsByActivityStatus("all");
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<SimplifiedItem> getItemsByActivityStatus(String status){
-		return itemDao.getItemsByActivityStatus(status);
-	}
-	*/
+
     
     @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<SimplifiedItem> getItems(){
-		return null;//itemDao.findByParameters(queryParams);
+		return itemDao.findAll();
 	}
     
     @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
     public List<Item> getItemsByDescription(String description){
-    	return (List<Item>)itemDao.getItemsByDiscriptionPatternMath(description);
+    	return (List<Item>)itemDao.getItemsByDiscriptionPatternMatch(description);
     }
 	
     @Loggable(value = LogLevel.TRACE)
@@ -180,10 +99,7 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	@Transactional
 	public void updateItem(ItemDetail item){
-		//if(item instanceof ItemDetail)
-		   itemDetailDao.updateItem(item); 
-		//else if(item instanceof SimplifiedItem)
-		  // itemDao.update((SimplifiedItem)item);
+		itemDetailDao.updateItem(item); 
 	}	
 	
 }
