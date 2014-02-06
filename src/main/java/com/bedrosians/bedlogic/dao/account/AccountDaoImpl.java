@@ -32,31 +32,32 @@ import com.bedrosians.bedlogic.util.RestrictionOperation;
 @Repository("accountDao")
 public class AccountDaoImpl extends GenericDaoImpl<SimplifiedAccount, String> implements AccountDao {
 	
-
-	//@Autowired
-	//private SessionFactory sessionFactory;
-	
-	@Autowired
-	private AccountPhoneDao accountPhoneDao;
-			
+				
 	@Override
-	@Transactional
+	public List<SimplifiedAccount> getAllAccounts() {
+		return (List<SimplifiedAccount>)findAll();
+	}
+	
+	@Override
+	//@Transactional
 	public Account getAccountById(String accountId) {
-		
-		return findById(accountId);
+		SimplifiedAccount account = (SimplifiedAccount)findById(accountId);
+		//account.setAccountBranches(account.getAccountBranches());
+	    //account.getAccountBranches();
+		return account;
 		//return findByParameter("accountId", accountId).get(0);
 	}
 	
 	@Cacheable("accounts")
 	@Override
-	public List<SimplifiedAccount> getAccountsByActivityStatus(String status){
+	public List<SimplifiedAccount> getAccountsByStatus(String status){
 		String queryString = "";
 		if ("all".equalsIgnoreCase(status) || status == null || status.length() == 0)
-			queryString = "from Account";
+			queryString = "from SimplifiedAccount";
 		else if ("active".equalsIgnoreCase(status))
-			queryString = "from Account a where activityStatus = ' '";
+			queryString = "from SimplifiedAccount where status = ' '";
 		else if ("inactive".equalsIgnoreCase(status))
-		    queryString = "from Account a where activityStatus is not null";
+		    queryString = "from SimplifiedAccount where status is not null";
 		Session session = currentSession();
 		Query query = session.createQuery(queryString);
 		query.setReadOnly(true);

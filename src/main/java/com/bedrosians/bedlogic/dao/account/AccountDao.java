@@ -10,9 +10,10 @@ import com.bedrosians.bedlogic.domain.account.AccountDetail;
 
 public interface AccountDao extends GenericDao<SimplifiedAccount, String>{
   
+  public List<? extends Account> getAllAccounts();
   public Account getAccountById(String accountId);  
-  public List<SimplifiedAccount> getAccountsByActivityStatus(String activityStatus);	
-  public List<SimplifiedAccount> getAccountsByOwnerName(String firstName, String lastName);
+  public List<? extends Account> getAccountsByStatus(String status);	
+  public List<? extends Account> getAccountsByOwnerName(String firstName, String lastName);
   public String createAccount(SimplifiedAccount symolifiedAccount);
   public void updateAccount(SimplifiedAccount account);
   //public String createAccount(Account account);

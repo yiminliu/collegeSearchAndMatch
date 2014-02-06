@@ -1,6 +1,8 @@
 package com.bedrosians.bedlogic.dao.account;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.bedrosians.bedlogic.dao.GenericDaoImpl;
@@ -13,7 +15,12 @@ public class AccountDetailDaoImpl extends GenericDaoImpl<AccountDetail, String> 
 	@Override
 	public AccountDetail getAccountById(String accountId) {
 		//return findById(accountId);//branch info cannot be linked to the account.
-		return findByParameter("accountId", accountId).get(0);
+		List<AccountDetail> accounts =  findByParameter("accountId", accountId);
+		if(accounts != null && !accounts.isEmpty())
+ 		   return (AccountDetail)accounts.get(0);
+		  //ad.getAccountBranches();
+		else
+		   return null;
 	}
 	
 	@Override
