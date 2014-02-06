@@ -77,7 +77,7 @@ public class Prices implements java.io.Serializable {
 	@Column(name = "sellpricemarginpct", precision = 5)
 	private BigDecimal sellPriceMarginPercent;	
 	@Column(name = "sellpriceroundaccuracy", precision = 1, scale = 0)
-	private Boolean sellPriceRoundAccuracy;
+	private BigDecimal sellPriceRoundAccuracy;
 	
 	@Column(name = "calcsellprice", precision = 9, scale = 4)
 	private BigDecimal calcSellPrice;	
@@ -303,11 +303,11 @@ public class Prices implements java.io.Serializable {
 		this.sellPriceMarginPercent = sellPriceMarginPercent;
 	}
 
-	public Boolean getSellPriceRoundAccuracy() {
+	public BigDecimal getSellPriceRoundAccuracy() {
 		return sellPriceRoundAccuracy;
 	}
 
-	public void setSellPriceRoundAccuracy(Boolean sellPriceRoundAccuracy) {
+	public void setSellPriceRoundAccuracy(BigDecimal sellPriceRoundAccuracy) {
 		this.sellPriceRoundAccuracy = sellPriceRoundAccuracy;
 	}
 

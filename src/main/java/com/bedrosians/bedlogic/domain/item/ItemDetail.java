@@ -27,6 +27,7 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 @Table(name = "ims", schema = "public")
 public class ItemDetail extends Item implements java.io.Serializable {
 
+	private static final long serialVersionUID = 674944990758702120L;
 	@Embedded
 	private Units units;
 	@Embedded
@@ -44,7 +45,9 @@ public class ItemDetail extends Item implements java.io.Serializable {
 	@Embedded
 	Applications applications;
 	@Embedded
-	private SimilarItemCode similarItemCode;	
+	private SimilarItemCode similarItemCode;
+	@Embedded
+	private TestInfo testInfo;
 	@Embedded
 	private Notes notes;
 	@Embedded
@@ -71,9 +74,9 @@ public class ItemDetail extends Item implements java.io.Serializable {
 	@Column(name = "stdratio", precision = 9, scale = 4)
 	private BigDecimal starndardRatio;
 	@Column(name = "ordunit", length = 4)
-	private String ordUnit;
+	private String orderUnit;
 	@Column(name = "ordratio", precision = 9, scale = 4)
-	private BigDecimal ordRatio;
+	private BigDecimal orderRatio;
 	
 
 	public ItemDetail() {
@@ -270,24 +273,33 @@ public class ItemDetail extends Item implements java.io.Serializable {
 	}
 
 
-	public String getOrdUnit() {
-		return ordUnit;
+	public String getOrderUnit() {
+		return orderUnit;
 	}
 
 
-	public void setOrdUnit(String ordUnit) {
-		this.ordUnit = ordUnit;
+	public void setOrderUnit(String orderUnit) {
+		this.orderUnit = orderUnit;
 	}
 
 
-	public BigDecimal getOrdRatio() {
-		return ordRatio;
+	public BigDecimal getOrderRatio() {
+		return orderRatio;
+	}
+
+	public void setOrderRatio(BigDecimal orderRatio) {
+		this.orderRatio = orderRatio;
+	}
+	
+	public TestInfo getTests() {
+		return testInfo;
 	}
 
 
-	public void setOrdRatio(BigDecimal ordRatio) {
-		this.ordRatio = ordRatio;
+	public void setTests(TestInfo testInfo) {
+		this.testInfo = testInfo;
 	}
+
 
 	public Miscellaneous getMiscellaneous() {
 		return miscellaneous;

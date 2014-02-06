@@ -22,7 +22,7 @@ public class PriorVendor implements java.io.Serializable {
 	@Column(name = "priorvendordiscpct3", precision = 5)
 	private BigDecimal priorVendorDiscountPercent3;
 	@Column(name = "priorvendorroundaccuracy", precision = 1, scale = 0)
-	private Boolean priorVendorRoundAccuracy;
+	private BigDecimal priorVendorRoundAccuracy;
 	@Column(name = "priorvendornetprice", precision = 9, scale = 4)
 	private BigDecimal priorVendorNetPrice;
 	@Column(name = "priorvendormarkuppct", precision = 4, scale = 1)
@@ -79,11 +79,11 @@ public class PriorVendor implements java.io.Serializable {
 		this.priorVendorDiscountPercent3 = priorVendorDiscountPercent3;
 	}
 
-	public Boolean getPriorVendorRoundAccuracy() {
+	public BigDecimal getPriorVendorRoundAccuracy() {
 		return priorVendorRoundAccuracy;
 	}
 
-	public void setPriorVendorRoundAccuracy(Boolean priorVendorRoundAccuracy) {
+	public void setPriorVendorRoundAccuracy(BigDecimal priorVendorRoundAccuracy) {
 		this.priorVendorRoundAccuracy = priorVendorRoundAccuracy;
 	}
 

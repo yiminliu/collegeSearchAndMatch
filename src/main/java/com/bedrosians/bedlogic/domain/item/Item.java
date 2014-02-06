@@ -13,6 +13,8 @@ import com.bedrosians.bedlogic.util.FormatUtil;
 @MappedSuperclass
 public class Item implements java.io.Serializable {
 
+	private static final long serialVersionUID = 6749990758703320L;
+	
 	@Id
 	@Column(name = "itemcd", unique = true, nullable = false)
 	private String itemId;	
@@ -21,9 +23,9 @@ public class Item implements java.io.Serializable {
 	@Column(name = "itemcd2", length = 18)
 	private String itemId2;
 	@Column(name = "itemdesc1", length = 35)
-	private String itemDescription1;
+	private String description1;
 	@Column(name = "itemdesc2", length = 35)
-	private String itemDescription2;
+	private String description2;
 	@Column(name = "fulldesc", length = 70)
 	private String fullDescription;
 	@Column(name = "color", length = 30)
@@ -64,10 +66,10 @@ public class Item implements java.io.Serializable {
 	private String thicknessUnit;
 	@Column(name = "sizeunits", length = 3)
 	private String sizeUnits;	
-	
-	@Embedded
-	private Purchaser purchaser;
-	
+	@Column(name = "purchaser", length = 10)
+	private String purchaser;
+	@Column(name = "purchaser2", length = 10)
+	private String purchaser2;	
 	@Column(name = "mattype", length = 24)
 	private String materialType;
 	@Column(name = "materialclass_cd", length = 5)
@@ -108,20 +110,20 @@ public class Item implements java.io.Serializable {
 		this.itemId2 = itemId2;
 	}
 
-	public String getItemDescription1() {
-		return itemDescription1;
+	public String getDescription1() {
+		return description1;
 	}
 
-	public void setItemDescription1(String itemDescription1) {
-		this.itemDescription1 = itemDescription1;
+	public void setDescription1(String description1) {
+		this.description1 = description1;
 	}
 
-	public String getItemDescription2() {
-		return itemDescription2;
+	public String getDescription2() {
+		return description2;
 	}
 
-	public void setItemDescription2(String itemDescription2) {
-		this.itemDescription2 = itemDescription2;
+	public void setDescription2(String description2) {
+		this.description2 = description2;
 	}
 
 	public String getFullDescription() {
@@ -285,12 +287,20 @@ public class Item implements java.io.Serializable {
 		this.sizeUnits = sizeUnits;
 	}
 
-	public Purchaser getPurchaser() {
+	public String getPurchaser() {
 		return purchaser;
 	}
 
-	public void setPurchaser(Purchaser purchaser) {
+	public void setPurchaser(String purchaser) {
 		this.purchaser = purchaser;
+	}
+
+	public String getPurchaser2() {
+		return purchaser2;
+	}
+
+	public void setPurchaser2(String purchaser2) {
+		this.purchaser2 = purchaser2;
 	}
 
 	public String getMaterialType() {
@@ -340,6 +350,38 @@ public class Item implements java.io.Serializable {
 	public void setQualityChoice(String qualityChoice) {
 		this.qualityChoice = qualityChoice;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((itemId == null) ? 0 : itemId.hashCode());
+		result = prime * result + ((itemId2 == null) ? 0 : itemId2.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (itemId == null) {
+			if (other.itemId != null)
+				return false;
+		} else if (!itemId.equals(other.itemId))
+			return false;
+		if (itemId2 == null) {
+			if (other.itemId2 != null)
+				return false;
+		} else if (!itemId2.equals(other.itemId2))
+			return false;
+		return true;
+	}
 		
+	
 	
 }

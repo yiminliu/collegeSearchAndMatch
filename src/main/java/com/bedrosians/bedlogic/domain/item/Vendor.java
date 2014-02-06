@@ -37,7 +37,7 @@ public class Vendor implements java.io.Serializable {
 	@Column(name = "vendordiscpct3", precision = 5)
 	private BigDecimal vendorDiscountPercent3;
 	@Column(name = "vendorroundaccuracy", precision = 1, scale = 0)
-	private Boolean vendorRroundAccuracy;	
+	private BigDecimal vendorRroundAccuracy;	
 	@Column(name = "vendorfreightratecwt", precision = 9, scale = 4)
 	private BigDecimal vendorFreightRateCwt;
 	@Column(name = "vendorlandedbasecost", precision = 13, scale = 6)
@@ -147,11 +147,11 @@ public class Vendor implements java.io.Serializable {
 		this.vendorDiscountPercent3 = vendorDiscountPercent3;
 	}
 
-	public Boolean getVendorRroundAccuracy() {
+	public BigDecimal getVendorRroundAccuracy() {
 		return vendorRroundAccuracy;
 	}
 
-	public void setVendorRroundAccuracy(Boolean vendorRroundAccuracy) {
+	public void setVendorRroundAccuracy(BigDecimal vendorRroundAccuracy) {
 		this.vendorRroundAccuracy = vendorRroundAccuracy;
 	}
 

@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 
 
 @Embeddable
-public class Miscellaneous extends Item implements java.io.Serializable {
+public class Miscellaneous implements java.io.Serializable {
 
 	@Column(name = "origin", length = 18)
 	private String origin;
@@ -20,7 +20,7 @@ public class Miscellaneous extends Item implements java.io.Serializable {
 	@Column(name = "showonwebsite", length = 1)
 	private Character showOnWebsite;
 	@Column(name = "showonalysedwards", length = 1)
-	private Character showonalysedwards;
+	private Character showOnAlysedWards;
 	@Column(name = "offshade", length = 1)
 	private Character offShade;	
 	@Column(name = "samplenbr", precision = 8, scale = 0)
@@ -28,7 +28,7 @@ public class Miscellaneous extends Item implements java.io.Serializable {
 	@Column(name = "type", length = 16)
 	private String type;
 	@Column(name = "subtype", length = 32)
-	private String subtype;
+	private String subType;
 		
 
 	public Miscellaneous() {
@@ -54,7 +54,8 @@ public class Miscellaneous extends Item implements java.io.Serializable {
 		this.shadeVariation = shadeVariation;
 	}
 
-    public String getIcons() {
+
+	public String getIcons() {
 		return icons;
 	}
 
@@ -84,13 +85,13 @@ public class Miscellaneous extends Item implements java.io.Serializable {
 	}
 
 
-	public Character getShowonalysedwards() {
-		return showonalysedwards;
+	public Character getShowOnAlysedWards() {
+		return showOnAlysedWards;
 	}
 
 
-	public void setShowonalysedwards(Character showonalysedwards) {
-		this.showonalysedwards = showonalysedwards;
+	public void setShowOnAlysedWards(Character showOnAlysedWards) {
+		this.showOnAlysedWards = showOnAlysedWards;
 	}
 
 
@@ -124,14 +125,13 @@ public class Miscellaneous extends Item implements java.io.Serializable {
 	}
 
 
-	public String getSubtype() {
-		return subtype;
+	public String getSubType() {
+		return subType;
 	}
 
 
-	public void setSubtype(String subtype) {
-		this.subtype = subtype;
-	}
+	public void setSubType(String subType) {
+		this.subType = subType;
+	}	
 
-    
 }
