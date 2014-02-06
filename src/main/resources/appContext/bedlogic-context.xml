@@ -35,5 +35,8 @@
           <property name="supportedMediaTypes" value="application/json" />
      </bean>
   
+  <!-- Jackson JSON ObjectMapper -->
+<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+  
      <!-- <import resource="/appContext/bedlogic-persistence.xml"/>-->
 </beans>

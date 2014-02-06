@@ -14,10 +14,8 @@ public class Phone implements Serializable {
 	
 	@Column(name="apPhone")
 	private Long phoneNumber;		
-	
 	@Column(name="apExt")
 	private Integer extension;
-	
 	@Column(name="apCellPhone")
 	private Long cellPhoneNumber;	
 	
