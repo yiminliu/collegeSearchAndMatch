@@ -183,6 +183,13 @@
 		</dependency>		
 		
 		<!--Jersey -->
+		
+        <!--  includes jersey-server jersey-json jersey-client
+        <dependency>
+           <groupId>com.sun.jersey</groupId>
+           <artifactId>jersey-bundle</artifactId>
+           <version>1.14</version>
+        </dependency>-->
 	    <dependency>
         	<groupId>com.sun.jersey</groupId>
 	        <artifactId>jersey-server</artifactId>
@@ -280,9 +287,7 @@
 	        <artifactId>hibernate-jpa-2.0-api</artifactId>
 	        <version>1.0.1.Final</version>
         </dependency>
-        
-        
-       	
+            	
        	<!-- postgresql -->	
 		<dependency>
 			<groupId>postgresql</groupId>
@@ -343,12 +348,12 @@
            <version>1.0.13</version>
          </dependency>
          
-         <dependency>
+         <!-- <dependency>
 	        <groupId>org.slf4j</groupId>
 	        <artifactId>jcl-over-slf4j</artifactId>
 	        <version>${slf4j.version}</version>
          </dependency>
-       
+         --> 
          <dependency>
          	<groupId>org.logback-extensions</groupId>
 	        <artifactId>logback-ext-spring</artifactId>
@@ -367,31 +372,45 @@
 			<version>${aspectj.version}</version>
 		</dependency>
 		
+		<dependency>
+   <groupId>net.sf.ehcache</groupId>
+   <artifactId>ehcache</artifactId>
+   <version>${ehcache.version}</version>
+</dependency>
+
+
+<dependency>
+  <groupId>org.hibernate</groupId>
+  <artifactId>hibernate-ehcache</artifactId>
+  <version>${hibernate.version}</version>
+</dependency>
+		
+<!-- 		
 		 <dependency>
 	       <groupId>net.sf.ehcache</groupId>
 	       <artifactId>ehcache</artifactId>
            <version>${ehcache.version}</version>
            <exclusions>
- <exclusion>
-  <groupId>net.sf.ehcache</groupId>
-  <artifactId>ehcache-core</artifactId>
- </exclusion>
-</exclusions>
+              <exclusion>
+                 <groupId>net.sf.ehcache</groupId>
+                 <artifactId>ehcache-core</artifactId>
+              </exclusion>
+           </exclusions>
         </dependency>
        
         <dependency>
-<artifactId>hibernate-ehcache</artifactId>
-<groupId>org.hibernate</groupId>
-<version>4.1.9.Final</version>
- <exclusions>
- <exclusion>
-  <groupId>net.sf.ehcache</groupId>
-  <artifactId>ehcache-core</artifactId>
- </exclusion>
-</exclusions>
-</dependency>
-        		        	    
-	    <!-- JUnit -->					
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-ehcache</artifactId>
+           <version>4.1.9.Final</version>
+           <exclusions>
+              <exclusion>
+                 <groupId>net.sf.ehcache</groupId>
+                 <artifactId>ehcache-core</artifactId>
+              </exclusion>
+          </exclusions>
+        </dependency>
+    -->    		        	    
+	     <!-- JUnit -->					
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
