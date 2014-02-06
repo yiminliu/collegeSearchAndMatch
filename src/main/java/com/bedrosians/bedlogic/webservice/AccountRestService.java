@@ -76,8 +76,8 @@ public class AccountRestService {
     
     /**
 	   * This method retrieves a list of accounts for the given query condition, or a list of all accounts if no query condition is specified .
-	   * @param  UriInfo     represents query condition in the form of name/value pairs. 
-	   * @return Response    object to include the status and a json object.
+	   * @param  UriInfo     represents query condition in the form of name/value pairs. If no query is specified, the all accounts will be returned.
+	   * @return Response    object contains the status and a json object.
 	   * @exception WebApplicationException on input error and server side condition errors as well.
 	   * @see WebApplicationException
 	   */
@@ -87,22 +87,27 @@ public class AccountRestService {
     @Loggable(value = LogLevel.TRACE)
   	public Response getAccounts(@Context UriInfo uriInfo) throws WebApplicationException{
     	MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-       	if(queryParams == null || queryParams.isEmpty()) {
+    	List<Account> accounts = null;
+    	if(queryParams == null || queryParams.isEmpty()) {
     		//throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity("Please specify your query.").build());	
-    		queryParams = new MultivaluedMapImpl();
-	        queryParams.add("activityStatus", "all");
+    		//queryParams = new MultivaluedMapImpl();
+	        //queryParams.add("activityStatus", "all");
+    		accounts = (List<Account>)accountService.getAllAccounts();
     	}
-    	try{
-    		List<Account> accounts = (List<Account>)accountService.getByQueryParameters(queryParams);
-		    if (accounts == null || accounts.size() <= 0)
+    	else {
+    		
+    	   	try{
+    	    	 accounts = (List<Account>)accountService.getByQueryParameters(queryParams);
+		   	}
+    	    catch(Exception e){
+			     throw new WebApplicationException(Response.Status.NOT_FOUND);
+		    }
+    	}
+    	 if (accounts == null || accounts.size() <= 0)
 		        return Response.status(Response.Status.NOT_FOUND).build();				
-		    else
+		 else
 		        return Response.status(Response.Status.OK).entity(JsonUtil.toJson(accounts)).build();
-		}
-		catch(Exception e){
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
-    }
+   }
     
     /**
 	   * This method retrieves a list of accounts for the given query condition, or a list of all accounts if no query condition is specified .
