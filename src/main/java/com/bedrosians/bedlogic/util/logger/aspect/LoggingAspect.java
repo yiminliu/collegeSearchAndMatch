@@ -17,7 +17,8 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import com.bedrosians.bedlogic.domain.account.SimplifiedAccount;
+
+import com.bedrosians.bedlogic.domain.product.Product;
 
 
 @Component
@@ -168,11 +169,11 @@ public class LoggingAspect {
 			id = "String";
 			descriptor = string;
 			clazz = string.getClass().getSimpleName();
-		} else if (arg instanceof SimplifiedAccount) {
-			SimplifiedAccount simplifiedAccount = (SimplifiedAccount) arg;
+		} else if (arg instanceof Product) {
+			Product simplifiedAccount = (Product) arg;
 			clazz = simplifiedAccount.getClass().getSimpleName();
-			id = simplifiedAccount.getAccountId();
-			descriptor = simplifiedAccount.getAccountName();
+			id = simplifiedAccount.getProductId();
+			descriptor = simplifiedAccount.getSeriesName();
 		} else if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse) {
 			return buffer.toString();
 		} else {

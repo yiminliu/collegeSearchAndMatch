@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
@@ -30,8 +31,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	private SessionFactory sessionFactory;
 	
 	protected synchronized Session currentSession() {
-	    return sessionFactory.getCurrentSession();
-		//return sessionFactory.openSession();
+	   // return sessionFactory.getCurrentSession();
+		return sessionFactory.openSession();
 	    
 	}
 		
@@ -62,9 +63,10 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		try{
            Session session = currentSession();
           // if(session.contains(transientObject))
-        	  session.update(transientObject);
+        	//  session.update(transientObject);
+          session.saveOrUpdate(transientObject);
            //else
-        	 // session.merge(transientObject);
+        	// session.merge(transientObject);
 		}
 		catch(DataException e){
 			throw e;
@@ -183,4 +185,17 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
    	    }	  	
 		return (List<T>)criteria.list();			
 	}
+	
+	
+	//@Loggable(value=LogLevel.DEBUG)
+	@Override
+	@SuppressWarnings("unchecked")
+    public Long insertRecord(String insertStatement){
+		//SQLQuery query = currentSession().createSQLQuery(insertStatement);
+		
+		SQLQuery query = currentSession().createSQLQuery("INSERT INTO Product (product_Id, color) VALUES('Test', 'Beige')");
+        long value = query.executeUpdate();
+        return Long.valueOf(value);
+	}	   
+	
 }

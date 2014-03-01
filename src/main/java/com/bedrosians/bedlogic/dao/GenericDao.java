@@ -20,5 +20,6 @@ public interface GenericDao <T, PK extends Serializable>{
 	PK save(T newInstance);
 	void update(T transientObject);
 	void delete(T persistentObject);
+	Long insertRecord(String insertStatement);
 
 }
