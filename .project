@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>bedlogic</name>
+	<name>CollegeSearch</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -49,7 +49,7 @@
 		<link>
 			<name>resources</name>
 			<type>2</type>
-			<location>C:/Projects/workspace/bedlogic/src/main/resources</location>
+			<location>C:/Projects/workspace/bedLogic/src/main/resources</location>
 		</link>
 	</linkedResources>
 </projectDescription>

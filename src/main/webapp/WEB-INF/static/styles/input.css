@@ -1,0 +1,146 @@
+/***********************************************
+Input definition
+***********************************************/
+ 
+  .page_title {
+     margin-left:auto; 
+     margin-right:auto;
+     margin-bottom:25px;
+     border-style: solid;
+     border-width: 1px;
+     background-color: AliceBlue;
+     color:GREEN; 
+     width:40%;
+     text-align: center;
+     font-size: 200%;
+  } 
+  #login-box {
+	width: 300px;
+	padding: 20px;
+	margin: 100px auto;
+	background: #fff;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border: 1px solid #000;
+  }
+  .input_table_cells {
+    border-collapse: separate;
+    border-spacing: 10px;
+  } 
+  #search_input { 
+    width: 90%; 
+  }
+  #search_icon {
+    background: white;
+    background-image: url('static/images/search.gif');
+    background-attachment: fixed;
+    background-position: right; 
+    background-repeat: no-repeat;
+    padding-right: 17px;
+}
+  fieldset {
+    border-collapse: separate;
+    border-spacing: 10px;
+  }     
+  fieldset legend{  
+    color: 66CCCC;
+  }    
+  fieldset label{  
+    color: BLACK;
+  } 
+  label {
+     display: table-cell;
+     text-align: right;
+     color: BLACK;
+  }
+  .label_same_row {
+      color: BLACK;
+  }
+  .input_label {
+     color: BLACK;
+  }
+  .input_value {
+     color: 66CCFF;
+  }
+  .input_row{
+     display:table-row;
+     color: BLACK;
+  } 
+  .input_row form{
+     display:table-row;
+     color: BLUE;
+  }
+  .input-container {
+     width: 500px;
+     clear: both;
+  }
+  .input-container input {
+     width: 100%;
+     clear: both;
+  }
+  .table.category { 
+      border-bottom: dotted 1px blue;
+  }
+  .table tr {
+      height:20px;
+      white-space:nowrap;
+      text-align:left;
+  }
+  .td.narrow 
+  { 
+      width:10px;
+  } 
+ 
+  #nav, #nav ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+  }
+  #nav li {
+    float: left;
+    position: relative;
+    width: 10em;
+    border: 1px solid #B0C4DE;
+    background-color: #E7EDF5;
+    color: #2D486C;
+    font-size: 80%;
+    margin-right: 1em;
+  }
+  #nav a:link, #nav a:visited {
+    display: block;
+    text-decoration: none;
+    padding-left: 1em;
+    color: #2D486C;
+  }
+  html #nav a {
+    width: 100%;
+  }
+  #nav ul {
+    display: none;
+    position: absolute;
+    padding: 0;
+  }
+  #nav ul li {
+     border: 0 none transparent;
+     border-bottom: 1px solid #E7EDF5;
+     border-top: .5em solid #FFF;
+     background-color: #F1F5F9;
+     font-size: 100%;
+     margin-bottom: -1px;
+     margin-top: 1px;
+     padding: 0;
+  }
+  #nav li:hover ul {
+     display: block; 
+  }
+  .submit_button {
+     padding:10px 25px; 
+     background-color: Azure;//#ccc; 
+     border:0 none;
+     cursor:pointer;
+     border-radius: 5px;
+     width:250px; 
+     hight:20px;
+     font-size: 100%;
+  }
+  

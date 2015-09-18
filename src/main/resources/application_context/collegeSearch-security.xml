@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+   xmlns="http://www.springframework.org/schema/security"
+   xmlns:context="http://www.springframework.org/schema/context" 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-4.0.xsd
+   http://www.springframework.org/schema/security
+   http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+  <!-- Annotation auto scan -->                        
+  <context:component-scan base-package="com.collegesearch" />
+    
+  <global-method-security pre-post-annotations="enabled" secured-annotations="enabled">
+    <expression-handler ref="expressionHandler" />
+  </global-method-security>
+
+  <beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+     <beans:property name="permissionEvaluator" ref="permissionEvaluator" />
+  </beans:bean>
+  
+  <beans:bean id="permissionEvaluator" class="com.collegesearch.security.MyPermissionEvaluator"/>
+  
+  <http pattern="/static/**" security="none" />
+  
+  <http auto-config="true" use-expressions="true">
+    <intercept-url pattern="/login/**" access="permitAll" />
+    <intercept-url pattern="/home" access="permitAll" />
+    <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" />
+    <intercept-url pattern="/school/createSchool/**" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" /> 
+    <intercept-url pattern="/school/updateSchool/**" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" /> 
+    <intercept-url pattern="/school/**" method="GET" access="permitAll" /> 
+    <intercept-url pattern="/school/getSchools" access="permitAll" /> 
+    <intercept-url pattern="/school/updateSchoolForm" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" /> 
+    <intercept-url pattern="/school/**" method="POST" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" /> 
+    <intercept-url pattern="/school/**" method="PUT" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" /> 
+    <intercept-url pattern="/school/**" method="DELETE" access="hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')" /> 
+    <form-login 
+		login-page="/login" 
+	    default-target-url="/school/home" 
+		authentication-failure-url="/login?failed=true" 
+		username-parameter="username"
+		password-parameter="password" />
+	  <logout logout-success-url="/login?logout" invalidate-session="true" delete-cookies="JSESSIONID" /> 
+	<session-management>
+	  <concurrency-control max-sessions="1" />
+    </session-management>
+	  
+  </http>
+
+  <authentication-manager alias="authenticationManager">
+     <authentication-provider ref="userAuthenticationProvider"/>
+  </authentication-manager>
+  
+  <beans:bean id="userAuthenticationProvider" class="com.collegesearch.security.UserAuthenticationProvider" />
+  
+</beans:beans>

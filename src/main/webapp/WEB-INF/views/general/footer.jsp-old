@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>Search Page</title>
+<link rel="shortcut icon" href="http://www.usacollegesearch.com/favicon.ico" />
+<meta name="author" content="usa college search" />
+<meta name="Keywords" content="college search, american colleges" />
+</head>
+
+<body>
+<table style="margin: auto; bottom: 0;  text-align: center">
+	<tr>
+		<td id="txtTd"><font face="Verdana,Arial,Helvetica" size="-1"
+			color="#999999">Address: 100085 Phone: 010-58699183
+		Fax: 010-58696450 Email: <a href="mailto:yymmll2002@yahoo.com">yymll2002@yahoo.com</a></td>
+	</tr>
+	<tr>
+		<td><font face="Verdana,Arial,Helvetica" size="-2"
+			color="#999999">Copyright&copy; 2008 <a	href="http://www.c.com/"><font color="#999999">USA College
+		Consulting.com</font></a> All Rights Reserved</font></td>
+	</tr>
+</table>
+</body>
+</html>
