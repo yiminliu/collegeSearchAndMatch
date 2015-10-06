@@ -29,6 +29,8 @@
                 <th>Category</th>
 				<th>Location</th>
 				<th>Total Students</th>
+				<!--<th>Average Freshman Retention Rate</th>
+                <th>Graduation Rate(6 year)</th>-->
               	<th>Student/Faculty Ratio</th>
 				<th>Academic calendar</th> 
 				<th>Phone</th>

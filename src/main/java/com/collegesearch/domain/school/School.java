@@ -43,8 +43,12 @@ public class School implements java.io.Serializable {
 	private Integer tuitionFee;
 	private Integer instateTuitionFee;
 	private Integer roomBoard;
-	private String  applicationDeadline;
-	private Integer applicationFee;
+	private String applicationDeadline;
+	private String satActReceivedDeadline;
+	private String earlyDecisionDeadline;
+	private Float percentageClassesFewerThan20Students;
+    private Float percentageClassesMoreThan50Students;
+  	private Integer applicationFee;
 	private Integer toefl;
 	private Integer ielts;
 	private Integer sat1Percentile25;
@@ -53,10 +57,10 @@ public class School implements java.io.Serializable {
 	private Integer actPercentile75;
 	private Integer sat1Score;
 	private Integer actScore;
+	private String satActNotRequired;
 	private Integer numberOfRequiredSat2;
 	private Float acceptRate;
 	private Integer rankOverall;
-	private Integer lastYearRankOverall;
 	private Float reputationScore;
 	private String  selectivity;
 	private Integer hsClassTop10Percentage;
@@ -354,15 +358,63 @@ public class School implements java.io.Serializable {
 	}
 	*/
 	
+	@Column(name="SAT_ACT_Not_Required", length=5)
+	public String getSatActNotRequired() {
+		return satActNotRequired;
+	}
+
+	public void setSatActNotRequired(String satActNotRequired) {
+		this.satActNotRequired = satActNotRequired;
+	}
+
 	@Column(name = "SAT2_Required")
 	public Integer getNumberOfRequiredSat2() {
 		return this.numberOfRequiredSat2;
+	}
+
+    @Column(name="Percentage_Classes_Fewer_Than_20_students", precision=12, scale=0)
+    public Float getPercentageClassesFewerThan20Students() {
+        return this.percentageClassesFewerThan20Students;
+    }
+    
+    public void setPercentageClassesFewerThan20Students(Float percentageClassesFewerThan20Students) {
+        this.percentageClassesFewerThan20Students = percentageClassesFewerThan20Students;
+    }
+
+    
+    @Column(name="Percentage_Classes_More_Than_50_students", precision=12, scale=0)
+    public Float getPercentageClassesMoreThan50Students() {
+        return this.percentageClassesMoreThan50Students;
+    }
+    
+    public void setPercentageClassesMoreThan50Students(Float percentageClassesMoreThan50Students) {
+        this.percentageClassesMoreThan50Students = percentageClassesMoreThan50Students;
+    }
+     
+    @Column(name="SAT_ACT_Received_Deadline", length=10)
+    public String getSatActReceivedDeadline() {
+        return this.satActReceivedDeadline;
+    }
+    
+    public void setSatActReceivedDeadline(String satActReceivedDeadline) {
+        this.satActReceivedDeadline = satActReceivedDeadline;
+    }
+
+    
+    @Column(name="Early_Decision_Deadline", length=10)
+	public String getEarlyDecisionDeadline() {
+		return earlyDecisionDeadline;
+	}
+
+	public void setEarlyDecisionDeadline(String earlyDecisionDeadline) {
+		this.earlyDecisionDeadline = earlyDecisionDeadline;
 	}
 
 	@Transient
 	public Integer getMaxResults() {
 		return maxResults;
 	}
+
 
 	public void setMaxResults(Integer maxResults) {
 		this.maxResults = maxResults;
@@ -388,15 +440,6 @@ public class School implements java.io.Serializable {
 
 	public void setRankOverall(Integer rankOverall) {
 		this.rankOverall = rankOverall;
-	}
-
-	@Column(name = "Rank_Overall_Last_Year")
-	public Integer getLastYearRankOverall() {
-		return lastYearRankOverall;
-	}
-
-	public void setLastYearRankOverall(Integer lastYearRankOverall) {
-		this.lastYearRankOverall = lastYearRankOverall;
 	}
 
 	@Column(name = "Reputation_Score")

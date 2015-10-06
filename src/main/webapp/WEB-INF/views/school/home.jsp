@@ -59,7 +59,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Top Liberal Art Colleges" class="submit_button" />
-                     <form:hidden path="category" value="Liberal Art College"/>
+                     <form:hidden path="category" value="National Liberal Arts College"/>
                      <form:select id="liberalArtLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
                        <form:option value="50" selected="selected">50</form:option>
                        <form:option value="100">100</form:option>
@@ -74,7 +74,7 @@
          </td>
         </tr>
       </table> 
-        <table class="section_title_center">
+      <table class="section_title_center">
         <tr><td>Get A College's Information</td></tr>
       </table>  
       <form:form method="GET" action="searchSchoolsByMatchNamePattern" modelAttribute="school">
@@ -145,7 +145,7 @@
 	    <tr>
           <td>
 		    <ul>
-		  	  <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Business">Colleges Do Not Require SAT1</a></li>
+		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT1</a></li>
               <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?internationalFinancialAid=yes">Colleges Provides Financial Aids for International Students</a></li>
               <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Business">Value Colleges(quality/price ratio and the scholarships or grants)</a></li>
             </ul>

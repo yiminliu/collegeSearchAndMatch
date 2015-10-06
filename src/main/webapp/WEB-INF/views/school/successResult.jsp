@@ -25,7 +25,7 @@
               	<th>School</th>
               	<c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
 				   <th>Rank</th>
-				   <th>Last Year Rank</th>
+				   <!--<th>Last Year Rank</th>-->
 				</c:if>   
 				<!--<th>Size(Students)</th>
                 <th>Type</th>-->
@@ -50,8 +50,7 @@
 					<!--<td>${school.name}</td>-->
 					<c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
 					   <td>${school.rankOverall}</td>
-					   <td>${school.lastYearRankOverall}</td>
-            		</c:if>
+		    		</c:if>
             		<!--<td>${school.size}</td>
                     <td>${school.type}</td>-->
 					<td>$${school.tuitionFee}</td>
