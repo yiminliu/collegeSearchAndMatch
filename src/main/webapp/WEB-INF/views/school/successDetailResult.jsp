@@ -32,7 +32,10 @@
 				<!--<th>Average Freshman Retention Rate</th>
                 <th>Graduation Rate(6 year)</th>-->
               	<th>Student/Faculty Ratio</th>
-				<th>Academic calendar</th> 
+              	<th>Class size<25</th>
+              	<th>Class size between 25 and 50</th>
+              	<th>Class size>50</th>
+               	<th>Academic calendar</th> 
 				<th>Phone</th>
 				<th>Website</th>
 			 </tr>
@@ -43,6 +46,16 @@
                	<td>${school.city}, ${school.state}</td>
 				<td>${school.size}</td>
             	<td>${school.studentFacultyRatio}</td>
+            	<c:choose>
+				  <c:when test="${school.percentageClassesFewerThan20Students >= 0}">
+            	     <td>${school.percentageClassesFewerThan20Students}</td>
+            	     <td>${school.percentageClassesBetween25And50Students}</td>
+            	     <td>${school.percentageClassesMoreThan50Students}</td>
+			      </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
 				<td>${school.calendar}</td> 
 				<td>${school.phone}</td>
 				<td><a id="website" href="<spring:url value="http://www.${school.website}" />">${school.website}</a></td>

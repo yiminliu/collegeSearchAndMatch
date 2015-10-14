@@ -31,16 +31,15 @@
                 <th>Type</th>-->
 				<th>Tuition+Fees<font size="1"></font></th>
 				<th>Room+Board<font size="1"></font></th>
-				<th>Appl. Fee<font size="1"></font></th>
-				<th>Appl. Deadline<font size="1">(mm-dd)</font></th>
-				<th>Min. TOEFL Score</th>
-				<th>SAT I<font size="1">(25th - 75th%)</font></th>
-				<th>ACT<font size="1">(25th% - 75th%)</font></th>
-				<th>SAT II Required</th>
-				<!--<th>Selectivity</th>-->
 				<th>Accept. Rate<font size="1"></font></th>
+				<th>SAT I/ACT<font size="1">(25th - 75th%)</font></th>
+				<th>SAT II Required</th>
+				<th>Min. TOEFL Score</th>
+				<!--<th>Selectivity</th>-->
+				<th>Appl. Deadline<font size="1">(mm-dd)</font></th>
+				<th>Appl. Fee<font size="1"></font></th>
 				<th>Location</th>
-				<th>Financial Aid for Intl. Students</th>
+				<!--<th>Financial Aid for Intl. Students</th>-->
 				<!--<th>Website</th>-->
 			</tr>
 			<c:forEach var="school" items="${schoolList}" varStatus="loopStatus">  
@@ -49,14 +48,56 @@
 					<!--<td><a href="http://www."${school.website}></a></td>-->
 					<!--<td>${school.name}</td>-->
 					<c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
-					   <td>${school.rankOverall}</td>
+					   <c:choose>
+                       <c:when test="${school.rankOverall > 0}">
+					      <td>${school.rankOverall}</td>
+					   </c:when> 
+					   <c:when test="${school.rankOverall < 0}">
+					      <td>Not Ranked</td>
+					   </c:when>  
+					   <c:otherwise>
+					      <td>Not Reported</td>
+					   </c:otherwise>
+					</c:choose> 
 		    		</c:if>
             		<!--<td>${school.size}</td>
                     <td>${school.type}</td>-->
-					<td>$${school.tuitionFee}</td>
-					<td>$${school.roomBoard}</td>
-					<td>$${school.applicationFee}</td>
-					<td>${school.applicationDeadline}</td>
+                    <c:choose>
+                       <c:when test="${school.tuitionFee >= 0}">
+					      <td>$${school.tuitionFee}</td>
+					   </c:when> 
+					   <c:otherwise>
+					      <td>N/A</td>
+					   </c:otherwise>
+					</c:choose>    
+					<c:choose>
+                       <c:when test="${school.roomBoard >= 0}">
+					      <td>$${school.roomBoard}</td>
+					   </c:when> 
+					   <c:otherwise>
+					      <td>N/A</td>
+					   </c:otherwise>
+					</c:choose>
+					<c:choose>
+                       <c:when test="${school.acceptRate >= 0}">  
+					      <td>${school.acceptRate}%</td>
+					   </c:when> 
+					   <c:otherwise>
+					      <td>N/A</td>
+					   </c:otherwise>
+					</c:choose>
+					<c:choose>
+					  <c:when test="${school.sat1Percentile25 > 0}">
+					     <td>${school.sat1Percentile25} - ${school.sat1Percentile75}</td>
+					  </c:when>   
+					  <c:when test="${school.actPercentile25 > 0}">
+                         <td>${school.actPercentile25} - ${school.actPercentile75}</td>
+                      </c:when>
+                      <c:otherwise>
+					    <td>N/A</td>
+					  </c:otherwise>
+					</c:choose>  
+					<td>${school.numberOfRequiredSat2}</td>
 					<c:choose>
 					  <c:when test="${school.toefl < 0}">
                         <td>Not Required</td>
@@ -68,27 +109,25 @@
                         <td>${school.toefl}</td> 
                       </c:otherwise>
                     </c:choose>
-					<c:choose>
-					  <c:when test="${school.sat1Percentile25 <= 0}">
-                        <td>N/A</td>
-                      </c:when>
-                      <c:otherwise>
-					    <td>${school.sat1Percentile25} - ${school.sat1Percentile75}</td>
-					  </c:otherwise>
-					 </c:choose>  
-					 <c:choose>
-					   <c:when test="${school.actPercentile25 <= 0}">
-                         <td>N/A</td>
-                       </c:when>
-                       <c:otherwise>
-					     <td>${school.actPercentile25} - ${school.actPercentile75}</td>
-					   </c:otherwise>
-				    </c:choose>    
-					<td>${school.numberOfRequiredSat2}</td>
 					<!--<td>${school.selectivity}</td>-->
-					<td>${school.acceptRate}%</td>
+					<c:choose>
+					  <c:when test="${school.applicationDeadline != null}">
+					    <td>${school.applicationDeadline}</td>
+					  </c:when>
+                      <c:otherwise>
+                        <td>N/A</td> 
+                      </c:otherwise>
+                    </c:choose>  
+                    <c:choose>
+					  <c:when test="${school.applicationFee != null}">
+					     <td>$${school.applicationFee}</td>
+					  </c:when>
+                      <c:otherwise>
+                        <td>N/A</td> 
+                      </c:otherwise>
+                    </c:choose>     
 					<td>${school.city}, ${school.state}</td>
-					<td>${school.internationalFinancialAid}</td>
+					<!--<td>${school.internationalFinancialAid}</td>-->
 					<!--<td><a id="website" href="<spring:url value="/collegeSearch/school/getSchool/${school.website}" />">${school.website}</a></td>-->
 			    </tr>
 		   </c:forEach>

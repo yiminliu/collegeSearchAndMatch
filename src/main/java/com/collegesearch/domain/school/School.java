@@ -43,11 +43,12 @@ public class School implements java.io.Serializable {
 	private Integer tuitionFee;
 	private Integer instateTuitionFee;
 	private Integer roomBoard;
-	private String applicationDeadline;
-	private String satActReceivedDeadline;
-	private String earlyDecisionDeadline;
-	private Float percentageClassesFewerThan20Students;
-    private Float percentageClassesMoreThan50Students;
+	private String  applicationDeadline;
+	private String  satActReceivedDeadline;
+	private String  earlyDecisionDeadline;
+	private Float   percentageClassesFewerThan20Students;
+    private Float   percentageClassesMoreThan50Students;
+    private Float   percentageClassesBetween25And50Students;
   	private Integer applicationFee;
 	private Integer toefl;
 	private Integer ielts;
@@ -57,14 +58,16 @@ public class School implements java.io.Serializable {
 	private Integer actPercentile75;
 	private Integer sat1Score;
 	private Integer actScore;
-	private String satActNotRequired;
+	private String  satActNotRequired;
 	private Integer numberOfRequiredSat2;
-	private Float acceptRate;
+	private Float   acceptRate;
+	private Integer averageFreshmanRetentionRate;
+    private Integer sixYearGraduationRate;
 	private Integer rankOverall;
-	private Float reputationScore;
+	private Float   reputationScore;
 	private String  selectivity;
 	private Integer hsClassTop10Percentage;
-	private Float studentFacultyRatio;
+	private Float   studentFacultyRatio;
 	private String  category;
 	private String  internationalFinancialAid;
 	private String  calendar;
@@ -390,8 +393,24 @@ public class School implements java.io.Serializable {
     public void setPercentageClassesMoreThan50Students(Float percentageClassesMoreThan50Students) {
         this.percentageClassesMoreThan50Students = percentageClassesMoreThan50Students;
     }
-     
-    @Column(name="SAT_ACT_Received_Deadline", length=10)
+    
+    @Transient    
+    public Float getPercentageClassesBetween25And50Students() {
+		//return percentageClassesBetween25And50Students;
+    	if(percentageClassesFewerThan20Students != null && percentageClassesFewerThan20Students > 0 &&
+    	   percentageClassesMoreThan50Students != null && percentageClassesMoreThan50Students > 0)		
+    	   percentageClassesBetween25And50Students = 100 - percentageClassesFewerThan20Students - percentageClassesMoreThan50Students;
+    	   return percentageClassesBetween25And50Students;
+    }
+
+	public void setPercentageClassesBetween25And50Students(Float percentageClassesBetween25And50Students) {
+		if(percentageClassesFewerThan20Students != null && percentageClassesFewerThan20Students > 0 &&
+		   percentageClassesMoreThan50Students != null && percentageClassesMoreThan50Students > 0)		
+		   percentageClassesBetween25And50Students = 100 - percentageClassesFewerThan20Students - percentageClassesMoreThan50Students;
+		   this.percentageClassesBetween25And50Students = 100 - percentageClassesFewerThan20Students - percentageClassesMoreThan50Students;
+	}
+
+	@Column(name="SAT_ACT_Received_Deadline", length=10)
     public String getSatActReceivedDeadline() {
         return this.satActReceivedDeadline;
     }
@@ -431,6 +450,24 @@ public class School implements java.io.Serializable {
 
 	public void setAcceptRate(Float acceptRate) {
 		this.acceptRate = acceptRate;
+	}
+	
+	@Column(name = "Average_Freshman_Retention_Rate")
+	public Integer getAverageFreshmanRetentionRate() {
+		return averageFreshmanRetentionRate;
+	}
+
+	public void setAverageFreshmanRetentionRate(Integer averageFreshmanRetentionRate) {
+		this.averageFreshmanRetentionRate = averageFreshmanRetentionRate;
+	}
+
+	@Column(name = "Six_Year_Graduation_Rate")
+	public Integer getSixYearGraduationRate() {
+		return sixYearGraduationRate;
+	}
+
+	public void setSixYearGraduationRate(Integer sixYearGraduationRate) {
+		this.sixYearGraduationRate = sixYearGraduationRate;
 	}
 
 	@Column(name = "Rank_Overall")
@@ -608,7 +645,16 @@ public class School implements java.io.Serializable {
 
 	public static class RankComparator implements Comparator<School>{
 	   public int compare(School school1, School school2){
-		  return school1.getRankOverall() - school2.getRankOverall();
+		  int result = -1;
+		  if(school1.getRankOverall() > 0){
+		    try{
+		       result = school1.getRankOverall() - school2.getRankOverall();
+		    }
+		    catch(Exception e){
+		 	   e.printStackTrace();
+		    }	
+	      } 
+		  return result;
 	   }
 	}
 	
