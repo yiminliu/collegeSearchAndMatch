@@ -77,6 +77,7 @@ public class SchoolController {
 		  	 schools = schools.subList(0, limit); 
 		  Collections.sort(schools,  new RankComparator());
 		  model.addAttribute("schoolList", schools);
+		  model.addAttribute("operation", "listSchools");
 		  status.setComplete(); //finish the "School" SessionAttribute
 		  return "school/successResult";
 	 }
@@ -87,17 +88,17 @@ public class SchoolController {
 	   *
 	   * @return String the name of the School detail page
 	   */
-	   @RequestMapping(value="getSchoolDetail/{name}", method = RequestMethod.GET)
-	   public String getSchoolDetail(@PathVariable("name") String name, Model model){
+	   @RequestMapping(value="getSchoolDetail/{id}", method = RequestMethod.GET)
+	   public String getSchoolDetail(@PathVariable("id") Integer id, Model model){
 		   School school = null;
 		   try{
-			    school = schoolService.getSchoolByName(name);
+			    school = schoolService.getSchoolById(id);
 		   }
 		   catch(Exception e){
 			  throw e;
 		   }
-		   if(school == null)
-			  throw new DataNotFoundException(name);
+		   //if(school == null)
+		   //	  throw new DataNotFoundException(name);
 		   model.addAttribute("school", school);
 		   return "school/successDetailResult";
 	    }
@@ -120,7 +121,8 @@ public class SchoolController {
 			 if(schoolList == null)
 			    throw new DataNotFoundException(name);
 			 model.addAttribute("schoolList", schoolList);
-			return "school/successResult";
+			 status.setComplete();
+		  	 return "school/successResult";
 		  }
 			   
 			   
@@ -182,17 +184,15 @@ public class SchoolController {
 		       return "school/searchEngine";
 		  }	
 			   
-		  /**
-				   * This method is used to show the form to search Schools
-				   *
-				   * @return all schools
-				   *
-				   */
-				   @RequestMapping(value = "/showMatchEngineForm", method = RequestMethod.GET)
-				   public String showMatchEngineForm(Model model) {
-				       model.addAttribute("school", new School());	
-				       return "school/matchEngine";
-				   }
+		/**
+		  * This method is used to show the form to search Schools
+		  * @return satisfied schools
+		  */
+		  @RequestMapping(value = "/showMatchEngineForm", method = RequestMethod.GET)
+		  public String showMatchEngineForm(Model model) {
+		      model.addAttribute("school", new School());	
+		      return "school/matchEngine";
+		  }
 	   
 	   /**
 	     * This method is used to process the School search based on input search criteria
@@ -472,17 +472,22 @@ public class SchoolController {
 	     
 	     @ModelAttribute("schoolCategoryList")
 	     public void listOfSchoolCategorys(Model model) {
-	    	 model.addAttribute("schoolCategoryList", Arrays.asList("National University", "Liberal Arts"));
+	    	 model.addAttribute("schoolCategoryList", Arrays.asList(
+	    			            "National University", "National Liberal Arts College",
+	    			            "Regional University-North", "Regional University-South", 
+	    			            "Regional University-Midwest", "Regional University-West", 
+	    			            "Regional College-North", "RegionalCollege-South",
+	    	 		            "Regional College-Midwest", "Regional College-West"));
 	     }
 	     
 	     @ModelAttribute("schoolSettingList")
 	     public void listOfSchoolSettings(Model model) {
-	    	 model.addAttribute("schoolSettingList", Arrays.asList("Urban", "Suburban", "Rural"));
+	    	 model.addAttribute("schoolSettingList", Arrays.asList("Urban", "Suburban", "Rural", "City"));
 	     }
 	     
 	     @ModelAttribute("selectivityList")
 	     public void listOfSelectivity(Model model) {
-	     	 model.addAttribute("selectivityList", Arrays.asList("Most selective", "More selective", "Selective"));
+	     	 model.addAttribute("selectivityList", Arrays.asList("Most selective", "More selective", "Selective", "Less Selective", "Least Selective"));
 	     }
 	     
 	     @ModelAttribute("majorList")

@@ -21,21 +21,14 @@
       </c:choose>
       <div>
         <c:if test="${!empty school}">
-          <div class="section_title">Basic Info</div>
+          <div class="section_title">School Summary</div>
           <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
               	<th>Type</th>
                 <th>Setting</th>
                 <th>Category</th>
 				<th>Location</th>
-				<th>Total Students</th>
-				<!--<th>Average Freshman Retention Rate</th>
-                <th>Graduation Rate(6 year)</th>-->
-              	<th>Student/Faculty Ratio</th>
-              	<th>Class size<25</th>
-              	<th>Class size between 25 and 50</th>
-              	<th>Class size>50</th>
-               	<th>Academic calendar</th> 
+				<th>Academic calendar</th> 
 				<th>Phone</th>
 				<th>Website</th>
 			 </tr>
@@ -44,24 +37,67 @@
                 <td>${school.setting}</td>
                 <td>${school.category}</td>
                	<td>${school.city}, ${school.state}</td>
-				<td>${school.size}</td>
+				<td>${school.calendar}</td> 
+				<td>${school.phone}</td>
+				<td><a id="website" href="<spring:url value="http://www.${school.website}" />">${school.website}</a></td>
+			   </tr>
+		   </table>
+		   <div class="section_title">Student and Class Info</div>
+           <table class="datatable" style="font-size: 80%; margin-left: 0px">
+             <tr style="background-color: Ivory;">
+             	<th>Total Students</th>
+             	<th>Student/Faculty Ratio</th>
+              	<th>Average Freshman Retention Rate</th>
+                <th>Graduation Rate(6 year)</th>
+              	<th>Class size<25</th>
+              	<th>Class size between 25 and 50</th>
+              	<th>Class size>50</th>
+              </tr>
+		     <tr>
+            	<td>${school.size}</td>
             	<td>${school.studentFacultyRatio}</td>
+            	<c:choose>
+				  <c:when test="${school.averageFreshmanRetentionRate >= 0}">
+            	     <td>${school.averageFreshmanRetentionRate}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+                <c:choose>
+				  <c:when test="${school.sixYearGraduationRate >= 0}">
+            	     <td>${school.sixYearGraduationRate}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+       
             	<c:choose>
 				  <c:when test="${school.percentageClassesFewerThan20Students >= 0}">
             	     <td>${school.percentageClassesFewerThan20Students}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+                <c:choose>
+				  <c:when test="${school.percentageClassesBetween25And50Students >= 0}">
             	     <td>${school.percentageClassesBetween25And50Students}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+                <c:choose>
+				  <c:when test="${school.percentageClassesMoreThan50Students >= 0}">
             	     <td>${school.percentageClassesMoreThan50Students}</td>
 			      </c:when>
                   <c:otherwise>
                     <td>N/A</td> 
                   </c:otherwise>
                 </c:choose>
-				<td>${school.calendar}</td> 
-				<td>${school.phone}</td>
-				<td><a id="website" href="<spring:url value="http://www.${school.website}" />">${school.website}</a></td>
-			   </tr>
 		   </table>
-		  
            <div class="section_title">Admission Info</div>
            <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
@@ -70,6 +106,9 @@
               	<th>Selectivity</th>
               	<th>Reputation Score</th>
               	<th>Application Deadline<font size="1">(mm-dd)</font></th>
+              	<th>Early Decision Deadline<font size="1">(mm-dd)</font></th>
+              	<th>SAT/ACT Received Deadline<font size="1">(mm-dd)</font></th>
+              	<th>SAT/ACT Not Required<font size="1"></font></th>
 				<th>Application Fee<font size="1"></font></th>
 				<th>Top 10% of High School Class</th>
 			</tr>
@@ -78,8 +117,31 @@
             	<td>${school.acceptRate}%</td>
             	<td>${school.selectivity}</td>
             	<td>${school.reputationScore}</td>
-            	<td>${school.applicationDeadline}</td>
-            	<td>$${school.applicationFee}</td>
+            	<c:choose>
+				  <c:when test="${school.applicationDeadline != null}">
+            	     <td>${school.applicationDeadline}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+                <c:choose> 
+            	  <c:when test="${school.earlyDecisionDeadline != null}">
+            	     <td>${school.earlyDecisionDeadline}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+            	<c:choose> 
+            	  <c:when test="${school.satActReceivedDeadline != null}">
+            	     <td>${school.satActReceivedDeadline}</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>
+             	<td>$${school.applicationFee}</td>
 				<td>${school.hsClassTop10Percentage}%</td>
 	    	</tr>
 		  </table>
@@ -90,6 +152,7 @@
               	<th>Minimum IELTS Score</th>
             	<th>SAT I Score<font size="1">(25th% - 75th%)</font></th>
 				<th>ACT Score<font size="1">(25th% - 75th%)</font></th>
+				<th>SAT/ACT Not Required</th>
 				<th>SAT II Required</th>
 			 </tr>
 		     <tr>
@@ -131,10 +194,18 @@
 				     <td>${school.actPercentile25} - ${school.actPercentile75}</td>
 				  </c:otherwise>
 			   </c:choose>  
+			   <c:choose>
+			      <c:when test="${school.satActNotRequired != null}">
+                    <td>${school.satActNotRequired}</td>
+                  </c:when>
+				  <c:otherwise>
+                     <td>No</td> 
+                  </c:otherwise>
+               </c:choose>
 				 <td>${school.numberOfRequiredSat2}</td>
 			 </tr>
 		  </table>
-		  <div class="section_title">Financial Info</div>
+		  <div class="section_title">Cost and Financial Info</div>
           <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
               	<th>Tuition and Fees<font size="1"></font></th>

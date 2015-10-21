@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.collegesearch.domain.school.PrincetonReviewGreatSchoolMajor;
 import com.collegesearch.domain.school.School;
 import com.collegesearch.domain.school.UsNewsBestSchoolProgram;
+import com.collegesearch.domain.school.School.RankComparator;
 import com.collegesearch.domain.user.User;
 import com.collegesearch.service.SchoolService;
 import com.collegesearch.service.system.IndexService;
@@ -185,7 +187,8 @@ public class CollegeSearchServiceTest {
 		//params.put("toefl", Arrays.asList(new String[]{"95"}));
 		//params.put("rankOverall", Arrays.asList(new String[]{"Top 25"}));
 		//params.put("type", Arrays.asList(new String[]{"Private"}));
-		params.put("category", Arrays.asList(new String[]{"National University"}));
+		params.put("state", Arrays.asList(new String[]{"CA"}));
+		//params.put("category", Arrays.asList(new String[]{"National University"}));
 		//params.put("tuitionFee", Arrays.asList(new String[]{"< 20000"}));
 		//params.put("roomBoard", Arrays.asList(new String[]{"< 20000"}));
 		//params.put("sat1Score", Arrays.asList(new String[]{"1800"}));
@@ -193,6 +196,7 @@ public class CollegeSearchServiceTest {
 		//params.put("size", Arrays.asList(new String[]{"between 2000 and 15000"}));
 		
 		List<School> pList = schoolService.getSchools(params);
+		Collections.sort(pList,  new RankComparator());
 		assertNotNull(pList);
 		assertNotEquals(0, pList.size());
 		for(School s : pList){

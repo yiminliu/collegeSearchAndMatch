@@ -17,7 +17,7 @@
           <td style="background-color:Azure;"><h4>Pick your suitable colleges by specifying the following criteria</h4></td>
        </tr>   
      </table>
-     <div class="content" style="width:70%; margin-top:15px; border-style: solid; border-width:2px; ">  
+     <div class="content" style="width:60%; margin-top:15px; border-style: solid; border-width:2px; ">  
         <form:form method="GET" action="${action}" modelAttribute="school">
          <table style="width:100%; text-align:center;background-color:Azure;">   
                <tr style="margin-top:15px;">
@@ -100,6 +100,14 @@
                     </form:select>
                 </td> 
             </tr>
+            <tr>
+                <td><label for="satnotrequired">SAT or ACT Not Required:</label>
+                    <form:select id="satActNotRequired" path="satActNotRequired" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                       <form:option value="Yes">Yes</form:option>
+                    </form:select>
+                </td> 
+            </tr>	
             <tr>
                 <td><label for="internationalFinancialAid">Financial Aid for International Students:</label>
                     <form:select id="internationalFinancialAid" path="internationalFinancialAid" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">

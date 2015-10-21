@@ -23,6 +23,9 @@
            <table class="datatable" style="font-size: 80%">
              <tr style="background-color: Ivory;">
               	<th>School</th>
+               	<c:if test="${operation=='searchSchools'}">
+				   <th>Category</th>
+				</c:if>   
               	<c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
 				   <th>Rank</th>
 				   <!--<th>Last Year Rank</th>-->
@@ -44,9 +47,12 @@
 			</tr>
 			<c:forEach var="school" items="${schoolList}" varStatus="loopStatus">  
                 <tr class="${loopStatus.index % 2 == 0 ? 'even' : 'odd'}">
-                    <td style="color : red"><a id="schoolDetail" href="<spring:url value="/school/getSchoolDetail/${school.name}" />">${school.name}</a></td>
+                    <td style="color : red"><a id="schoolDetail" href="<spring:url value="/school/getSchoolDetail/${school.id}" />">${school.name}</a></td>
 					<!--<td><a href="http://www."${school.website}></a></td>-->
 					<!--<td>${school.name}</td>-->
+					<c:if test="${operation eq 'searchSchools'}">
+					    <td>${school.category}</td>
+					</c:if>    
 					<c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
 					   <c:choose>
                        <c:when test="${school.rankOverall > 0}">

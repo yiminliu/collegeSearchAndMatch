@@ -118,6 +118,14 @@
                  </td> 
               </tr>
               <tr>
+                <td><label for="satnotrequired">SAT or ACT Not Required:</label>
+                    <form:select id="satActNotRequired" path="satActNotRequired" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                       <form:option value="Yes">Yes</form:option>
+                    </form:select>
+                </td> 
+             </tr>	
+             <tr>
                  <td><label for="internationalFinancialAid">Financial Aid for International Students:</label>
                      <form:select id="internationalFinancialAid" path="internationalFinancialAid" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>

@@ -645,13 +645,33 @@ public class School implements java.io.Serializable {
 
 	public static class RankComparator implements Comparator<School>{
 	   public int compare(School school1, School school2){
-		  int result = -1;
+		  int result = 1;
+		  result = school1.getCategory().compareTo(school2.getCategory());
+		  if(result > 1)
+			 return 1;
+		  
 		  if(school1.getRankOverall() > 0){
 		    try{
-		       result = school1.getRankOverall() - school2.getRankOverall();
+		       if(school1.getRankOverall() < school2.getRankOverall())
+		    	  result = -1;
+		       else if(school1.getRankOverall() > school2.getRankOverall())
+		    	   result = 1;
+		       else
+		    	   result = 0;
+		       
+		      // if(result == 0){
+		    	//  if(school1.getName().compareTo(school2.getName()) < 0)
+		    		// result = -1; 
+		    	  //else if(school1.getName().compareTo(school2.getName()) > 0)
+			    	// result = 1;
+		    	  //else
+		    		//  result = 0;
+		       //}  
 		    }
 		    catch(Exception e){
 		 	   e.printStackTrace();
+		 	   System.out.println("school1 name/rank="+school1.getName() + "/" +school1.getRankOverall());
+		 	   System.out.println("school2 name/rank="+school2.getName() + "/" +school2.getRankOverall());
 		    }	
 	      } 
 		  return result;

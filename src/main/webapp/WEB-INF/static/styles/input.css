@@ -54,7 +54,11 @@ Input definition
      color: BLACK;
   }
   .label_same_row {
-      color: BLACK;
+     display: table-row;//table-cell;
+     float:left;
+     padding: 6px 12px 2px 12px;
+     align: right;
+     color: BLACK;
   }
   .input_label {
      color: BLACK;
