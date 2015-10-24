@@ -30,7 +30,7 @@
                     </form:select>
                 </td> 
              </tr>
-             <tr>
+             <!--<tr>
                 <td><label for="tuitionFee">Tuition and Fees($):</label>
                     <form:select id="tuitionFee" path="tuitionFee" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
@@ -46,6 +46,26 @@
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="roomBoard" items="${tuitionRangeList}" varStatus="status">
                              <form:option value="${roomBoard}">${roomBoard}</form:option>
+                          </c:forEach>
+                    </form:select>
+                </td>
+             </tr>-->
+             <tr>
+                <td><label for="totalCost">Total Cost (Tuition and Fees + Room and Board)($):</label>
+                    <form:select id="totalCost" path="totalCost" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                          <c:forEach var="totalCost" items="${totalCostRangeList}" varStatus="status">
+                             <form:option value="${totalCost}">${totalCost}</form:option>
+                          </c:forEach>
+                    </form:select>
+                </td>
+             </tr>
+             <tr>
+               <td><label for="acceptRate">Acceptance Rate(%):</label>
+                    <form:select id="acceptRate" path="acceptRate" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                          <c:forEach var="acceptRate" items="${acceptanceRateList}" varStatus="status">
+                             <form:option value="${acceptRate}">${acceptRate}</form:option>
                           </c:forEach>
                     </form:select>
                 </td>

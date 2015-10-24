@@ -25,12 +25,14 @@
              <ul style="list-style-type:none">
                 <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Your Suitable Colleges</a></li>
                 <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Match You and the Suitable Colleges. <span style="color:red">JUST FOR YOU</span></a></li>
+                <li><a id="matchSchool" href="<spring:url value="/school/showNoSATMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;">Having TOEFL/IELTS Tests, But No SAT/ACT Yet? Still Can Find Colleges Here</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%">No TOEFL/IELTS, No SAT/ACT? Find Colleges With Conditional-Admission Available Here </a></li>
              </ul>
            </td>
         </tr>
       </table>
       <table class="section_title_center">
-        <tr><td>Top Colleges</td></tr>
+        <tr><td>Top Colleges in Different Categories</td></tr>
       </table>  
       <!--<table class="center_element" style="border-spacing: 80px, -90px">-->
        <spring:url var="action" value="/school/searchSchools" />
@@ -40,7 +42,7 @@
              <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
                  <tr>
-                   <td><input name="submit" type="submit" value="Top National Colleges" class="submit_button"/>
+                   <td><input name="submit" type="submit" value="National Universities" class="submit_button"/>
                      <form:hidden path="category" value="National University"/>
                      <form:select id="nationalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
                        <form:option value="50" selected="selected">50</form:option>
@@ -58,9 +60,161 @@
             <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
                  <tr>
-                   <td><input name="submit" type="submit" value="Top Liberal Art Colleges" class="submit_button" />
+                   <td><input name="submit" type="submit" value="National Liberal Art Colleges" class="submit_button" />
                      <form:hidden path="category" value="National Liberal Arts College"/>
                      <form:select id="liberalArtLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                 </tr>
+              </table>
+            </form:form>
+         </td>
+        </tr>  
+	    <tr>
+          <td>
+             <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Reginal Universities-North" class="submit_button"/>
+                     <form:hidden path="category" value="Regional University-North"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                </tr>
+              </table>
+            </form:form>
+          </td>
+          <td>    
+            <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Reginal Universities-West" class="submit_button"/>
+                     <form:hidden path="category" value="Regional University-West"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                 </tr>
+              </table>
+            </form:form>
+         </td>
+        </tr>
+        <tr>
+          <td>
+             <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Regional Universities-Midwest" class="submit_button"/>
+                     <form:hidden path="category" value="Regional University-Midwest"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                </tr>
+              </table>
+            </form:form>
+          </td>
+          <td>    
+            <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Regional Universities-South" class="submit_button"/>
+                     <form:hidden path="category" value="Regional University-South"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                 </tr>
+              </table>
+            </form:form>
+         </td>
+        </tr>
+        <tr>
+          <td>
+             <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Reginal Colleges-North" class="submit_button"/>
+                     <form:hidden path="category" value="Regional College-North"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                </tr>
+              </table>
+            </form:form>
+          </td>
+          <td>    
+            <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Reginal Colleges-West" class="submit_button"/>
+                     <form:hidden path="category" value="Regional College-West"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                 </tr>
+              </table>
+            </form:form>
+         </td>
+        </tr>
+        <tr>
+          <td>
+             <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Regional Colleges-Midwest" class="submit_button"/>
+                     <form:hidden path="category" value="Regional College-Midwest"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
+                       <form:option value="50" selected="selected">50</form:option>
+                       <form:option value="100">100</form:option>
+                       <form:option value="150">150</form:option>
+                       <form:option value="200">200</form:option>
+                       <form:option value="1000" >All</form:option>
+                     </form:select>
+                   </td> 
+                </tr>
+              </table>
+            </form:form>
+          </td>
+          <td>    
+            <form:form method="GET" action="${action}" modelAttribute="school">
+               <table>            
+                 <tr>
+                   <td><input name="submit" type="submit" value="Regional Colleges-South" class="submit_button"/>
+                     <form:hidden path="category" value="Regional College-South"/>
+                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
                        <form:option value="50" selected="selected">50</form:option>
                        <form:option value="100">100</form:option>
                        <form:option value="150">150</form:option>
@@ -156,6 +310,43 @@
   		    </ul>
 	      </td>
 	    </tr>
+      </table>
+       <table class="section_title_center">
+        <tr><td>Optimized College Lists</td></tr>
+      </table> 
+      <table class="center_element" style="margin-top:0px;">
+	    <tr>
+         <td>
+           <ul>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">College List With High Acceptance Rate in Top 50 National Colleges</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">College List With High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
+			
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/ Agriculture">Agriculture Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Biology">Biology Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Business_Finance">Business/Finance Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Communications">Communications Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Computer Science and Computer Engineering">Computer Science/Computer Engineering Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Criminology">Criminology Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Education">Education Majors</a></li>
+		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/English Literature and Language">English Literature and Language Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Engineering">Engineering Majors</a></li>
+	      </ul>
+       </td>
+       <td>
+		  <ul>
+		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Environmental Studies">Environmental Studies Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/History">History Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Journalism">Journalism Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Marketing and Sales">Marketing and Sales Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mathematics">Mathematics Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mechanical Engineering">Mechanical Engineering Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Nursing">Nursing Majors</a></li>
+		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Political Science and Government">Political Science/Government Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Psychology">Psychology Majors</a></li>
+		  </ul>
+	    </td>
+	   </tr>
       </table>
       <!-- 
       <hr></hr>

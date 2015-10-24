@@ -187,13 +187,16 @@ public class CollegeSearchServiceTest {
 		//params.put("toefl", Arrays.asList(new String[]{"95"}));
 		//params.put("rankOverall", Arrays.asList(new String[]{"Top 25"}));
 		//params.put("type", Arrays.asList(new String[]{"Private"}));
-		params.put("state", Arrays.asList(new String[]{"CA"}));
-		//params.put("category", Arrays.asList(new String[]{"National University"}));
+		//params.put("state", Arrays.asList(new String[]{"CA"}));
+		params.put("category", Arrays.asList(new String[]{"National University"}));
 		//params.put("tuitionFee", Arrays.asList(new String[]{"< 20000"}));
 		//params.put("roomBoard", Arrays.asList(new String[]{"< 20000"}));
+		//params.put("totalCost", Arrays.asList(new String[]{"<20000"}));
 		//params.put("sat1Score", Arrays.asList(new String[]{"1800"}));
-		//params.put("size", Arrays.asList(new String[]{"Small <2000"}));
+		//params.put("size", Arrays.asList(new String[]{"Small(<2000)"}));
 		//params.put("size", Arrays.asList(new String[]{"between 2000 and 15000"}));
+		params.put("acceptRate", Arrays.asList(new String[]{"<25%"}));
+		//params.put("acceptRate", Arrays.asList(new String[]{"between 20% and 50%"}));
 		
 		List<School> pList = schoolService.getSchools(params);
 		Collections.sort(pList,  new RankComparator());

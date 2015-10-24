@@ -127,6 +127,14 @@ public class SchoolServiceImpl implements SchoolService {
 		   if(maxResults > 0 && maxResults < schools.size())
 			  	 schools = schools.subList(0, maxResults); 
 		}   
+		if(SchoolUtil.getValue(queryParams, "totalCost") != null) {
+		   String totalCost = SchoolUtil.getValue(queryParams, "totalCost");
+		   int totalCostInt = -1;
+		   if(totalCost != null && totalCost.length()>0)
+		      totalCostInt = Integer.valueOf(totalCost.substring(1));
+		   schools = filterByTotalCost(schools, totalCostInt);
+		}   
+		
 		if(SchoolUtil.applicantDataExist(queryParams))
 		   return doMatch( schools, queryParams);	
 	
@@ -189,6 +197,16 @@ public class SchoolServiceImpl implements SchoolService {
 		   return adjustedSchoolList;
 		else
 		   return oriSchoolList;
+	}
+	
+	private List<School> filterByTotalCost(List<School> oriSchoolList, int totalCost){
+		ArrayList<School> finalSchoolList = new ArrayList<School>();
+		for(School school : oriSchoolList){
+			if(school.getTuitionFee() != null && school.getRoomBoard() != null && 
+			  (school.getTuitionFee() + school.getRoomBoard()) < totalCost)
+				finalSchoolList.add(school);
+		}
+		return finalSchoolList;
 	}
 	
 	@Loggable(value = LogLevel.TRACE)

@@ -32,6 +32,7 @@ import com.collegesearch.exception.DataNotFoundException;
 import com.collegesearch.exception.DatabaseOperationException;
 import com.collegesearch.exception.InputParamException;
 import com.collegesearch.service.SchoolService;
+import com.collegesearch.util.school.SchoolUtil;
 
 /**
 * This MVC controller class takes all ims-related requests and dispatches the requests to corresponding services to fulfill database CRUD operations on ims.
@@ -193,6 +194,16 @@ public class SchoolController {
 		      model.addAttribute("school", new School());	
 		      return "school/matchEngine";
 		  }
+		  
+		/**
+		  * This method is used to show the form to search Schools
+		  * @return satisfied schools
+		  */
+		  @RequestMapping(value = "/showNoSATMatchEngineForm", method = RequestMethod.GET)
+		  public String showNoSATMatchEngineForm(Model model) {
+		      model.addAttribute("school", new School());	
+		      return "school/matchEngineNoSAT";
+		  }	  
 	   
 	   /**
 	     * This method is used to process the School search based on input search criteria
@@ -216,11 +227,18 @@ public class SchoolController {
 		   }
 		   if(schools == null)
 			  throw new DataNotFoundException();
+		    
 		   Collections.sort(schools,  new RankComparator());
 		   model.addAttribute("schoolList",  schools);
 		   model.addAttribute("operation", "searchSchools");
 		   status.setComplete(); //finish the "School" SessionAttribute
-		   return "school/successResult";
+		   if(SchoolUtil.getValue(allRequestParams, "maxResults") != null){
+			  if(SchoolUtil.getValue(allRequestParams, "category") != null)   
+				 model.addAttribute("category", SchoolUtil.getValue(allRequestParams, "category"));
+			  return "school/successTopListResult";
+		   }	  
+		   else
+		      return "school/successResult";
 	    }
 	   
 	  
@@ -476,7 +494,7 @@ public class SchoolController {
 	    			            "National University", "National Liberal Arts College",
 	    			            "Regional University-North", "Regional University-South", 
 	    			            "Regional University-Midwest", "Regional University-West", 
-	    			            "Regional College-North", "RegionalCollege-South",
+	    			            "Regional College-North", "Regional College-South",
 	    	 		            "Regional College-Midwest", "Regional College-West"));
 	     }
 	     
@@ -501,14 +519,24 @@ public class SchoolController {
 	     	 model.addAttribute("schoolRankList", Arrays.asList("Top 10", "Top 25","Top 50","Top 75","Top 100","Top 150"));
 	     }
 	     
+	     @ModelAttribute("acceptanceRateList")
+	     public void listOfacceptanceRate(Model model) {
+	     	 model.addAttribute("acceptanceRateList", Arrays.asList("<25%", "between 25% and 50%", "between 50% and 75%", "between 75% and 100%"));
+	     }
+	     
 	     @ModelAttribute("tuitionRangeList")
 	     public void listOfTuitionRanges(Model model) {
-	     	 model.addAttribute("tuitionRangeList", Arrays.asList("< 5000", "< 7500", "< 10000", "< 15000","< 20000","< 25000","< 30000","< 35000","< 40000", "< 45000"));
+	     	 model.addAttribute("tuitionRangeList", Arrays.asList("<5000", "<7500", "<10000", "<15000","<20000","<25000","<30000","<35000","<40000", "<45000","<50000"));
+	     }
+	     
+	     @ModelAttribute("totalCostRangeList")
+	     public void listOfTotalCostRanges(Model model) {
+	     	 model.addAttribute("totalCostRangeList", Arrays.asList("<15000","<20000","<25000","<30000","<35000","<40000", "<45000","<50000", "<55000","<60000", "<65000"));
 	     }
 	     
 	     @ModelAttribute("schoolSizeList")
 	     public void listOfSchoolSize(Model model) {
-	     	 model.addAttribute("schoolSizeList", Arrays.asList("Small: <2000", "Midium: between 2000 and 15000","Large: >15000"));
+	     	 model.addAttribute("schoolSizeList", Arrays.asList("Small(<2000)", "Midium(between 2000 and 15000)","Large(>15000"));
 	     }
 	      
 	     @ModelAttribute("recommandationLetters")

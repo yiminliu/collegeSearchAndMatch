@@ -32,8 +32,9 @@
 				</c:if>   
 				<!--<th>Size(Students)</th>
                 <th>Type</th>-->
-				<th>Tuition+Fees<font size="1"></font></th>
-				<th>Room+Board<font size="1"></font></th>
+				<!--<th>Tuition+Fees<font size="1"></font></th>
+				<th>Room+Board<font size="1"></font></th>-->
+				<th>Total Cost<font size="1"></font>
 				<th>Accept. Rate<font size="1"></font></th>
 				<th>SAT I/ACT<font size="1">(25th - 75th%)</font></th>
 				<th>SAT II Required</th>
@@ -68,7 +69,7 @@
 		    		</c:if>
             		<!--<td>${school.size}</td>
                     <td>${school.type}</td>-->
-                    <c:choose>
+                    <!--<c:choose>
                        <c:when test="${school.tuitionFee >= 0}">
 					      <td>$${school.tuitionFee}</td>
 					   </c:when> 
@@ -80,6 +81,20 @@
                        <c:when test="${school.roomBoard >= 0}">
 					      <td>$${school.roomBoard}</td>
 					   </c:when> 
+					   <c:otherwise>
+					      <td>N/A</td>
+					   </c:otherwise>
+					</c:choose>-->
+					<c:choose>
+                       <c:when test="${school.tuitionFee != null && school.roomBoard !=null}">
+					      <td>$${school.tuitionFee + school.roomBoard}</td>
+					   </c:when> 
+				       <c:when test="${school.tuitionFee != null && school.roomBoard ==null}">
+					      <td>$${school.tuitionFee} + null</td>
+					   </c:when>
+					   <c:when test="${school.tuitionFee == null && school.roomBoard !=null}">
+					      <td>null + $${school.roomBoard}</td>
+					   </c:when>
 					   <c:otherwise>
 					      <td>N/A</td>
 					   </c:otherwise>

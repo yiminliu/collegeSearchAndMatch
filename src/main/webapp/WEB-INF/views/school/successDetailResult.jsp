@@ -108,12 +108,21 @@
               	<th>Application Deadline<font size="1">(mm-dd)</font></th>
               	<th>Early Decision Deadline<font size="1">(mm-dd)</font></th>
               	<th>SAT/ACT Received Deadline<font size="1">(mm-dd)</font></th>
-              	<th>SAT/ACT Not Required<font size="1"></font></th>
-				<th>Application Fee<font size="1"></font></th>
+             	<th>Application Fee<font size="1"></font></th>
 				<th>Top 10% of High School Class</th>
 			</tr>
 		    <tr>
-            	<td>${school.rankOverall}</td>
+            	 <c:choose>
+                       <c:when test="${school.rankOverall > 0}">
+					      <td>${school.rankOverall}</td>
+					   </c:when> 
+					   <c:when test="${school.rankOverall < 0}">
+					      <td>Not Ranked</td>
+					   </c:when>  
+					   <c:otherwise>
+					      <td>Not Reported</td>
+					   </c:otherwise>
+					</c:choose> 
             	<td>${school.acceptRate}%</td>
             	<td>${school.selectivity}</td>
             	<td>${school.reputationScore}</td>

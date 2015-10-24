@@ -30,6 +30,8 @@ public class SchoolUtil {
 		   		 }  
 		   	}	
 		} 
+		if(value != null && value.length() <1)
+		   value = null;	
 		return value;
 	}
 

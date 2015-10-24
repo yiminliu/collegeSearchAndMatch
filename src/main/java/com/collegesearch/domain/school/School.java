@@ -74,6 +74,7 @@ public class School implements java.io.Serializable {
 	private String  Phone;
 	private String  website;
 	private Integer maxResults;
+	private Integer totalCost;
 	
 	/*private Set<PrincetonReviewPopularMajor> goodAtMajors = new HashSet<PrincetonReviewPopularMajor>();
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="item", cascade={CascadeType.ALL, CascadeType.REMOVE})//, orphanRemoval=true)
@@ -375,6 +376,10 @@ public class School implements java.io.Serializable {
 		return this.numberOfRequiredSat2;
 	}
 
+	public void setNumberOfRequiredSat2(Integer numberOfRequiredSat2) {
+		this.numberOfRequiredSat2 = numberOfRequiredSat2;
+	}
+	
     @Column(name="Percentage_Classes_Fewer_Than_20_students", precision=12, scale=0)
     public Float getPercentageClassesFewerThan20Students() {
         return this.percentageClassesFewerThan20Students;
@@ -434,15 +439,19 @@ public class School implements java.io.Serializable {
 		return maxResults;
 	}
 
-
 	public void setMaxResults(Integer maxResults) {
 		this.maxResults = maxResults;
 	}
-
-	public void setNumberOfRequiredSat2(Integer numberOfRequiredSat2) {
-		this.numberOfRequiredSat2 = numberOfRequiredSat2;
+ 
+	@Transient
+	public Integer getTotalCost() {
+		return totalCost;
 	}
 
+	public void setTotalCost(Integer totalCost) {
+		this.totalCost = totalCost;
+	}
+		
 	@Column(name = "Accept_Rate")
 	public Float getAcceptRate() {
 		return this.acceptRate;

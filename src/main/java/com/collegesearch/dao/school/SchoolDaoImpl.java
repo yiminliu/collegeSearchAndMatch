@@ -103,7 +103,9 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	        if(value == null || value.isEmpty())
 	           continue;	
 	        if(key.equalsIgnoreCase("rankOverall") && value.startsWith("Top"))
-	           value = value.substring(4);	
+	           value = value.substring(4);
+	        if(key.equalsIgnoreCase("acceptRate") && value.endsWith("%"))
+		       value = value.replace("%", "");
 	        if((key.equalsIgnoreCase("tuitionFee") || key.equalsIgnoreCase("roomBoard")) && value.startsWith("<"))
 		       value = value.substring(2);
 	        if(key.equalsIgnoreCase("name") && value.contains("Washington University in St"))
@@ -145,27 +147,44 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	  	   	   case "rankOverall": case "tuitionFee": case "roomBoard": 
 	 	   		   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
 	 	   		   break;
-	 	   	  
+	  	       //case "totalCost": 
+	 	   	   //	   schoolCriteria.add(Restrictions.le(sum("tuitionFee", "roomBoard"), Integer.parseInt(value))); 
+	 	   	   //	   break;
 	 	   	   case "toefl":
 	 	   		 schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
 	 	   	     schoolCriteria.add(Restrictions.gt(key, 0)); 
 		   	     break;
-	 	       case "sat1Score": case "actScore": case "exactMatch": case "maxresults": case "maxResults": case "submit":
- 	   		     break;   
-	 	       case "size":    
+	 	       case "sat1Score": case "actScore": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
+ 	   		     break;  
+	 	       case "size": case "acceptRate":   
  	   		     if(value.indexOf("between") >= 0){
- 		            String lowerValue = value.substring(value.indexOf("between") + 10, value.indexOf(" "));
- 		        	String upperValue = value.substring(value.indexOf("and") + 5);
- 		        	schoolCriteria.add(Restrictions.le(key, Integer.parseInt(upperValue))); 
- 		 	   	    schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(lowerValue))); 
+ 		            String lowerValue = value.substring(value.indexOf("between") + 8, value.indexOf("and")-1);
+ 		            String upperValue = value.substring(value.indexOf("and") + 4);
+ 		            if(key.equalsIgnoreCase("size")){
+ 		           	   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(upperValue)));
+ 		           	   schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(lowerValue))); 
+ 		            }
+ 		            else if(key.equalsIgnoreCase("acceptRate")){
+			        	 schoolCriteria.add(Restrictions.le(key, Float.parseFloat(upperValue)));
+			        	 schoolCriteria.add(Restrictions.gt(key, Float.parseFloat(lowerValue)));
+ 		            }
  		         }
- 	   		     else if(value.indexOf("<") > 0) {
- 			           value = value.substring(value.indexOf("<") + 1);
- 			          schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
+ 	   		     else if(value.indexOf("<") >= 0) {
+ 			          if(key.equalsIgnoreCase("size")){
+ 			        	 value = value.substring(value.indexOf("<") + 1, value.indexOf(")")); 
+ 			             schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
+ 			          }
+ 			          else if(key.equalsIgnoreCase("acceptRate")){
+ 			        	 value = value.substring(value.indexOf("<") + 1);
+ 			             schoolCriteria.add(Restrictions.le(key, Float.parseFloat(value)));
+ 			          }   
  	   		     }
- 	   		     else if(value.indexOf(">") > 0){
- 				      value = value.substring(value.indexOf(">") + 1);
- 				      schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(value))); 
+ 	   		     else if(value.indexOf(">") >= 0){
+ 				      value = value.substring(value.indexOf(">") + 1, value.indexOf(")"));
+ 				      if(key.equalsIgnoreCase("size"))
+ 			             schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(value))); 
+ 			          else if(key.equalsIgnoreCase("acceptRate"))
+ 			        	 schoolCriteria.add(Restrictions.gt(key, Float.parseFloat(value)));
  		        }	 
  	   		    break; 
 	 	   	   default:     
