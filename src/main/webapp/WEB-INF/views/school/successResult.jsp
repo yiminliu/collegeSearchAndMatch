@@ -120,14 +120,14 @@
 					</c:choose>  
 					<td>${school.numberOfRequiredSat2}</td>
 					<c:choose>
-					  <c:when test="${school.toefl < 0}">
+					  <c:when test="${school.internationalStudentApplication.minimumToeflScore < 0}">
                         <td>Not Required</td>
                       </c:when>
-					  <c:when test="${school.toefl == 0}">
+					  <c:when test="${school.internationalStudentAapplication.minimumToeflScore == 0}">
                         <td>N/A</td>
                       </c:when>
                       <c:otherwise>
-                        <td>${school.toefl}</td> 
+                        <td>${school.internationalStudentApplication.minimumToeflScore}</td> 
                       </c:otherwise>
                     </c:choose>
 					<!--<td>${school.selectivity}</td>-->
@@ -148,7 +148,7 @@
                       </c:otherwise>
                     </c:choose>     
 					<td>${school.city}, ${school.state}</td>
-					<!--<td>${school.internationalFinancialAid}</td>-->
+					<!--<td>${school.internationalStudentApplication.financialAid}</td>-->
 					<!--<td><a id="website" href="<spring:url value="/collegeSearch/school/getSchool/${school.website}" />">${school.website}</a></td>-->
 			    </tr>
 		   </c:forEach>

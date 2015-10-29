@@ -101,8 +101,8 @@
            <div class="section_title">Admission Info</div>
            <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
-              	<th>Overall Rank</th>
-              	<th>Acceptance Rate<font size="1"></font></th>
+              	<th>Rank</th>
+              	<th>Accept Rate<font size="1"></font></th>
               	<th>Selectivity</th>
               	<th>Reputation Score</th>
               	<th>Application Deadline<font size="1">(mm-dd)</font></th>
@@ -157,36 +157,12 @@
 		  <div class="section_title" style="font-size: 90%;">Admission Requirements</div>
            <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
-              	<th>Minimum TOEFL Score</th>
-              	<th>Minimum IELTS Score</th>
-            	<th>SAT I Score<font size="1">(25th% - 75th%)</font></th>
+             	<th>SAT I Score<font size="1">(25th% - 75th%)</font></th>
 				<th>ACT Score<font size="1">(25th% - 75th%)</font></th>
 				<th>SAT/ACT Not Required</th>
 				<th>SAT II Required</th>
 			 </tr>
 		     <tr>
-                <c:choose>
-				  <c:when test="${school.toefl < 0}">
-                     <td>Not Required</td>
-                  </c:when>
-				  <c:when test="${school.toefl == 0}">
-                     <td>N/A</td>
-                  </c:when>
-                  <c:otherwise>
-                    <td>${school.toefl}</td> 
-                  </c:otherwise>
-                </c:choose>
-                <c:choose>
-				  <c:when test="${school.ielts < 0}">
-                     <td>Not Required</td>
-                  </c:when>
-				  <c:when test="${school.ielts == 0}">
-                     <td>N/A</td>
-                  </c:when>
-                  <c:otherwise>
-                     <td>${school.ielts}</td> 
-                  </c:otherwise>
-               </c:choose>
                <c:choose>
                	  <c:when test="${school.sat1Percentile25 <= 0}">
                      <td>N/A</td>
@@ -214,6 +190,80 @@
 				 <td>${school.numberOfRequiredSat2}</td>
 			 </tr>
 		  </table>
+		  <div class="section_title" style="font-size: 90%;">International Student Application</div>
+           <table class="datatable" style="font-size: 80%; margin-left: 0px">
+             <tr style="background-color: Ivory;">
+              	<th>Minimum/Average TOEFL Score</th>
+              	<th>Minimum/Average IELTS Score</th>
+            	<th>Seperate Application Form Required</th>
+            	<th>TOEFL Accepted Instead of Sat/Act</th>
+				<th>Conditional Admission Offered</th>
+				<th>International Student Application Deadline_Fall/Spring</th>
+				<th>International Students Applyed/Accepted/Enrolled</th>
+				<th>International Addmision Contact</th>
+				<c:choose>
+				  <c:when test="${school.internationalStudentApplication.note != null}">
+				     <th>Note</th>
+				  </c:when>
+				</c:choose>     
+			 </tr>
+		     <tr>
+                <c:choose>
+				  <c:when test="${school.internationalStudentApplication.minimumToeflScore < 0}">
+                     <td>Not Required</td>
+                  </c:when>
+				  <c:when test="${school.internationalStudentApplication.minimumToeflScore == null && school.internationalStudentApplication.averageToeflScore == null}">
+                     <td>N/A</td>
+                  </c:when>
+                  <c:otherwise>
+                    <td>${school.internationalStudentApplication.minimumToeflScore}/${school.internationalStudentApplication.averageToeflScore}</td> 
+                  </c:otherwise>
+                </c:choose>
+                <c:choose>
+				  <c:when test="${school.internationalStudentApplication.minimumIeltsScore < 0}">
+                     <td>Not Required</td>
+                  </c:when>
+				  <c:when test="${school.internationalStudentApplication.minimumIeltsScore == null}">
+                     <td>N/A</td>
+                  </c:when>
+                  <c:otherwise>
+                     <td>${school.internationalStudentApplication.minimumIeltsScore}/${school.internationalStudentApplication.averageIeltsScore}</td> 
+                  </c:otherwise>
+               </c:choose>
+               <c:choose>
+               	  <c:when test="${school.internationalStudentApplication.separateApplicationFormRrequired}">
+                     <td>N/A</td>
+                  </c:when>
+                  <c:otherwise>
+				    <td>${school.internationalStudentApplication.separateApplicationFormRrequired}</td>
+				  </c:otherwise>
+			   </c:choose>   
+			   <c:choose>
+               	  <c:when test="${school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct == null}">
+                     <td>N/A</td>
+                  </c:when>
+                  <c:otherwise>
+				    <td>${school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct}</td>
+				  </c:otherwise>
+			   </c:choose> 
+			  <c:choose>
+               	  <c:when test="${school.internationalStudentApplication.conditionalAdmissionOffered == null}">
+                     <td>N/A</td>
+                  </c:when>
+                  <c:otherwise>
+				    <td>${school.internationalStudentApplication.conditionalAdmissionOffered}</td>
+				  </c:otherwise>
+			   </c:choose> 
+			   <td>${school.internationalStudentApplication.applicationDeadlineFall}/${school.internationalStudentApplication.applicationDeadlineSpring}</td>
+			   <td>${school.internationalStudentApplication.internationalStudentsApplying}/${school.internationalStudentApplication.internationalStudentsAccepted}/${school.internationalStudentApplication.internationalFreshmenEnrolled}</td>
+			   <td>${school.internationalStudentApplication.contact}</td>
+			   <c:choose>
+				  <c:when test="${school.internationalStudentApplication.note != null}">
+				     <th>${school.internationalStudentApplication.note}</th>
+				  </c:when>
+				</c:choose>  
+			 </tr>
+		  </table>
 		  <div class="section_title">Cost and Financial Info</div>
           <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
@@ -230,7 +280,7 @@
 				   <td>$${school.instateTuitionFee}</td>
 				</c:if>   
 				<td>$${school.roomBoard}</td>
-				<td>${school.internationalFinancialAid}</td>
+				<td>${school.internationalStudentApplication.financialAid}</td>
 			 </tr>
 		  </table>
 		  <div class="section_title">Best Majors</div>

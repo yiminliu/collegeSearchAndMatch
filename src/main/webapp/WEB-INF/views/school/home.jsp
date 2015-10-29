@@ -300,7 +300,7 @@
           <td>
 		    <ul>
 		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT1</a></li>
-              <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?internationalFinancialAid=yes">Colleges Provides Financial Aids for International Students</a></li>
+              <!--<li><a href="http://localhost:8080/collegeSearch/school/searchSchools?school.internationalStudentApplication.financialAid=yes">Colleges Provides Financial Aids for International Students</a></li>-->
               <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Business">Value Colleges(quality/price ratio and the scholarships or grants)</a></li>
             </ul>
           </td>

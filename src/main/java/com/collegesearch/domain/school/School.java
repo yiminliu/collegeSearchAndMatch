@@ -4,15 +4,19 @@ package com.collegesearch.domain.school;
 
 import java.util.Comparator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Boost;
@@ -20,6 +24,7 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 
@@ -50,8 +55,6 @@ public class School implements java.io.Serializable {
     private Float   percentageClassesMoreThan50Students;
     private Float   percentageClassesBetween25And50Students;
   	private Integer applicationFee;
-	private Integer toefl;
-	private Integer ielts;
 	private Integer sat1Percentile25;
 	private Integer sat1Percentile75;
 	private Integer actPercentile25;
@@ -69,12 +72,14 @@ public class School implements java.io.Serializable {
 	private Integer hsClassTop10Percentage;
 	private Float   studentFacultyRatio;
 	private String  category;
-	private String  internationalFinancialAid;
 	private String  calendar;
 	private String  Phone;
 	private String  website;
 	private Integer maxResults;
 	private Integer totalCost;
+	private InternationalStudentApplication internationalStudentApplication;
+	
+	
 	
 	/*private Set<PrincetonReviewPopularMajor> goodAtMajors = new HashSet<PrincetonReviewPopularMajor>();
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="item", cascade={CascadeType.ALL, CascadeType.REMOVE})//, orphanRemoval=true)
@@ -95,6 +100,40 @@ public class School implements java.io.Serializable {
 	}
 	*/
 	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+	//@Fetch(FetchMode.JOIN)
+	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	@IndexedEmbedded
+	public InternationalStudentApplication getInternationalStudentApplication() {
+		return internationalStudentApplication;
+	}
+
+	public void setInternationalStudentApplication(
+			InternationalStudentApplication internationalStudentApplication) {
+		this.internationalStudentApplication = internationalStudentApplication;
+	}
+	
+	/*
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Fetch(FetchMode.JOIN)
+	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	@IndexedEmbedded
+	public ImsNewFeature getNewFeature() {	
+	    return this.newFeature;
+	}
+	public void setNewFeature(ImsNewFeature newFeature) {
+		this.newFeature = newFeature;
+	}
+	
+	public void addNewFeature(ImsNewFeature newFeature ){
+		if(getNewFeature() != null)
+			setNewFeature(null);
+		//if(newFeature.getItemCode() == null || !newFeature.getItemCode().equalsIgnoreCase(getItemcode()))
+		//	newFeature.setItemCode(getItemcode());
+		newFeature.setItem(this);
+		this.newFeature = newFeature;
+	}
+	*/
 	@DocumentId
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -208,24 +247,6 @@ public class School implements java.io.Serializable {
 
 	public void setApplicationFee(Integer applicationFee) {
 		this.applicationFee = applicationFee;
-	}
-
-	@Column(name = "Toefl")
-	public Integer getToefl() {
-		return this.toefl;
-	}
-
-	public void setToefl(Integer toefl) {
-		this.toefl = toefl;
-	}
-
-	
-	public Integer getIelts() {
-		return ielts;
-	}
-
-	public void setIelts(Integer ielts) {
-		this.ielts = ielts;
 	}
 
 	@Column(name = "SAT1_percentile_25")
@@ -533,15 +554,6 @@ public class School implements java.io.Serializable {
 		this.category = category;
 	}
 
-	@Column(name = "Intl_Financial_Aid", length = 40)
-	public String getInternationalFinancialAid() {
-		return this.internationalFinancialAid;
-	}
-
-	public void setInternationalFinancialAid(String internationalFinancialAid) {
-		this.internationalFinancialAid = internationalFinancialAid;
-	}
-
 	@Column(name = "Calendar", length = 10)
 	public String getCalendar() {
 		return this.calendar;
@@ -596,7 +608,6 @@ public class School implements java.io.Serializable {
 		this.roomBoard = roomBoard;
 		this.applicationDeadline = applicationDeadline;
 		this.applicationFee = applicationFee;
-		this.toefl = toefl;
 		this.sat1Percentile25 = sat1Percentile25;
 		this.sat1Percentile75 = sat1Percentile75;
 		this.numberOfRequiredSat2 = sat2;
@@ -607,7 +618,6 @@ public class School implements java.io.Serializable {
 		this.hsClassTop10Percentage = hsClassTop10Percentage;
 		this.studentFacultyRatio = studentFacultyRatio;
 		this.category = category;
-		this.internationalFinancialAid = intFinacialAid;
 		this.calendar = calendar;
 		this.website = website;
 	}
@@ -640,7 +650,7 @@ public class School implements java.io.Serializable {
 				+ ", state=" + state + ", setting=" + setting + ", size="
 				+ size + ", tuitionFee=" + tuitionFee + ", roomBoard="
 				+ roomBoard + ", applicationDeadline=" + applicationDeadline
-				+ ", applicationFee=" + applicationFee + ", toefl=" + toefl
+				+ ", applicationFee=" + applicationFee 
 				+ ", sat1Percentile25=" + sat1Percentile25 + ", sat1Percentile75="
 				+ sat1Percentile75 + ", sat2=" + numberOfRequiredSat2 + ", acceptRate="
 				+ acceptRate + ", rankOverall=" + rankOverall
@@ -648,7 +658,7 @@ public class School implements java.io.Serializable {
 				+ selectivity + ", hsClassTop10Percentage=" + hsClassTop10Percentage
 				+ ", studentFacultyRatio=" + studentFacultyRatio
 				+ ", category=" + category + ", intFinacialAid="
-				+ internationalFinancialAid + ", calendar=" + calendar + ", website="
+				+ ", calendar=" + calendar + ", website="
 				+ website + "]";
 	}
 
