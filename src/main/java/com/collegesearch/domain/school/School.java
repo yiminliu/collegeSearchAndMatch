@@ -78,6 +78,8 @@ public class School implements java.io.Serializable {
 	private Integer maxResults;
 	private Integer totalCost;
 	private InternationalStudentApplication internationalStudentApplication;
+	private Float anticipationIndex;
+	private String applicationNote;
 	
 	
 	
@@ -579,6 +581,24 @@ public class School implements java.io.Serializable {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	@Transient
+	public Float getAnticipationIndex() {
+		return anticipationIndex;
+	}
+
+	public void setAnticipationIndex(Float anticipationIndex) {
+		this.anticipationIndex = anticipationIndex;
+	}
+	
+	@Transient	
+	public String getApplicationNote() {
+		return applicationNote;
+	}
+
+	public void setApplicationNote(String applicationNote) {
+		this.applicationNote = applicationNote;
 	}
 
 	public School() {

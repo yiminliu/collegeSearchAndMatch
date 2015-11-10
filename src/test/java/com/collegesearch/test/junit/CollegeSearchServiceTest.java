@@ -230,6 +230,33 @@ public class CollegeSearchServiceTest {
 		//	System.out.println("school = " + s.toString());
 		//}
 	}
+	
+	@Test
+	public void testGetScholsByTOEFLQueryParameters() {
+		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		String toeflScore = "60";
+		String ieltsScore = "8";
+		//params.put("internationalStudentApplication.toeflScore", Arrays.asList(new String[]{toeflScore}));
+		//params.put("internationalStudentApplication.ieltsScore", Arrays.asList(new String[]{ieltsScore}));
+		//params.put("internationalStudentApplication.conditionalAdmissionOffered", Arrays.asList(new String[]{"Yes"}));
+		params.put("internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct", Arrays.asList(new String[]{"Yes"}));
+		
+		
+		List<School> sList = schoolService.getSchools(params);
+		List<School> schoolsAdjustedBySAT1Standard = new ArrayList<School>(sList.size());
+		//for(School school : sList){
+		//    if(Integer.valueOf(sat1Score) >= SchoolUtil.adjustSchoolStandardforSatOrActScores(school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
+		//      schoolsAdjustedBySAT1Standard.add(school);
+		//} 
+		//assertNotNull(schoolsAdjustedBySAT1Standard);
+		System.out.println("number of schools returned = "+sList.size()); 
+		assertNotEquals(0, sList.size());
+		//for(School s : pList){
+		//	System.out.println("school = " + s.toString());
+		//}
+	}
 	 
 
 	@Test

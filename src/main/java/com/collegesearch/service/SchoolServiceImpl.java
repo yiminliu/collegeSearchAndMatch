@@ -143,29 +143,27 @@ public class SchoolServiceImpl implements SchoolService {
 	
 	private List<School> doMatch(List<School> oriSchoolList, final LinkedHashMap<String, List<String>> queryParams){
 		List<School> finalSchoolList = null;
-		String sat1Score = SchoolUtil.getValue(queryParams, "sat1Score");
-		String actScore = SchoolUtil.getValue(queryParams, "actScore");
-		if(sat1Score != null || actScore != null)
-			finalSchoolList = matchSatOrAct(oriSchoolList, sat1Score, actScore);	
+		String studentSat1Score = SchoolUtil.getValue(queryParams, "sat1Score");
+		String studentActScore = SchoolUtil.getValue(queryParams, "actScore");
+		String studentToeflScore = SchoolUtil.getValue(queryParams, "internationalStudentApplication.toeflScore");
+		String studentIeltsScore = SchoolUtil.getValue(queryParams, "internationalStudentApplication.ieltsScore");
+		if(studentSat1Score != null || studentActScore != null)
+			finalSchoolList = eveluateSatOrAct(oriSchoolList, studentSat1Score, studentActScore);	
 		else
 			finalSchoolList = oriSchoolList;
+		if(studentToeflScore != null || studentIeltsScore != null)
+		    finalSchoolList = eveluateToeflAndIeltsScores(finalSchoolList, studentToeflScore, studentIeltsScore);
 		
-		//String toeflScore = SchoolUtil.getValue(queryParams, "toefl");
-		//if(toeflScore != null && toeflScore.length() > 0 && !toeflScore.equals("0"))
-		//	finalSchoolList = matchSatOrAct(oriSchoolList, sat1Score, actScore);	
-		/*String ieltsScore = SchoolUtil.getValue(queryParams, "ieltsScore");
-		if(toeflScore != null || ieltsScore != null)
-			finalSchools = matchToeflOrIelts(finalSchools, toeflScore, ieltsScore);
-		
-		String gpa = SchoolUtil.getValue(queryParams, "gpa");
+		/*String gpa = SchoolUtil.getValue(queryParams, "gpa");
 		if(gpa != null)
-			finalSchools = matchGPA(finalSchools, gpa);
+			finalSchools = eveluateGPA(finalSchools, gpa);
 		*/	
 		return finalSchoolList;
 	}
 	
-	private List<School> matchSatOrAct(List<School> oriSchoolList, String sat1Score, String actScore){
+	private List<School> eveluateSatOrAct(List<School> oriSchoolList, String sat1Score, String actScore){
 		int score = 0;
+		Float acceptRate = null;
 		List<School> adjustedSchoolList = null;
 		//check SAT1 score first
 		if(sat1Score != null && sat1Score.length() > 0 && !sat1Score.equals("0")){
@@ -181,13 +179,18 @@ public class SchoolServiceImpl implements SchoolService {
 			 score = Integer.parseInt(actScore);
 			 adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
 			 for(School school : oriSchoolList){
+				 acceptRate = school.getAcceptRate();
+				 if(acceptRate == null)
+					 acceptRate = 100f; 
 				 if(school.getActPercentile25() != null && school.getActPercentile25() != 0){
-			        if(SchoolUtil.isTestScoreSatisfied(score, school.getActPercentile25(), school.getActPercentile75(), school.getAcceptRate()))
-			        	adjustedSchoolList.add(school);
+					 System.out.println("ACT:"+school.getName() + school.getActPercentile25() + "/"+school.getActPercentile75());
+			        if(SchoolUtil.isTestScoreSatisfied(score, school.getActPercentile25(), school.getActPercentile75(), acceptRate))
+			           adjustedSchoolList.add(school);
 				 }
-				 else {
+				 else if(school.getSat1Percentile25() != null && school.getSat1Percentile75() != null){
 					int satScore = SchoolUtil.convertActToSat(score);
-				    if(SchoolUtil.isTestScoreSatisfied(satScore, school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
+					System.out.println("SAT:"+school.getName() + school.getSat1Percentile25() + "/"+school.getSat1Percentile75());
+				    if(SchoolUtil.isTestScoreSatisfied(satScore, school.getSat1Percentile25(), school.getSat1Percentile75(), acceptRate))
 				    	adjustedSchoolList.add(school);
 				 }
 					 
@@ -197,6 +200,72 @@ public class SchoolServiceImpl implements SchoolService {
 		   return adjustedSchoolList;
 		else
 		   return oriSchoolList;
+	}
+	
+	//6 cases: 
+	//1. student' Toefl <==> school average Toefl;  2. student' Toefl <==> school minimum Toefl
+	//3. student' Ielts <==> school average Ieltsl; 4. student' Ielts <==> school minimum Ielts
+	//5. student' Ielts <==> school average Toefl; 4. student' Ielts <==> school minimum Toefl
+	private List<School> eveluateToeflAndIeltsScores(List<School> oriSchoolList, String studentToeflScore, String studentIeltsScore){
+		int score = 0;
+		Integer minToefl = null;
+		Integer avgToefl = null;
+		Integer minIelts = null;
+		Integer avgIelts = null;
+		List<School> adjustedSchoolList = null;
+		//if students's Toefl or Ielts scores present, go ahead
+		if((studentToeflScore != null && studentToeflScore.length() > 0 && !studentToeflScore.equals("0")) ||
+			studentIeltsScore != null && studentIeltsScore.length() > 0 && !studentIeltsScore.equals("0")){
+		    adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
+		    for(School school : oriSchoolList){
+			   minToefl = school.getInternationalStudentApplication().getMinimumToeflScore();
+			   avgToefl = school.getInternationalStudentApplication().getAverageToeflScore();
+			   minIelts = school.getInternationalStudentApplication().getMinimumIeltsScore();
+			   avgIelts = school.getInternationalStudentApplication().getAverageIeltsScore(); 
+		
+			   //student's Toefl score presents		   
+			   if(studentToeflScore != null && studentToeflScore.length() > 0 && !studentToeflScore.equals("0")){ 
+			      score = Integer.parseInt(studentToeflScore);  
+			      //school's average Toefl requirements present
+			      if(avgToefl != null && avgToefl > 0 && score > avgToefl){
+			         school.setAnticipationIndex(((score-avgToefl)*1.0f/avgToefl)*1.1f);
+				     adjustedSchoolList.add(school);
+			      }
+			      //only school's minimum Toefl requirement presents   
+			      else if(minToefl != null && minToefl > 0 && score > minToefl){
+				     school.setAnticipationIndex(((score-minToefl)*1.0f/minToefl)*1.0f);
+				     adjustedSchoolList.add(school);
+			      }
+			   }  
+		
+			   //student's Toefl score not present but Ielts score presents
+			   else if(studentIeltsScore != null && studentIeltsScore.length() > 0 && !studentIeltsScore.equals("0")){
+				     score = Integer.parseInt(studentIeltsScore);  
+				     //case 1. school's average Ielts requirement presents 
+				     if(avgIelts != null && avgIelts > 0 && score >= avgIelts){
+					    school.setAnticipationIndex(((score-avgIelts)/avgIelts)*1.1f);
+					    adjustedSchoolList.add(school);
+				     }
+				     //case 2. school's minimum Ielts requirement presents
+				     else if(minIelts != null && minIelts > 0 && score >= minIelts){
+					    school.setAnticipationIndex(((score-minIelts)/minIelts)*1.0f);
+					    adjustedSchoolList.add(school);
+				     }		
+				     //case 3. school's Ielts requirement not presents, nut average Toefl requirement presents
+				     else if(avgToefl != null && avgToefl > 0 && score >= avgToefl){
+				    	 score = SchoolUtil.convertIeltsToToefl(studentIeltsScore);
+				         school.setAnticipationIndex(((score-avgToefl)/avgToefl)*1.1f);
+					     adjustedSchoolList.add(school);
+				      }
+				      //case 4. school's Ielts requirement not presents, nut minimal Toefl requirement presents   
+				      else if(minToefl != null && minToefl > 0 && score >= minToefl){
+					     school.setAnticipationIndex(((score-minToefl)/minToefl)*1.0f);
+					     adjustedSchoolList.add(school);
+				      }
+			   }			  
+		    } 
+		}
+		return adjustedSchoolList;
 	}
 	
 	private List<School> filterByTotalCost(List<School> oriSchoolList, int totalCost){

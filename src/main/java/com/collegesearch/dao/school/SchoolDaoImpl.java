@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+
+
+
 import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
@@ -22,6 +25,7 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.dsl.TermContext;
+import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -71,7 +75,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		  maxResults = Integer.valueOf(SchoolUtil.getValue(queryParams, "maxResults"));
 	   Set<Map.Entry<String, List<String>>> entrySet = queryParams.entrySet();
 	   Iterator<Map.Entry<String, List<String>>> it = entrySet.iterator();
-	   //DetachedCriteria newFeatureCriteria = null;
+	   DetachedCriteria internationalApplicationCriteria = null;
 	   DetachedCriteria schoolCriteria = DetachedCriteria.forClass(School.class);
 	   String key, value = null;
 	   List<String> values = null;
@@ -141,7 +145,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	   	  //     newFeatureCriteria = addNewFeatureRestrictions(newFeatureCriteria, key, value);
 	      // 	   continue;
 		  //  }
-	 	   
+	 	  //newFeatureCriteria.add(Restrictions.eq(key, Grade.instanceOf(value)));
 	 	  
 	 	   	switch(key) {
 	  	   	   case "rankOverall": case "tuitionFee": case "roomBoard": 
@@ -151,23 +155,49 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	 	   	   //	   schoolCriteria.add(Restrictions.le(sum("tuitionFee", "roomBoard"), Integer.parseInt(value))); 
 	 	   	   //	   break;
 	 	   	   case "toefl":
-	 	   		 schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
-	 	   	     schoolCriteria.add(Restrictions.gt(key, 0)); 
-		   	     break;
-	 	       case "sat1Score": case "actScore": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
- 	   		     break;  
-	 	       case "size": case "acceptRate":   
- 	   		     if(value.indexOf("between") >= 0){
- 		            String lowerValue = value.substring(value.indexOf("between") + 8, value.indexOf("and")-1);
- 		            String upperValue = value.substring(value.indexOf("and") + 4);
- 		            if(key.equalsIgnoreCase("size")){
- 		           	   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(upperValue)));
- 		           	   schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(lowerValue))); 
- 		            }
- 		            else if(key.equalsIgnoreCase("acceptRate")){
+	 	   	       schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
+	 	   	       schoolCriteria.add(Restrictions.gt(key, 0)); 
+		   	       break;
+	 	       case "internationalStudentApplication.ieltsScore":
+		 		   key = "minimumIeltsScore"; 
+		 		   if(internationalApplicationCriteria == null)
+		 			  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
+		 	       internationalApplicationCriteria.add(Restrictions.le(key, Integer.parseInt(value)));
+		 	       internationalApplicationCriteria.add(Restrictions.gt(key, 0));
+		 		   break;   
+		       case "internationalStudentApplication.toeflScore":
+		 		   key = "minimumToeflScore"; 
+		 		   if(internationalApplicationCriteria == null)
+		 			  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
+		 	       internationalApplicationCriteria.add(Restrictions.le(key, Integer.parseInt(value)));
+		 	       internationalApplicationCriteria.add(Restrictions.gt(key, 0));
+		   	       break;  
+		       case "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct":
+			       key = "toeflAcceptedInsteadOfSatOrAct"; 
+				   if(internationalApplicationCriteria == null)
+				   	  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
+				   internationalApplicationCriteria.add(Restrictions.eq(key, value).ignoreCase()); 
+				   break;   
+		       case "internationalStudentApplication.conditionalAdmissionOffered":
+		    	   key = "conditionalAdmissionOffered"; 
+			 	   if(internationalApplicationCriteria == null)
+			 		  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
+			 	   internationalApplicationCriteria.add(Restrictions.eq(key, value).ignoreCase()); 
+			   	   break;  
+		       case "sat1Score": case "actScore": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
+ 	   		       break;  
+		       case "size": case "acceptRate":   
+ 	   		       if(value.indexOf("between") >= 0){
+ 		              String lowerValue = value.substring(value.indexOf("between") + 8, value.indexOf("and")-1);
+ 		           String upperValue = value.substring(value.indexOf("and") + 4);
+ 		           if(key.equalsIgnoreCase("size")){
+ 		              schoolCriteria.add(Restrictions.le(key, Integer.parseInt(upperValue)));
+ 		              schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(lowerValue))); 
+ 		           }
+ 		           else if(key.equalsIgnoreCase("acceptRate")){
 			        	 schoolCriteria.add(Restrictions.le(key, Float.parseFloat(upperValue)));
 			        	 schoolCriteria.add(Restrictions.gt(key, Float.parseFloat(lowerValue)));
- 		            }
+ 		           }
  		         }
  	   		     else if(value.indexOf("<") >= 0) {
  			          if(key.equalsIgnoreCase("size")){
@@ -185,8 +215,8 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
  			             schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(value))); 
  			          else if(key.equalsIgnoreCase("acceptRate"))
  			        	 schoolCriteria.add(Restrictions.gt(key, Float.parseFloat(value)));
- 		        }	 
- 	   		    break; 
+ 		         }	 
+ 	   		     break; 
 	 	   	   default:     
 	 	   		   schoolCriteria.add(Restrictions.eq(key, value).ignoreCase());
 	 	   		   break;
@@ -297,8 +327,13 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 			  case "Washington University in St":
 		 		 key = "Washington University in St. Louis"; 
 		   	     break;
-		   	     
-			  case "itemdesc1": case "itemDesc1":
+			  //case "internationalStudentApplication.ieltsScore":
+			  //		 key = "internationalStudentApplication.minimumIeltsScore"; 
+			  // 	     break;   
+			  //case "internationalStudentApplication.toeflScore":
+			  //		 key = "internationalStudentApplication.minimumToeflScore"; 
+			  // 	     break;  	     
+		   	  case "itemdesc1": case "itemDesc1":
 			   	 key = "itemdesc.itemdesc1";
 			   	 break;
 			 

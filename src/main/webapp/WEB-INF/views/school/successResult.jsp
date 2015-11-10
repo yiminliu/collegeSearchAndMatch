@@ -22,7 +22,8 @@
         <c:if test="${!empty schoolList}">
            <table class="datatable" style="font-size: 80%">
              <tr style="background-color: Ivory;">
-              	<th>School</th>
+                <th>School</th>
+               	<th>AI</th>
                	<c:if test="${operation=='searchSchools'}">
 				   <th>Category</th>
 				</c:if>   
@@ -36,9 +37,9 @@
 				<th>Room+Board<font size="1"></font></th>-->
 				<th>Total Cost<font size="1"></font>
 				<th>Accept. Rate<font size="1"></font></th>
-				<th>SAT I/ACT<font size="1">(25th - 75th%)</font></th>
-				<th>SAT II Required</th>
-				<th>Min. TOEFL Score</th>
+				<th>SAT I/ACT<font size="1">(25th-75th%)</font></th>
+				<!--<th>SAT II Required</th>-->
+				<th>Min./Avg. TOEFL Score</th>
 				<!--<th>Selectivity</th>-->
 				<th>Appl. Deadline<font size="1">(mm-dd)</font></th>
 				<th>Appl. Fee<font size="1"></font></th>
@@ -51,6 +52,7 @@
                     <td style="color : red"><a id="schoolDetail" href="<spring:url value="/school/getSchoolDetail/${school.id}" />">${school.name}</a></td>
 					<!--<td><a href="http://www."${school.website}></a></td>-->
 					<!--<td>${school.name}</td>-->
+					<td>${school.anticipationIndex}</td>
 					<c:if test="${operation eq 'searchSchools'}">
 					    <td>${school.category}</td>
 					</c:if>    
@@ -108,26 +110,51 @@
 					   </c:otherwise>
 					</c:choose>
 					<c:choose>
-					  <c:when test="${school.sat1Percentile25 > 0}">
-					     <td>${school.sat1Percentile25} - ${school.sat1Percentile75}</td>
-					  </c:when>   
-					  <c:when test="${school.actPercentile25 > 0}">
-                         <td>${school.actPercentile25} - ${school.actPercentile75}</td>
-                      </c:when>
+					   <c:when test="${school.sat1Percentile25 > 0 && school.satActNotRequired == 'Yes' && school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct == 'Yes'}">
+					     <td>${school.sat1Percentile25}-${school.sat1Percentile75}(*-)</td>
+					   </c:when>   
+					   <c:when test="${school.sat1Percentile25 > 0 && school.satActNotRequired == 'Yes' && school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct != 'Yes'}">
+					     <td>${school.sat1Percentile25}-${school.sat1Percentile75}(*) </td>
+					   </c:when>
+					   <c:when test="${school.sat1Percentile25 > 0 && school.satActNotRequired != 'Yes' && school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct == 'Yes'}">
+					     <td>${school.sat1Percentile25}-${school.sat1Percentile75}(-) </td>
+					   </c:when>
+					   <c:when test="${school.sat1Percentile25 > 0}">
+					      <td>${school.sat1Percentile25}-${school.sat1Percentile75}</td>
+					   </c:when>
+					   <c:when test="${school.actPercentile25 > 0 && school.satActNotRequired == 'Yes' && school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct == 'Yes'}">
+					     <td>${school.actPercentile25}-${school.actPercentile75}(*-)</td>
+					   </c:when>   
+					   <c:when test="${school.actPercentile25 > 0 && school.satActNotRequired == 'Yes' && school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct != 'Yes'}">
+					     <td>${school.actPercentile25}-${school.actPercentile75}(*) </td>
+					   </c:when>
+					   <c:when test="${school.actPercentile25 > 0 && school.satActNotRequired != 'Yes' && school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct == 'Yes'}">
+					     <td>${school.actPercentile25}-${school.actPercentile75}(-) </td>
+					   </c:when>
+					   <c:when test="${school.actPercentile25 > 0}">
+                         <td>${school.actPercentile25}-${school.actPercentile75}</td>
+                       </c:when>
                       <c:otherwise>
 					    <td>N/A</td>
 					  </c:otherwise>
 					</c:choose>  
-					<td>${school.numberOfRequiredSat2}</td>
+					<!--<td>${school.numberOfRequiredSat2}</td>-->
 					<c:choose>
 					  <c:when test="${school.internationalStudentApplication.minimumToeflScore < 0}">
                         <td>Not Required</td>
                       </c:when>
-					  <c:when test="${school.internationalStudentAapplication.minimumToeflScore == 0}">
+					  <c:when test="${school.internationalStudentApplication.minimumToeflScore == 0}">
                         <td>N/A</td>
                       </c:when>
                       <c:otherwise>
-                        <td>${school.internationalStudentApplication.minimumToeflScore}</td> 
+                        <c:choose>
+					      <c:when test="${school.internationalStudentApplication.averageToeflScore == null}">
+                            <td>${school.internationalStudentApplication.minimumToeflScore}</td> 
+                          </c:when>
+                          <c:otherwise>
+                            <td>${school.internationalStudentApplication.minimumToeflScore}/${school.internationalStudentApplication.averageToeflScore}</td> 
+                          </c:otherwise>
+                        </c:choose>
                       </c:otherwise>
                     </c:choose>
 					<!--<td>${school.selectivity}</td>-->

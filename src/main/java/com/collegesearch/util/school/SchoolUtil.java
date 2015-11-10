@@ -50,14 +50,13 @@ public class SchoolUtil {
 	}
 	
 	public static boolean applicantDataExist(final LinkedHashMap<String, List<String>> queryParams){
-		return getValue(queryParams, "toefl") !=null? true : 
-			   getValue(queryParams, "itee") !=null? true : 
+		return getValue(queryParams, "internationalStudentApplication.toeflScore") !=null? true : 
+			   getValue(queryParams, "internationalStudentApplication.ieltsScore") !=null? true : 
 			   getValue(queryParams, "sat1Score") != null? true : 
 			   getValue(queryParams, "actScore") !=null? true :	
 			   getValue(queryParams, "gpa") !=null? true : false;
 	}
 
-	@Transient
 	public static Integer adjustSchoolStandardforSatOrActScores(int percentile25, int percentile75, float acceptRate) {
 		
 		if(percentile25 <= 0 || percentile75 <= 0) {
@@ -90,7 +89,6 @@ public class SchoolUtil {
 		return Math.round(ajustedThreashold);
 	}
 	
-	@Transient
 	public static Integer adjustSchoolStandardByConvertActToSatScores(int actPercentile25, int actPercentile75, float acceptRate) {
 		
 		if(actPercentile25 <= 0 || actPercentile75 <= 0) {
@@ -222,4 +220,67 @@ public class SchoolUtil {
 		}
 		return sat;
 	}
+	
+	public static int convertIeltsToToefl(String ielts){
+		int toefl = 0;
+		switch(ielts){
+		   case "0":
+			   toefl = 0;
+			   break;
+		   case "1": 
+			   toefl = 8;
+			   break;
+		   case "2": 
+			   toefl = 16;
+			   break;   
+		   case "3": 
+			   toefl = 24;
+			   break;	 
+		   case "4": 
+			   toefl = 31;
+			   break;
+		   case "4.5": 
+			   toefl = 34;
+			   break;
+		   case "5": 
+			   toefl = 45;
+			   break;
+		   case "5.5": 
+			   toefl = 59;
+			   break;
+		   case "6": 
+			   toefl = 78;
+			   break;
+		   case "6.5": 
+			   toefl = 93;
+			   break;
+		   case "7": 
+			   toefl = 101;
+			   break;
+		   case "7.5": 
+			   toefl = 109;
+			   break;
+		   case "8": 
+			   toefl = 114;
+			   break;
+		   case "8.5": 
+			   toefl = 117;
+			   break;
+		   case "9": 
+			   toefl = 120;
+			   break;
+		}
+		return toefl;
+	}
+	/*		   0–31	0–4
+			   32–34	4.5
+			   35–45	5
+			   46–59*	5.5
+			   60–78*	6
+			   79–93*	6.5
+			   94–101*	7
+			   102–109*	7.5
+			   110–114	8
+			   115–117	8.5
+			   118–120	9	*/	   
 }

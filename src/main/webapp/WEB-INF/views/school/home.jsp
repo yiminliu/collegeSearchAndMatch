@@ -25,8 +25,8 @@
              <ul style="list-style-type:none">
                 <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Your Suitable Colleges</a></li>
                 <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Match You and the Suitable Colleges. <span style="color:red">JUST FOR YOU</span></a></li>
-                <li><a id="matchSchool" href="<spring:url value="/school/showNoSATMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;">Having TOEFL/IELTS Tests, But No SAT/ACT Yet? Still Can Find Colleges Here</a></li>
-                <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%">No TOEFL/IELTS, No SAT/ACT? Find Colleges With Conditional-Admission Available Here </a></li>
+                <li><a id="matchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%;">Colleges Accept TOEFL/IELTS Instead of SAT/ACT</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional-Admission</a></li>
              </ul>
            </td>
         </tr>
@@ -265,7 +265,7 @@
          <td>
            <ul>
 			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">Accounting Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/ Agriculture">Agriculture Majors</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Agriculture">Agriculture Majors</a></li>
 			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Biology">Biology Majors</a></li>
 			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Business_Finance">Business/Finance Majors</a></li>
 			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Communications">Communications Majors</a></li>
@@ -299,7 +299,7 @@
 	    <tr>
           <td>
 		    <ul>
-		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT1</a></li>
+		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT1/ACT</a></li>
               <!--<li><a href="http://localhost:8080/collegeSearch/school/searchSchools?school.internationalStudentApplication.financialAid=yes">Colleges Provides Financial Aids for International Students</a></li>-->
               <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Business">Value Colleges(quality/price ratio and the scholarships or grants)</a></li>
             </ul>
@@ -318,8 +318,8 @@
 	    <tr>
          <td>
            <ul>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">College List With High Acceptance Rate in Top 50 National Colleges</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">College List With High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">Colleges With High Acceptance Rate in Top 50 National Colleges</a></li>
+			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">Colleges With High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
 			
 			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/ Agriculture">Agriculture Majors</a></li>
 			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Biology">Biology Majors</a></li>

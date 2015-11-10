@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -31,10 +32,12 @@ public class InternationalStudentApplication  implements java.io.Serializable {
     private String  separateApplicationFormRrequired;
     private String  conditionalAdmissionOffered;
     private String  toeflAcceptedInsteadOfSatOrAct;
-    private String  minimumToeflScore;
-    private String  averageToeflScore;
-    private String  minimumIeltsScore;
-    private String  averageIeltsScore;
+    private Integer minimumToeflScore;
+    private Integer averageToeflScore;
+    private Integer minimumIeltsScore;
+    private Integer averageIeltsScore;
+    private Integer toeflScore;
+	private Float   ieltsScore;
     private Integer internationalStudentsApplying;
     private Integer internationalStudentsAccepted;
     private Integer internationalFreshmenEnrolled;
@@ -122,38 +125,38 @@ public class InternationalStudentApplication  implements java.io.Serializable {
     }
     
     @Column(name="Minimum_TOEFL_Score_Required", length=10)
-    public String getMinimumToeflScore() {
+    public Integer getMinimumToeflScore() {
         return this.minimumToeflScore;
     }
     
-    public void setMinimumToeflScore(String minimumToeflScore) {
+    public void setMinimumToeflScore(Integer minimumToeflScore) {
         this.minimumToeflScore = minimumToeflScore;
     }
     
     @Column(name="Average_TOEFL_Score_Required", length=10)
-    public String getAverageToeflScore() {
+    public Integer getAverageToeflScore() {
         return this.averageToeflScore;
     }
     
-    public void setAverageToeflScore(String averageToeflScore) {
+    public void setAverageToeflScore(Integer averageToeflScore) {
         this.averageToeflScore = averageToeflScore;
     }
     
     @Column(name="Minimum_IELTS_Score_Required", length=10)
-    public String getMinimumIeltsScore() {
+    public Integer getMinimumIeltsScore() {
         return this.minimumIeltsScore;
     }
     
-    public void setMinimumIeltsScore(String minimumIeltsScore) {
+    public void setMinimumIeltsScore(Integer minimumIeltsScore) {
         this.minimumIeltsScore = minimumIeltsScore;
     }
     
     @Column(name="Average_IELTS_Score_Required", length=10)
-    public String getAverageIeltsScore() {
+    public Integer getAverageIeltsScore() {
         return this.averageIeltsScore;
     }
     
-    public void setAverageIeltsScore(String averageIeltsScore) {
+    public void setAverageIeltsScore(Integer averageIeltsScore) {
         this.averageIeltsScore = averageIeltsScore;
     }
     
@@ -211,6 +214,23 @@ public class InternationalStudentApplication  implements java.io.Serializable {
         this.note = note;
     }
 
+	@Transient
+	public Integer getToeflScore() {
+		return toeflScore;
+	}
+
+	public void setToeflScore(Integer toeflScore) {
+		this.toeflScore = toeflScore;
+	}
+	
+	@Transient
+	public Float getIeltsScore() {
+		return ieltsScore;
+	}
+
+	public void setIeltsScore(Float ieltsScore) {
+		this.ieltsScore = ieltsScore;
+	}
     
     public InternationalStudentApplication() {
     }
@@ -219,7 +239,14 @@ public class InternationalStudentApplication  implements java.io.Serializable {
         this.id = id;
         this.name = name;
     }
-    public InternationalStudentApplication(int id, String name, String applicationDeadlineFall, String applicationDeadlineSpring, String separateApplicationFormRrequired, String conditionalAdmissionOffered, String toeflAcceptedInsteadOfSatOrAct, String minimumToeflScoreRequired, String averageToeflScoreRequired, String minimumIeltsScoreRequired, String averageIeltsScoreRequired, Integer internationalStudentsApplying, Integer internationalStudentsAccepted, Integer internationalFreshmenEnrolled, String intlFinancialAid, String contact, String note) {
+    
+    public InternationalStudentApplication(int id, String name, String applicationDeadlineFall, 
+    		String applicationDeadlineSpring, String separateApplicationFormRrequired, 
+    		String conditionalAdmissionOffered, String toeflAcceptedInsteadOfSatOrAct, 
+    		Integer minimumToeflScoreRequired, Integer averageToeflScoreRequired, 
+    		Integer minimumIeltsScoreRequired, Integer averageIeltsScoreRequired, 
+    		Integer internationalStudentsApplying, Integer internationalStudentsAccepted, 
+    		Integer internationalFreshmenEnrolled, String intlFinancialAid, String contact, String note) {
        this.id = id;
        this.name = name;
        this.applicationDeadlineFall = applicationDeadlineFall;

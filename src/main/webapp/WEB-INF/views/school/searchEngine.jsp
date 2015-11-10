@@ -130,7 +130,7 @@
             </tr>	
             <tr>
                 <td><label for="internationalFinancialAid">Financial Aid for International Students:</label>
-                    <form:select id="internationalFinancialAid" path="internationalFinancialAid" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                    <form:select id="internationalFinancialAid" path="internationalStudentApplication.financialAid" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="internationalFinancialAid" items="${internationalFinancialAidList}" varStatus="status">
                              <form:option value="Yes">${internationalFinancialAid}</form:option>
