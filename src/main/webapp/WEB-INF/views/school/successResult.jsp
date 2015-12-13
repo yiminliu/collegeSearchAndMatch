@@ -179,7 +179,8 @@
 					<!--<td><a id="website" href="<spring:url value="/collegeSearch/school/getSchool/${school.website}" />">${school.website}</a></td>-->
 			    </tr>
 		   </c:forEach>
-	      </table>
+		  </table>
+		   <c:out value="Legends: *: SAT/ACT Not Required   -: TOEFL Is Accepted Instead Of SAT/ACT"/>
 	    </c:if>
 	    <div>
 	      <table  class="center" style="margin: 0 auto; cellspacing: 30px; cellpadding: 30px; border-spacing: 50px;">

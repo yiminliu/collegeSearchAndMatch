@@ -21,7 +21,7 @@
       </c:choose>
       <div>
         <c:if test="${!empty school}">
-          <div class="section_title">School Summary</div>
+          <div class="section_title">Summary</div>
           <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
                 <th>Category</th>
@@ -59,8 +59,22 @@
 				   <td>$${school.instateTuitionFee}</td>
 				</c:if>   
 				<td>$${school.roomBoard}</td>
-				<td>${school.selectivity}</td>
-               	<td>${school.acceptRate}%</td>
+				<c:choose>
+				  <c:when test="${school.selectivity != null}">
+				    <td>${school.selectivity}</td>
+				  </c:when>
+                  <c:otherwise>
+                    <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>  
+               	<c:choose>
+				  <c:when test="${school.acceptRate != null}">
+				    <td>${school.acceptRate}%</td>
+				  </c:when>
+                  <c:otherwise>
+                     <td>N/A</td> 
+                  </c:otherwise>
+                </c:choose>  
             	<td>${school.reputationScore}</td>
                	<td>${school.type}</td>
                 <td>${school.setting}</td>
@@ -77,7 +91,7 @@
              	<th>Student/Faculty Ratio</th>
            		<th>Top 10% of High School Class</th>
 		       	<th>Average Freshman Retention Rate</th>
-                <th>Graduation Rate(6 year)</th>
+                <th>Graduation Rate(6 yr)</th>
               	<th>Class size<25</th>
               	<th>Class size between 25 and 50</th>
               	<th>Class size>50</th>
