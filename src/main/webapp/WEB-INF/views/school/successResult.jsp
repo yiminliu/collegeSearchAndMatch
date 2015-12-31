@@ -36,13 +36,13 @@
 				<!--<th>Tuition+Fees<font size="1"></font></th>
 				<th>Room+Board<font size="1"></font></th>-->
 				<th>Total Cost<font size="1"></font>
-				<th>Accept. Rate<font size="1"></font></th>
-				<th>SAT I/ACT<font size="1">(25th-75th%)</font></th>
+				<th>Accept Rate<font size="1"></font></th>
+				<th>SAT1/ACT<font size="1"> (25th-75th%)</font></th>
 				<!--<th>SAT II Required</th>-->
-				<th>Min./Avg. TOEFL Score</th>
+				<th>TOEFL Score (Min/Avg)</th>
 				<!--<th>Selectivity</th>-->
-				<th>Appl. Deadline<font size="1">(mm-dd)</font></th>
-				<th>Appl. Fee<font size="1"></font></th>
+				<th>Appl. Deadline</th>
+				<th>Appl. Fee</th>
 				<th>Location</th>
 				<!--<th>Financial Aid for Intl. Students</th>-->
 				<!--<th>Website</th>-->
@@ -143,7 +143,7 @@
 					  <c:when test="${school.internationalStudentApplication.minimumToeflScore < 0}">
                         <td>Not Required</td>
                       </c:when>
-					  <c:when test="${school.internationalStudentApplication.minimumToeflScore == 0}">
+					  <c:when test="${school.internationalStudentApplication.minimumToeflScore == null && school.internationalStudentApplication.averageToeflScore == null}">
                         <td>N/A</td>
                       </c:when>
                       <c:otherwise>

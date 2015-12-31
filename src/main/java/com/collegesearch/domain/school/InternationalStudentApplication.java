@@ -2,6 +2,8 @@ package com.collegesearch.domain.school;
 // Generated Oct 28, 2015 3:05:03 PM by Hibernate Tools 4.0.0
 
 
+import java.text.DecimalFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,6 +47,9 @@ public class InternationalStudentApplication  implements java.io.Serializable {
     private String  contact;
     private String  note;
     private School  school;
+    private Float internationalStudentAcceptRate;
+    private Float internationalStudentRetentionRate;
+    private String website;
 
        
     @GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "school"))
@@ -240,6 +245,53 @@ public class InternationalStudentApplication  implements java.io.Serializable {
         this.name = name;
     }
     
+    @Transient
+    public Float getInternationalStudentAcceptRate() {
+    	Float f = null;
+    	if(internationalStudentAcceptRate == null && internationalStudentsAccepted != null && internationalStudentsApplying != null){
+    	   f =((float)internationalStudentsAccepted/internationalStudentsApplying)*100.0f;
+    	   DecimalFormat df = new DecimalFormat("###.#");
+    	   return Float.valueOf(df.format(f));
+    	}   
+    	else
+		   return internationalStudentAcceptRate;
+	}
+
+	public void setInternationalStudentAcceptRate(Float internationalStudentAcceptRate) {
+		this.internationalStudentAcceptRate = internationalStudentAcceptRate;
+	}
+
+	@Transient
+	public Float getInternationalStudentRetentionRate() {
+		Float f = null;
+    	if(internationalStudentRetentionRate == null && internationalFreshmenEnrolled != null && internationalStudentsAccepted != null){
+    	   f =((float)internationalFreshmenEnrolled/internationalStudentsAccepted)*100.0f;
+    	   DecimalFormat df = new DecimalFormat("###.#");
+    	   return Float.valueOf(df.format(f));
+    	}   
+		else
+		   return internationalStudentRetentionRate;
+	}
+
+	public void setInternationalStudentRetentionRate(Float internationalStudentRetentionRate) {
+			this.internationalStudentRetentionRate = internationalStudentRetentionRate;
+	}
+
+    @Transient
+    public String getWebsite() {
+    	if(website == null && contact != null){
+    	   website = contact.substring(contact.indexOf("@")+1, contact.indexOf(".edu")+4);
+    	  while(website.indexOf(".") != website.lastIndexOf(".")){
+    		  website = website.substring(website.indexOf(".")+1); 
+    	   }	  
+     	}
+		return "www."+website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+    
     public InternationalStudentApplication(int id, String name, String applicationDeadlineFall, 
     		String applicationDeadlineSpring, String separateApplicationFormRrequired, 
     		String conditionalAdmissionOffered, String toeflAcceptedInsteadOfSatOrAct, 
@@ -265,8 +317,6 @@ public class InternationalStudentApplication  implements java.io.Serializable {
        this.contact = contact;
        this.note = note;
     }
-
-
 
 }
 

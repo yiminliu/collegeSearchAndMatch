@@ -1,14 +1,14 @@
 DROP TABLE IF EXISTS princeton_review_great_school_major;
 CREATE TABLE princeton_review_great_school_major
 (
-  School_Id INT NOT NULL,
   Major_Id INT NOT NULL,
-  Good_At VARCHAR(6) DEFAULT 'False',
+  School_Id INT NOT NULL,
+   Good_At VARCHAR(6) DEFAULT 'False',
   Primary Key (School_Id, Major_Id)
 );
 
-Insert princeton_review_great_school_major values(1, 1, 'True');
-Insert princeton_review_great_school_major values(1, 2, 'True');
+Insert princeton_review_great_school_major values(1, 2046, 'True');
+Insert princeton_review_great_school_major values(1, 142, 'True');
 Insert princeton_review_great_school_major values(1, 3, 'True');
 Insert princeton_review_great_school_major values(1, 4, 'True');
 Insert princeton_review_great_school_major values(1, 5, 'True');

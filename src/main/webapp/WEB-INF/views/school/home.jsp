@@ -13,20 +13,39 @@
   <div class="container">
     <div class="content">  
       <table class="section_title_center">
-        <tr>
-          <td>
-              More Than 3300 Colleges to Choose from. Chose Your Colleges Based on Your Testing Scores and Your Preferences
-          </td>
-        </tr>
+        <tr><td>Chose Your Colleges Based on Your Preferences and Qualifications</td></tr>
       </table>     
       <table class="center_element_text" style="border:1px; width: 100%">
         <tr>
            <td>
              <ul style="list-style-type:none">
                 <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Your Suitable Colleges</a></li>
-                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Match You and the Suitable Colleges. <span style="color:red">JUST FOR YOU</span></a></li>
+                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Match You and the Suitable Colleges <span style="color:red">  *JUST FOR YOU*</span></a></li>
+             </ul>
+           </td>
+        </tr>
+      </table>
+      <table class="section_title_center">
+        <tr><td>Application Made Easier for International Students</td></tr>
+      </table>     
+      <table class="center_element_text" style="border:1px; width: 100%">
+        <tr>
+           <td>
+             <ul style="list-style-type:none">
                 <li><a id="matchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%;">Colleges Accept TOEFL/IELTS Instead of SAT/ACT</a></li>
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional-Admission</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional Admission</a></li>
+             </ul>
+           </td>
+        </tr>
+      </table>
+      <table class="section_title_center">
+        <tr><td>Application Made Easier</td></tr>
+      </table>     
+      <table class="center_element_text" style="border:1px; width: 100%">
+        <tr>
+           <td>
+             <ul style="list-style-type:none">
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?satActNotRequired=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Do Not Require SAT1/ACT</a></li>
              </ul>
            </td>
         </tr>

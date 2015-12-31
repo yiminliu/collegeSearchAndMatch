@@ -57,6 +57,7 @@ public class CollegeSearchServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		//indexService.initializeIndex();
 	}
 
 	@After
@@ -96,7 +97,7 @@ public class CollegeSearchServiceTest {
 	
 	@Test
 	public void testGetSchoolsByMatchNamePattern() {
-		indexService.initializeIndex();
+		//indexService.initializeIndex();
 		String name = "Penn";
 		List<School> schools = schoolService.getSchoolsByMatchNamePattern(name);
 		assertNotNull(schools);
@@ -256,6 +257,39 @@ public class CollegeSearchServiceTest {
 		//for(School s : pList){
 		//	System.out.println("school = " + s.toString());
 		//}
+	}
+	
+	@Test
+	public void testGetInternationalStudentData() {
+		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
+		String name = "United States Coast Guard Academy";
+		School school = schoolService.getSchoolByName(name);
+		
+		//assertNotNull(schoolsAdjustedBySAT1Standard);
+		System.out.println("data = "+school.getInternationalStudentApplication().getInternationalStudentAcceptRate()); 
+		System.out.println("data = "+school.getInternationalStudentApplication().getInternationalStudentRetentionRate()); 
+		//for(School s : pList){
+		//	System.out.println("school = " + s.toString());
+		//}
+	}
+	
+	@Test
+	public void testGetWebsiteFromInternationalContact() {
+		//indexService.initializeIndex();
+		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
+		//String name = "University of Pennsylvania";
+		String name = "United States Coast Guard Academy";
+		School school = schoolService.getSchoolByName(name);
+		
+		//assertNotNull(schoolsAdjustedBySAT1Standard);
+		System.out.println("data = "+school.getInternationalStudentApplication().getWebsite()); 
+			//for(School s : pList){
+		//	System.out.println("school = " + s.toString());
+		//}
+		//org.hibernate.SessionFactory sf = new org.hibernate.SessionFactory();
+		//.close();
 	}
 	 
 

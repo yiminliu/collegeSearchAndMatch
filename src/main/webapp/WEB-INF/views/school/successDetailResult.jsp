@@ -10,13 +10,14 @@
 
 <body background="/WEB-INF/static/images/search_bg3.jpg">
   <div class="narrow_container">
-      <div><%@ include file="/WEB-INF/views/general/header.jsp"%></div>
       <c:choose>
          <c:when test="${empty school}">
              <div class="page_title">No School Found</div>
          </c:when>
          <c:otherwise>
-            <div class="page_title">${school.name}</div>
+            <div class="page_title" id="banner" style="width:90%; margin-top:50px;margin-bottom:50px;">
+                 School Detail Information For   ${school.name}
+            </div>
          </c:otherwise>
       </c:choose>
       <div>
@@ -26,14 +27,20 @@
              <tr style="background-color: Ivory;">
                 <th>Category</th>
                 <th>Rank</th>
-                <th>Tuition and Fees<font size="1"></font></th>
-              	<c:if test="${school.instateTuitionFee != null && school.instateTuitionFee > 0}">
-				   <th>In-state Tuition and Fees<font size="1"></font></th>
-				</c:if>   
-				<th>Room and Board<font size="1"></font></th>
+                <c:choose>
+                   <c:when test="${school.instateTuitionFee != null && school.instateTuitionFee > 0}">
+                      <th>Tuition and Fees 
+                        <font size="1"> (in-state/out-state)</font>
+                      </th>
+                   </c:when>  
+				   <c:otherwise>   
+				      <th>Tuition and Fees</th>
+				   </c:otherwise>
+				</c:choose>   
+              	<th>Room and Board<font size="1"></font></th>
                	<th>Selectivity</th>
            	  	<th>Accept Rate<font size="1"></font></th>
-               	<th>Reputation Score</th>
+               	<!--<th>Reputation Score</th>-->
                	<th>Type</th>
                 <th>Setting</th>
                 <th>Location</th>
@@ -54,10 +61,14 @@
 				      <td>Not Reported</td>
 				   </c:otherwise>
 				</c:choose> 
-				<td>$${school.tuitionFee}</td>
-            	<c:if test="${school.instateTuitionFee != null && school.instateTuitionFee > 0}">
-				   <td>$${school.instateTuitionFee}</td>
-				</c:if>   
+				<c:choose>
+                   <c:when test="${school.instateTuitionFee != null && school.instateTuitionFee > 0}">
+                      <td>$${school.instateTuitionFee} / $${school.tuitionFee}</td>
+                   </c:when>  
+				   <c:otherwise>   
+				      <td>$${school.tuitionFee}</td>
+				   </c:otherwise>
+				</c:choose>   
 				<td>$${school.roomBoard}</td>
 				<c:choose>
 				  <c:when test="${school.selectivity != null}">
@@ -75,13 +86,13 @@
                      <td>N/A</td> 
                   </c:otherwise>
                 </c:choose>  
-            	<td>${school.reputationScore}</td>
+            	<!--<td>${school.reputationScore}</td>-->
                	<td>${school.type}</td>
                 <td>${school.setting}</td>
                	<td>${school.city}, ${school.state}</td>
 				<td>${school.calendar}</td> 
 				<td>${school.phone}</td>
-				<td><a id="website" href="<spring:url value="http://www.${school.website}" />">${school.website}</a></td>
+				<td><a id="website" href="<spring:url value="http://www.${school.internationalStudentApplication.website}" />">${school.internationalStudentApplication.website}</a></td>
 			   </tr>
 		   </table>
 		   <div class="section_title">Student/Class Info</div>
@@ -89,20 +100,34 @@
              <tr style="background-color: Ivory;">
              	<th>Total Students</th>
              	<th>Student/Faculty Ratio</th>
-           		<th>Top 10% of High School Class</th>
-		       	<th>Average Freshman Retention Rate</th>
-                <th>Graduation Rate(6 yr)</th>
+           		<th>Top 10% of HS Class</th>
+		       	<th>Ave. Freshman Retention Rate</th>
+                <th>Graduat. Rate(6 yr)</th>
               	<th>Class size<25</th>
-              	<th>Class size between 25 and 50</th>
+              	<th>Class size 25-50</th>
               	<th>Class size>50</th>
              </tr>
 		     <tr>
             	<td>${school.size}</td>
-            	<td>${school.studentFacultyRatio}</td>
-       			<td>${school.hsClassTop10Percentage}%</td>
+            	<c:choose>
+            	   <c:when test="${school.studentFacultyRatio != null}">
+       			      <td>${school.studentFacultyRatio}</td>
+       			   </c:when>
+       			   <c:otherwise>
+       			      <td>N/A</td>
+       			   </c:otherwise>
+       			</c:choose>  
+              	<c:choose>
+            	   <c:when test="${school.hsClassTop10Percentage >= 0}">
+       			      <td>${school.hsClassTop10Percentage}%</td>
+       			   </c:when>
+       			   <c:otherwise>
+       			      <td>N/A</td>
+       			   </c:otherwise>
+       			</c:choose>          
 	           	<c:choose>
 				  <c:when test="${school.averageFreshmanRetentionRate >= 0}">
-            	     <td>${school.averageFreshmanRetentionRate}</td>
+            	     <td>${school.averageFreshmanRetentionRate}%</td>
                   </c:when>
                   <c:otherwise>
                     <td>N/A</td> 
@@ -110,7 +135,7 @@
                 </c:choose>
                 <c:choose>
 				  <c:when test="${school.sixYearGraduationRate >= 0}">
-            	     <td>${school.sixYearGraduationRate}</td>
+            	     <td>${school.sixYearGraduationRate}%</td>
                   </c:when>
                   <c:otherwise>
                     <td>N/A</td> 
@@ -118,7 +143,7 @@
                 </c:choose>
             	<c:choose>
 				  <c:when test="${school.percentageClassesFewerThan20Students >= 0}">
-            	     <td>${school.percentageClassesFewerThan20Students}</td>
+            	     <td>${school.percentageClassesFewerThan20Students}$</td>
                   </c:when>
                   <c:otherwise>
                     <td>N/A</td> 
@@ -126,7 +151,7 @@
                 </c:choose>
                 <c:choose>
 				  <c:when test="${school.percentageClassesBetween25And50Students >= 0}">
-            	     <td>${school.percentageClassesBetween25And50Students}</td>
+            	     <td>${school.percentageClassesBetween25And50Students}%</td>
                   </c:when>
                   <c:otherwise>
                     <td>N/A</td> 
@@ -134,7 +159,7 @@
                 </c:choose>
                 <c:choose>
 				  <c:when test="${school.percentageClassesMoreThan50Students >= 0}">
-            	     <td>${school.percentageClassesMoreThan50Students}</td>
+            	     <td>${school.percentageClassesMoreThan50Students}%</td>
 			      </c:when>
                   <c:otherwise>
                     <td>N/A</td> 
@@ -145,14 +170,14 @@
            <div class="section_title">Application Info</div>
            <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
-                <th>SAT I Score<font size="1">(25th% - 75th%)</font></th>
-				<th>ACT Score<font size="1">(25th% - 75th%)</font></th>
+                <th>SAT Score<font size="1">(25-75th%)</font></th>
+				<th>ACT Score<font size="1">(25-75th%)</font></th>
 				<th>SAT/ACT Not Required</th>
 				<th>SAT II Required</th>
-              	<th>Application Deadline<font size="1">(mm-dd)</font></th>
-              	<th>Early Decision Deadline<font size="1">(mm-dd)</font></th>
-              	<th>SAT/ACT Received Deadline<font size="1">(mm-dd)</font></th>
-             	<th>Application Fee<font size="1"></font></th>
+              	<th>Application Deadline</th>
+              	<th>Early Decision Deadline</th>
+              	<th>SAT/ACT Received Deadline</th>
+             	<th>Application Fee</th>
 			</tr>
 		    <tr>
 		        <c:choose>
@@ -247,12 +272,12 @@
 		  <div class="section_title" style="font-size: 90%;">International Student Application</div>
            <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
-              	<th>Minimum/Average TOEFL Score</th>
-              	<th>Minimum/Average IELTS Score</th>
+              	<th>TOEFL Score (min/ave)</th>
+              	<th>IELTS Score (min/ave)</th>
             	<th>Separate Application Form Required</th>
             	<th>TOEFL Accepted Instead of SAT/ACT</th>
 				<th>Conditional Admission Offered</th>
-				<th>International Student Application Deadline_Fall/Spring</th>
+				<th>Application Deadline(Fall/Spring)</th>
 			 </tr>
 		     <tr>
                 <c:choose>
@@ -306,9 +331,9 @@
 		  </table>
 		   <div class="section_title" style="font-size: 90%;">International Student Application</div>
            <table class="datatable" style="font-size: 80%; margin-left: 0px">
-             <c:set var="applying" value="${school.internationalStudentApplication.internationalStudentsApplying}" />
-             <c:set var="accepted" value="${school.internationalStudentApplication.internationalStudentsAccepted}" />
-             <c:set var="enrolled" value="${school.internationalStudentApplication.internationalFreshmenEnrolled}" />
+             <c:set var="applying" value="${school.internationalStudentApplication.internationalStudentsApplying}" scope="session" />
+             <c:set var="accepted" value="${school.internationalStudentApplication.internationalStudentsAccepted}" scope="session"/>
+             <c:set var="enrolled" value="${school.internationalStudentApplication.internationalFreshmenEnrolled}" scope="session"/>
              <c:set var="acceptRatio" value="${accepted/applying*100}" />
              <c:set var="freshmanRetantionRatio" value="${enrolled/accepted*100}" />
              <tr style="background-color: Ivory;">
@@ -316,12 +341,12 @@
               	<th>International Students Applied/Accepted/Enrolled</th>
               	<c:choose>
               	   <c:when test="${applying != null && applying != 0}">
-              	     <th>Int'l Student Accept Ratio</th>
+              	     <th>Int'l Student Accept Rate</th>
 				   </c:when>
 				</c:choose> 
 				<c:choose>
               	   <c:when test="${accepted != null && accepted != 0}">
-              	      <th>Int'l Student Freshman Retantion Ratio</th>
+              	      <th>Int'l Student Freshman Retantion Rate</th>
 				   </c:when>
 				</c:choose>       
 				<th>International Admission Contact</th>
@@ -335,15 +360,15 @@
 		       <td>${school.internationalStudentApplication.financialAid}</td>
                <td>${applying}/${accepted}/${enrolled}</td>
 			   <c:choose>
-				  <c:when test="${applying != null && applying != 0}">
-				     <td>${acceptRatio}%</td>
+				  <c:when test="${school.internationalStudentApplication.internationalStudentAcceptRate != null}">
+				     <td>${school.internationalStudentApplication.internationalStudentAcceptRate}%</td>
 				  </c:when>
 			   </c:choose>
 			   <c:choose>
-				  <c:when test="${accepted != null && accepted != 0}">
-				     <td>${freshmanRetantionRatio}%</td>
+				  <c:when test="${school.internationalStudentApplication.internationalStudentRetentionRate != null}">
+				     <td>${school.internationalStudentApplication.internationalStudentRetentionRate}%</td>
 				  </c:when>
-				</c:choose>	
+			   </c:choose>
 			   <td>${school.internationalStudentApplication.contact}</td>	
 			   <c:choose>
 				  <c:when test="${school.internationalStudentApplication.note != null}">

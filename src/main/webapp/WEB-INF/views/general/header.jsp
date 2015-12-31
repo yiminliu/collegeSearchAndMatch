@@ -5,9 +5,7 @@
 <body>
   <div id="header" style="margin-top: -8px;">
      <table>
-       <tr>
-            <td><%@ include file="/WEB-INF/views/general/login_header.jsp"%></td>
-       </tr>
+       <tr><td><%@ include file="/WEB-INF/views/general/login_header.jsp"%></td></tr>
        <tr><td><%@ include file="/WEB-INF/views/general/main_menu.jsp"%></td></tr>
        <tr><td><%@ include file="/WEB-INF/views/general/banner.jsp"%></td></tr>
      </table>

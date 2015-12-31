@@ -48,7 +48,7 @@
                 <prop key="format_sql">${hibernate.format_sql}</prop>
                 <!-- <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>-->
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>                  
-               
+                
                 <!--<prop key="hibernate.max.fetch.depth">${hibernate.max.fetch.depth}</prop>          
                 <prop key="hibernate.jdbc.fetch.size">${hibernate.jdbc.fetch.size}</prop>          
                 <prop key="hibernate.jdbc.batch.size">${hibernate.jdbc.bstch.size}</prop>--> 
@@ -60,11 +60,13 @@
                 <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>     
                 <prop key="hibernate.cache.generate_statistics">${hibernate.cache.generate_statistics}</prop> 
                 <!--  Hibernate Search -->
+               <!-- <prop key="hibernate.search.autoregister_listeners">false</prop>
+                <prop key="hibernate.search.indexing_strategy">manual</prop> 
                 <prop key="hibernate.search.default.directory_provider">${hibernate.search.default.directory_provider}</prop>
                 <prop key="hibernate.search.default.indexBase">${hibernate.search.default.indexBase}</prop>  
                 <prop key="hibernate.search.lucene_version">${hibernate.search.lucene_version}</prop>
-                <!--<prop key="hibernate.search.default.refresh">${hibernate.search.default.refresh}</prop>-->
-                <!--<prop key="hibernate.search.indexing_strategy">manual</prop>-->        
+                <prop key="hibernate.search.default.refresh">${hibernate.search.default.refresh}</prop>-->
+                     
             </props>  
         </property>  
     </bean>
