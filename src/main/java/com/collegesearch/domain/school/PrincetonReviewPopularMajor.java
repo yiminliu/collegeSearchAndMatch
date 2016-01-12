@@ -2,12 +2,15 @@ package com.collegesearch.domain.school;
 
 // Generated Aug 10, 2015 3:42:22 PM by Hibernate Tools 4.0.0
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -24,9 +27,13 @@ public class PrincetonReviewPopularMajor implements java.io.Serializable {
 	private static final long serialVersionUID = -804990758703320L;
 	private Integer id;
 	private String name;
-	//private School school;
-
+	private List<School> schools = new ArrayList<School>(0);
+	
 	public PrincetonReviewPopularMajor() {
+	}
+	
+	public PrincetonReviewPopularMajor(Integer id) {
+		this.id = id;
 	}
 
 	public PrincetonReviewPopularMajor(String name) {
@@ -53,16 +60,13 @@ public class PrincetonReviewPopularMajor implements java.io.Serializable {
 		this.name = name;
 	}
 	
-	/*
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "item_code")
-	//@ContainedIn
-	public School getISchool() {
-		return this.school;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "bestMajors")
+	public List<School> getSchools() {
+		return this.schools;
 	}
 
-	public void setSchool(School school) {
-		this.school = school;
+	public void setSchools(List<School> schools) {
+		this.schools = schools;
 	}
-     */
+	
 }

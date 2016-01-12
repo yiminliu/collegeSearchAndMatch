@@ -2,7 +2,9 @@ package com.collegesearch.domain.school;
 
 // Generated Jul 11, 2015 5:53:42 PM by Hibernate Tools 4.0.0
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,12 +13,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Boost;
@@ -80,27 +83,26 @@ public class School implements java.io.Serializable {
 	private InternationalStudentApplication internationalStudentApplication;
 	private Float anticipationIndex;
 	private String applicationNote;
+	private List<PrincetonReviewPopularMajor> bestMajors = new ArrayList<PrincetonReviewPopularMajor>();
 	
-	
-	
-	/*private Set<PrincetonReviewPopularMajor> goodAtMajors = new HashSet<PrincetonReviewPopularMajor>();
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="item", cascade={CascadeType.ALL, CascadeType.REMOVE})//, orphanRemoval=true)
-	//@Fetch(FetchMode.SUBSELECT)
-	public Set<PrincetonReviewPopularMajor> getGoodAtMajors() {
-		return this.goodAtMajors;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "princeton_review_great_school_major", catalog = "school", joinColumns = { 
+			@javax.persistence.JoinColumn(name = "School_Id", nullable = false, updatable = false) }, 
+			inverseJoinColumns = {@javax.persistence.JoinColumn(name = "Major_Id", nullable = false, updatable = false) })
+	public List<PrincetonReviewPopularMajor> getBestMajors() {
+		return this.bestMajors;
 	}
 
-	public void setGoodAtMajors(Set<PrincetonReviewPopularMajor> goodAtMajors) {
-		this.goodAtMajors = goodAtMajors;
+	public void setBestMajors(List<PrincetonReviewPopularMajor> bestMajors) {
+		this.bestMajors = bestMajors;
 	}
    
-	public void addColorhue(PrincetonReviewPopularMajor major){
-		major.setSchool(this);
-		if(goodAtMajors == null)
-			goodAtMajors = new HashSet<PrincetonReviewPopularMajor>();
-		goodAtMajors.add(major);
+	public void addBestMajors(PrincetonReviewPopularMajor major){
+		if(bestMajors == null)
+			bestMajors = new ArrayList<PrincetonReviewPopularMajor>();
+		bestMajors.add(major);
 	}
-	*/
+	
 	
 	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
 	//@Fetch(FetchMode.JOIN)
@@ -115,27 +117,6 @@ public class School implements java.io.Serializable {
 		this.internationalStudentApplication = internationalStudentApplication;
 	}
 	
-	/*
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-	@Fetch(FetchMode.JOIN)
-	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@IndexedEmbedded
-	public ImsNewFeature getNewFeature() {	
-	    return this.newFeature;
-	}
-	public void setNewFeature(ImsNewFeature newFeature) {
-		this.newFeature = newFeature;
-	}
-	
-	public void addNewFeature(ImsNewFeature newFeature ){
-		if(getNewFeature() != null)
-			setNewFeature(null);
-		//if(newFeature.getItemCode() == null || !newFeature.getItemCode().equalsIgnoreCase(getItemcode()))
-		//	newFeature.setItemCode(getItemcode());
-		newFeature.setItem(this);
-		this.newFeature = newFeature;
-	}
-	*/
 	@DocumentId
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)

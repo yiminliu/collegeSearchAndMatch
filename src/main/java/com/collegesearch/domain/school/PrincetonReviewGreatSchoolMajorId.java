@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class PrincetonReviewGreatSchoolMajorId implements java.io.Serializable {
 
+	private static final long serialVersionUID = 674999895470L;
 	private int schoolId;
 	private int majorId;
 
