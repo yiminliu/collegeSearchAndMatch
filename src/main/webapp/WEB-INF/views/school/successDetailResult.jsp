@@ -399,8 +399,20 @@
 		  <div class="section_title">Best Majors</div>
           <table class="datatable" style="font-size: 80%; margin-left: 0px">
              <tr style="background-color: Ivory;">
-         	 </tr>
-		  </table>		 		 
+               <td>
+                 <c:forEach var="major" items="${school.bestMajors}" varStatus="loopStatus">
+                    <c:choose>
+               	     <c:when test="${loopStatus.index == fn:length(school.bestMajors)-1}">
+               	        <a id="major" href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/${major.name}" />">${major.name}</a>
+                       </c:when>
+                       <c:otherwise>
+				  <a id="major" href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/${major.name}" />">${major.name}</a>,
+			     </c:otherwise>
+			  </c:choose>                    
+                </c:forEach>  
+               </td>     
+          	 </tr>
+	    </table>		 		 
 	   </c:if>
 	 </div>
 	 <table  class="center" style="margin: 0 auto; cellspacing: 30px; cellpadding: 30px; border-spacing: 50px;">

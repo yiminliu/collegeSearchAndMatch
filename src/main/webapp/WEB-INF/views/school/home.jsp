@@ -318,14 +318,14 @@
 	    <tr>
           <td>
 		    <ul>
-		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT1/ACT</a></li>
+		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT or ACT</a></li>
               <!--<li><a href="http://localhost:8080/collegeSearch/school/searchSchools?school.internationalStudentApplication.financialAid=yes">Colleges Provides Financial Aids for International Students</a></li>-->
               <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Business">Value Colleges(quality/price ratio and the scholarships or grants)</a></li>
             </ul>
           </td>
           <td>
 		    <ul>
-			  <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Engineering">Top Colleges in Engineering Programs</a></li>
+			  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?toeflAcceptedInsteadOfSatOrAct=Yes">Colleges Accepts TOEFL Instead of SAT or ACT</a></li>
   		    </ul>
 	      </td>
 	    </tr>
