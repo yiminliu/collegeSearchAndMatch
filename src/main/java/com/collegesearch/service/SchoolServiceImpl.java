@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.collegesearch.domain.school.PrincetonReviewGreatSchoolMajor;
+import com.collegesearch.domain.school.PrincetonReviewGreatSchoolInPopularMajor;
 import com.collegesearch.domain.school.PrincetonReviewPopularMajor;
 import com.collegesearch.domain.school.School;
 import com.collegesearch.domain.school.UsNewsBestSchoolProgram;
@@ -282,7 +282,7 @@ public class SchoolServiceImpl implements SchoolService {
 	@Override
 	@Transactional(readOnly=true)
 	public List<School> getPrincetonReviewGreatSchoolMajor(String majorName){
-		List<PrincetonReviewGreatSchoolMajor> pList = null;
+		List<PrincetonReviewGreatSchoolInPopularMajor> pList = null;
 		List<School> sList = null;
 		Session session = getSession();
 		try{
@@ -290,7 +290,7 @@ public class SchoolServiceImpl implements SchoolService {
 		    if(major != null){
 		       pList = princetonReviewGreatSchoolMajorDao.getPrincetonReviewGreatSchoolMajorsByMajorId(major.getId(), session);
 		       sList = new ArrayList<School>(pList.size());
-	  	       for(PrincetonReviewGreatSchoolMajor m : pList){
+	  	       for(PrincetonReviewGreatSchoolInPopularMajor m : pList){
 	  	   	       School school = getSchoolById(m.getId().getSchoolId(), session);
 			       sList.add(school);
 	  	       }    
