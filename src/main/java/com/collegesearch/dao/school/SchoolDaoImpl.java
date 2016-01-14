@@ -355,33 +355,6 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		      case "newFeature.status": 
 			   	 key = "status";
 				 break;	 
-			  case "newFeature.grade": 
-			   	 key = "grade";
-				 break;	 
-			  case "newFeature.mpsCode": 
-				 key = "mpsCode";
-				 break;	 
-			  case "newFeature.designLook": 
-					 key = "designLook";
-					 break;
-			  case "newFeature.designStyle": 
-					 key = "designStyle";
-					 break;
-			  case "newFeature.body": 
-					 key = "body";
-					 break;
-			  case "newFeature.edge": 
-					 key = "edge";
-					 break;
-			  case "newFeature.surfaceApplication": 
-					 key = "surfaceApplication";
-					 break;
-			  case "newFeature.surfaceType": 
-					 key = "surfaceType";
-					 break;
-			  case "newFeature.surfaceFinish": 
-					 key = "surfaceFinish";
-					 break;	
 	       }
 	       if(key.endsWith("_colorHue")){
 	    	   if(!key.endsWith("_colorhues"))

@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-//import javax.ws.rs.core.MultivaluedMap;
-
 
 public interface GenericDao <T, PK extends Serializable>{
 	
@@ -27,8 +25,6 @@ public interface GenericDao <T, PK extends Serializable>{
 	PK save(T newInstance);
 	void update(T transientObject);
 	public void update(Session session, final Integer id, final T transientObject);
-		
 	void delete(T persistentObject);
-	Long insertRecord(String insertStatement);
 
 }

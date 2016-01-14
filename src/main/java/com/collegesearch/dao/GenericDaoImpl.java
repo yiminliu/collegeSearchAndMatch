@@ -27,27 +27,6 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	
 	@Autowired
 	private SessionFactory sessionFactory;
-	
-	protected synchronized Session currentSession() {
-	    Session session = null;
-		try{
-			session = sessionFactory.getCurrentSession();
-	    }
-		catch(Exception e) {
-		}
-		return session;
-		//return sessionFactory.openSession();
-	}
-	
-	protected synchronized Session openSession() {
-	    Session session = null;
-		try{
-	    	session = sessionFactory.openSession();
-	    }
-		catch(Exception e) {
-		}
-		return session;
-	}
 		
 	@SuppressWarnings("unchecked")
 	public GenericDaoImpl(){
@@ -71,13 +50,14 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	public T findById(final PK id, Session session) {
 		return (T)session.get(type, id);
 	}
-			
+		
+	@Override
+	@SuppressWarnings("unchecked")
 	public List<T> findAll(){
 		return currentSession().createCriteria(type).list();
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public synchronized void update(final T transientObject) {
 		try{
            Session session = currentSession();
@@ -105,10 +85,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 			throw e;
 		}		   
    	}
-	
-	
+		
 	@Override
-	@SuppressWarnings("unchecked")
 	public void delete(T persistentObject) {
 		
 	}
@@ -136,9 +114,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		criteria.add(Restrictions.eq(parameterName, value).ignoreCase());
 		return (List<T>)criteria.list();			
 	}
-	
-
-	
+		
 	@Override
 	@SuppressWarnings("unchecked")
     public List<T> findByParameter(final String parameterName, Long value){
@@ -187,32 +163,32 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
    	    	Entry<String, List<String>> entry = (Entry<String, List<String>>)it.next();
    		   	key = (String)entry.getKey();
    	    	value = ((List<String>)entry.getValue()).get(0);
-   	    	if("activityStatus".equalsIgnoreCase(key)) {
-   	            if ("active".equalsIgnoreCase(value))
-   	 		        criteria.add(Restrictions.eq(key, ""));
-   	 		    else if ("inactive".equalsIgnoreCase(value))
-   	 		        criteria.add(Restrictions.in(key, new String[] {"F", "Y", "D", "I"})); 
-   	    	}  
-   	       	else {
-   	    		//criteria.add(Restrictions.eq("activityStatus", "")); //return only active accounts
-   	    		criteria.add(Restrictions.eq(key, value).ignoreCase());
-   	    	}
-   		
+   	   		//criteria.add(Restrictions.eq("activityStatus", "")); //return only active accounts
+   	   		criteria.add(Restrictions.eq(key, value).ignoreCase());
    	    }	  	
 		return (List<T>)criteria.list();			
 	}
 	
 	
-	//@Loggable(value=LogLevel.DEBUG)
-	@Override
-	@SuppressWarnings("unchecked")
-    public Long insertRecord(String insertStatement){
-		//SQLQuery query = currentSession().createSQLQuery(insertStatement);
-		
-		SQLQuery query = currentSession().createSQLQuery("INSERT INTO Product (product_Id, color) VALUES('Test', 'Beige')");
-        long value = query.executeUpdate();
-        return Long.valueOf(value);
-	}	   
+	protected synchronized Session currentSession() {
+	    Session session = null;
+		try{
+			session = sessionFactory.getCurrentSession();
+	    }
+		catch(Exception e) {
+		}
+		return session;
+	}
+	
+	protected synchronized Session openSession() {
+	    Session session = null;
+		try{
+	    	session = sessionFactory.openSession();
+	    }
+		catch(Exception e) {
+		}
+		return session;
+	}
 	
 	protected synchronized Session getSession(){
 		Session session = sessionFactory.getCurrentSession();
