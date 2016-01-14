@@ -19,12 +19,12 @@ import javax.persistence.Table;
 public class PrincetonReviewGreatSchoolInPopularMajor implements java.io.Serializable {
 
 	private static final long serialVersionUID = -85490758703320L;
-	private PrincetonReviewGreatSchoolMajorId id;
+	private PrincetonReviewGreatSchoolInPopularMajorId id;
 	
 	public PrincetonReviewGreatSchoolInPopularMajor() {
 	}
 
-	public PrincetonReviewGreatSchoolInPopularMajor(PrincetonReviewGreatSchoolMajorId id) {
+	public PrincetonReviewGreatSchoolInPopularMajor(PrincetonReviewGreatSchoolInPopularMajorId id) {
 		this.id = id;
 	}
 
@@ -32,11 +32,11 @@ public class PrincetonReviewGreatSchoolInPopularMajor implements java.io.Seriali
 	@AttributeOverrides({
 			@AttributeOverride(name = "schoolId", column = @Column(name = "School_Id", nullable = false)),
 			@AttributeOverride(name = "majorId", column = @Column(name = "Major_Id", nullable = false)) })
-	public PrincetonReviewGreatSchoolMajorId getId() {
+	public PrincetonReviewGreatSchoolInPopularMajorId getId() {
 		return this.id;
 	}
 
-	public void setId(PrincetonReviewGreatSchoolMajorId id) {
+	public void setId(PrincetonReviewGreatSchoolInPopularMajorId id) {
 		this.id = id;
 	}
 

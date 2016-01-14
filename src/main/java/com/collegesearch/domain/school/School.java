@@ -405,8 +405,7 @@ public class School implements java.io.Serializable {
     
     @Transient    
     public Float getPercentageClassesBetween25And50Students() {
-		//return percentageClassesBetween25And50Students;
-    	if(percentageClassesFewerThan20Students != null && percentageClassesFewerThan20Students > 0 &&
+	 	if(percentageClassesFewerThan20Students != null && percentageClassesFewerThan20Students > 0 &&
     	   percentageClassesMoreThan50Students != null && percentageClassesMoreThan50Students > 0)		
     	   percentageClassesBetween25And50Students = 100 - percentageClassesFewerThan20Students - percentageClassesMoreThan50Students;
     	   return percentageClassesBetween25And50Students;
@@ -690,8 +689,6 @@ public class School implements java.io.Serializable {
 		    }
 		    catch(Exception e){
 		 	   e.printStackTrace();
-		 	   System.out.println("school1 name/rank="+school1.getName() + "/" +school1.getRankOverall());
-		 	   System.out.println("school2 name/rank="+school2.getName() + "/" +school2.getRankOverall());
 		    }	
 	      } 
 		  return result;
