@@ -12,12 +12,16 @@ import java.util.Map.Entry;
 //import javax.ws.rs.core.MultivaluedMap;
 
 
+
+
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,13 +54,25 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	public T findById(final PK id, Session session) {
 		return (T)session.get(type, id);
 	}
-		
+	 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<T> findAll(){
-		return currentSession().createCriteria(type).list();
+		Criteria criteria = currentSession().createCriteria(type);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return criteria.list();
 	}
 	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<T> findAll(SimpleExpression simpleExpression){
+		Criteria criteria = currentSession().createCriteria(type);
+		if(simpleExpression != null)
+		   criteria.add(simpleExpression);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return criteria.list();
+	}
+	 
 	@Override
 	public synchronized void update(final T transientObject) {
 		try{

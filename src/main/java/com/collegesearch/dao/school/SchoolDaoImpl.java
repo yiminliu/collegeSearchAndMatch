@@ -112,9 +112,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		       value = value.replace("%", "");
 	        if((key.equalsIgnoreCase("tuitionFee") || key.equalsIgnoreCase("roomBoard")) && value.startsWith("<"))
 		       value = value.substring(2);
-	        if(key.equalsIgnoreCase("name") && value.contains("Washington University in St"))
-	    	   value = "Washington University in St. Louis"; 
-	   
+	       
 	        //----------- Compose hibernate criteria -------------//
 	 		//------ conditional pattern match -------//
     		if(!exactMatch && ("itemcode".equalsIgnoreCase(key) || ("material.materialcategory".equalsIgnoreCase(key)))){
@@ -151,6 +149,9 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	  	   	   case "rankOverall": case "tuitionFee": case "roomBoard": 
 	 	   		   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
 	 	   		   break;
+	  	   	   case "applicationFee":	
+	  	   		   schoolCriteria.add(Restrictions.eq(key, Integer.parseInt(value))); 
+	  	   		   break;
 	  	       //case "totalCost": 
 	 	   	   //	   schoolCriteria.add(Restrictions.le(sum("tuitionFee", "roomBoard"), Integer.parseInt(value))); 
 	 	   	   //	   break;
@@ -210,12 +211,17 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
  			          }   
  	   		     }
  	   		     else if(value.indexOf(">") >= 0){
- 				      value = value.substring(value.indexOf(">") + 1, value.indexOf(")"));
+ 	   		    	  if(value.indexOf(")") >= 0)
+ 				         value = value.substring(value.indexOf(">") + 1, value.indexOf(")"));
+ 	   		    	  else
+ 	   		    		value = value.substring(value.indexOf(">") + 1); 
  				      if(key.equalsIgnoreCase("size"))
  			             schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(value))); 
  			          else if(key.equalsIgnoreCase("acceptRate"))
- 			        	 schoolCriteria.add(Restrictions.gt(key, Float.parseFloat(value)));
- 		         }	 
+ 			            	 schoolCriteria.add(Restrictions.gt(key, Float.parseFloat(value)));
+ 			     }	 
+ 	   		     else
+ 	   		    	schoolCriteria.add(Restrictions.eq(key, Float.parseFloat(value)));
  	   		     break; 
 	 	   	   default:     
 	 	   		   schoolCriteria.add(Restrictions.eq(key, value).ignoreCase());
@@ -225,11 +231,11 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
         schoolCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         //schoolCriteria.addOrder(Order.asc("itemcode"));
         System.out.println("getItemsByQueryParameters() using criteria = " +schoolCriteria.toString());
-  
+        System.out.println("maxResults="+maxResults);
 		try {
-			if(maxResults > 0)
-		       schools =  (List<School>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setMaxResults(maxResults).setCacheable(true).list();//executeCriteria(schoolCriteria);//(List<Product>)schoolCriteria.list();			
-			else
+			//if(maxResults > 0) 
+		    //   schools =  (List<School>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setMaxResults(maxResults).setCacheable(true).list();//executeCriteria(schoolCriteria);//(List<Product>)schoolCriteria.list();			
+			//else
 			   schools =  (List<School>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setCacheable(true).list();	
 		}
 		catch(Exception e){

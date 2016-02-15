@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.SimpleExpression;
 
 
 public interface GenericDao <T, PK extends Serializable>{
@@ -12,6 +13,7 @@ public interface GenericDao <T, PK extends Serializable>{
 	T findById(PK id);
 	T findById(PK id, Session session);
 	List<T> findAll();
+	List<T> findAll(SimpleExpression simpleExpression);
 	List<T> findByParameter(String parameterName, String value);
 	List<T> findByParameter(String parameterName, String value, Session session);
 	List<T> findByParameter(String parameterName, Long value);
