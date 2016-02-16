@@ -32,8 +32,8 @@
         <tr>
            <td>
              <ul style="list-style-type:none">
-                <li><a id="matchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%;">Colleges Accept TOEFL/IELTS Instead of SAT/ACT</a></li>
                 <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional Admission</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Accepts TOEFL Instead of SAT/ACT</a></li>
              </ul>
            </td>
         </tr>
@@ -45,13 +45,13 @@
         <tr>
            <td>
              <ul style="list-style-type:none">
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?satActNotRequired=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Do Not Require SAT1/ACT</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?satActNotRequired=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Not Requiring SAT/ACT</a></li>
              </ul>
            </td>
         </tr>
       </table>
       <table class="section_title_center">
-        <tr><td>Top Colleges in Different Categories</td></tr>
+        <tr><td>College Rankings in Different Categories</td></tr>
       </table>  
       <!--<table class="center_element" style="border-spacing: 80px, -90px">-->
        <spring:url var="action" value="/school/searchSchools" />
@@ -64,10 +64,10 @@
                    <td><input name="submit" type="submit" value="National Universities" class="submit_button"/>
                      <form:hidden path="category" value="National University"/>
                      <form:select id="nationalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
+                       <form:option value="50" selected="selected">Top 50</form:option>
+                       <form:option value="100">Top 100</form:option>
+                       <form:option value="150">Top 150</form:option>
+                       <form:option value="200">Top 200</form:option>
                        <form:option value="1000" >All</form:option>
                      </form:select>
                    </td> 
@@ -248,6 +248,25 @@
         </tr>
       </table> 
       <table class="section_title_center">
+        <tr><td>College Rankings in Different Specialities</td></tr>
+      </table>
+      <table>
+         <tr>
+          <td>
+            <ul>
+		  <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Engineering_Doctorate" />">Engineering Programs (Doctorate Degree Offered)</a></li>
+	        <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Engineering_No_Doctorate" />">Engineering Programs (No_Doctorate Degree Offered)</a></li>
+	      </ul>
+          </td>
+          <td>
+            <ul>
+		  <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Business_Doctorate" />">Business Programs (Doctorate Degree Offered)</a></li>
+	        <li></li>
+	      </ul>
+          </td>
+       </tr>
+      </table> 
+      <table class="section_title_center">
         <tr><td>Get A College's Information</td></tr>
       </table>  
       <form:form method="GET" action="searchSchoolsByMatchNamePattern" modelAttribute="school">
@@ -280,36 +299,36 @@
         <tr><td>Top Colleges for Popular Majors</td></tr>
       </table> 
       <table class="center_element" style="margin-top:0px;">
-	    <tr>
+        <tr>
          <td>
            <ul>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">Accounting Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Agriculture">Agriculture Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Biology">Biology Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Business_Finance">Business/Finance Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Communications">Communications Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Computer Science and Computer Engineering">Computer Science/Computer Engineering Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Criminology">Criminology Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Education">Education Majors</a></li>
-		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/English Literature and Language">English Literature and Language Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Engineering">Engineering Majors</a></li>
-	      </ul>
-       </td>
-       <td>
-		  <ul>
-		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Environmental Studies">Environmental Studies Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/History">History Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Journalism">Journalism Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Marketing and Sales">Marketing and Sales Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mathematics">Mathematics Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mechanical Engineering">Mechanical Engineering Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Nursing">Nursing Majors</a></li>
-		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Political Science and Government">Political Science/Government Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Psychology">Psychology Majors</a></li>
-		  </ul>
-	    </td>
-	   </tr>
+		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Accounting" />">Accounting Majors</a></li>
+		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Agriculture"/>">Agriculture Majors</a></li>
+		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Biology"/>">Biology Majors</a></li>
+	   	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Business_Finance"/>">Business/Finance Majors</a></li>
+	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Communications"/>">Communications Majors</a></li>
+	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Computer Science and Computer Engineering"/>">Computer Science/Computer Engineering Majors</a></li>
+		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Criminology"/>">Criminology Majors</a></li>
+	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Education"/>">Education Majors</a></li>
+		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/English Literature and Language"/>">English Literature and Language Majors</a></li>
+	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Engineering"/>">Engineering Majors</a></li>
+	     </ul>
+        </td>
+        <td>
+	     <ul>
+ 	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Environmental Studies">Environmental Studies Majors</a></li>
+		  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/History">History Majors</a></li>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Journalism">Journalism Majors</a></li>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Marketing and Sales">Marketing and Sales Majors</a></li>
+	    	  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mathematics">Mathematics Majors</a></li>
+	  	  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mechanical Engineering">Mechanical Engineering Majors</a></li>
+	  	  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Nursing">Nursing Majors</a></li>
+		  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Political Science and Government">Political Science/Government Majors</a></li>
+		  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Psychology">Psychology Majors</a></li>
+ 	     </ul>
+	  </td>
+	 </tr>
       </table>
       <table class="section_title_center">
         <tr><td>Colleges with Special Features</td></tr>
@@ -336,34 +355,19 @@
       <table class="center_element" style="margin-top:0px;">
 	    <tr>
          <td>
-           <ul>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">Colleges With High Acceptance Rate in Top 50 National Colleges</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">Colleges With High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
-			
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/ Agriculture">Agriculture Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Biology">Biology Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Business_Finance">Business/Finance Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Communications">Communications Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Computer Science and Computer Engineering">Computer Science/Computer Engineering Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Criminology">Criminology Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Education">Education Majors</a></li>
-		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/English Literature and Language">English Literature and Language Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Engineering">Engineering Majors</a></li>
-	      </ul>
+            <ul>
+               <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=highAcceptanceRate&size=100" />">Colleges with Highest Acceptance rate</a></li>
+               <li><a href="<spring:url value="/school/searchSchools?acceptRate>95" />">Colleges with Lowest SAT/ACT</a></li>
+		   <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">High Acceptance Rate in Top 50 National Colleges</a></li>
+		   <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
+            </ul>
        </td>
        <td>
-		  <ul>
-		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Environmental Studies">Environmental Studies Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/History">History Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Journalism">Journalism Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Marketing and Sales">Marketing and Sales Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mathematics">Mathematics Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mechanical Engineering">Mechanical Engineering Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Nursing">Nursing Majors</a></li>
-		    <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Political Science and Government">Political Science/Government Majors</a></li>
-			<li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Psychology">Psychology Majors</a></li>
-		  </ul>
+		<ul>
+		   <li><a href="<spring:url value="/school/searchSchools?acceptRate<25%" />">Colleges with lowest Acceptance rate</a></li>
+		   <li><a href="<spring:url value="/school/searchSchools?applicationFee=0" />">Colleges No Requiring Application Fee</a></li>
+	   	   <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
+		</ul>
 	    </td>
 	   </tr>
       </table>

@@ -142,6 +142,19 @@ General definition
      text-align: center;
      font-size: 200%;
   } 
+  .page_title_wide {
+     margin-left:auto; 
+     margin-right:auto;
+     margin-top:20px;
+     margin-bottom:10px;
+     border-style: solid;
+     border-width: 2px;
+     background-color: DarkOrange;//Coral; //AliceBlue; //Azure; //
+     color:GREEN; 
+     width:900px;
+     text-align: center;
+     font-size: 200%;
+  } 
   .title {
      margin-left:auto; 
      margin-right:auto;

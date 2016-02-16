@@ -110,16 +110,7 @@
                     </form:select>
                 </td> 
             </tr>
-            <tr>
-                <td><label for="internationalFinancialAid">Financial Aid for International Students:</label>
-                    <form:select id="internationalFinancialAid" path="internationalFinancialAid" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                          <c:forEach var="internationalFinancialAid" items="${internationalFinancialAidList}" varStatus="status">
-                             <form:option value="Yes">${internationalFinancialAid}</form:option>
-                          </c:forEach> 
-                    </form:select>
-                </td> 
-            </tr>	
+           
             <tr><td><input type="submit" value="Submit"/></td></tr>
          </table>
       </form:form>
@@ -223,7 +214,7 @@
                     </form:select>
                  </td> 
               </tr>
-              <tr>
+              <!--<tr>
                  <td><label for="internationalFinancialAid">Financial Aid for International Students:</label>
                      <form:select id="internationalFinancialAid" path="internationalFinancialAid" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
@@ -232,7 +223,7 @@
                           </c:forEach>
                     </form:select>
                  </td> 
-               </tr>	
+               </tr>-->	
            </table>
                <input type="submit" value="Submit"/>
       </form:form>
