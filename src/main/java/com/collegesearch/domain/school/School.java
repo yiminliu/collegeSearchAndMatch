@@ -66,6 +66,7 @@ public class School implements java.io.Serializable {
 	private Integer actScore;
 	private String  satActNotRequired;
 	private Integer numberOfRequiredSat2;
+	private Float   averageGpa;
 	private Float   acceptRate;
 	private Integer averageFreshmanRetentionRate;
     private Integer sixYearGraduationRate;
@@ -81,6 +82,7 @@ public class School implements java.io.Serializable {
 	private Integer maxResults;
 	private Integer totalCost;
 	private InternationalStudentApplication internationalStudentApplication;
+	private SchoolRankInSpeciality schoolRankInSpeciality;
 	private Float anticipationIndex;
 	private String applicationNote;
 	private List<PrincetonReviewPopularMajor> bestMajors = new ArrayList<PrincetonReviewPopularMajor>();
@@ -115,6 +117,18 @@ public class School implements java.io.Serializable {
 	public void setInternationalStudentApplication(
 			InternationalStudentApplication internationalStudentApplication) {
 		this.internationalStudentApplication = internationalStudentApplication;
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+	//@Fetch(FetchMode.JOIN)
+	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	@IndexedEmbedded
+	public SchoolRankInSpeciality getSchoolRankInSpeciality() {
+		return schoolRankInSpeciality;
+	}
+
+	public void setSchoolRankInSpeciality(SchoolRankInSpeciality schoolRankInSpeciality) {
+		this.schoolRankInSpeciality = schoolRankInSpeciality;
 	}
 	
 	@DocumentId
@@ -384,7 +398,17 @@ public class School implements java.io.Serializable {
 		this.numberOfRequiredSat2 = numberOfRequiredSat2;
 	}
 	
-    @Column(name="Percentage_Classes_Fewer_Than_20_students", precision=12, scale=0)
+	
+	@Column(name = "Average_GPA")
+    public Float getAverageGpa() {
+		return averageGpa;
+	}
+
+	public void setAverageGpa(Float averageGpa) {
+		this.averageGpa = averageGpa;
+	}
+
+	@Column(name="Percentage_Classes_Fewer_Than_20_students", precision=12, scale=0)
     public Float getPercentageClassesFewerThan20Students() {
         return this.percentageClassesFewerThan20Students;
     }
@@ -700,4 +724,57 @@ public class School implements java.io.Serializable {
 		  return school1.getName().compareToIgnoreCase(school2.getName());
 	   }
 	}
+	
+	public static class AcceptanceRateComparator implements Comparator<School>{
+		   public int compare(School school1, School school2){
+			  if(school1 == null)
+				 return 1;
+			  if(school2 == null)
+				 return -1; 
+			  if(school1.getAcceptRate() == null && school2.getAcceptRate() == null)
+				 return 0;
+			  if(school1.getAcceptRate() == null)
+				 return 1;
+			  if(school2.getAcceptRate() == null)
+				 return -1;			 
+			  if(school1.getAcceptRate() < school2.getAcceptRate())
+			  	 return -1;
+			  if (school1.getAcceptRate() > school2.getAcceptRate())
+				 return 1;
+			  if (school1.getAcceptRate() == school2.getAcceptRate())
+				 return 0;
+			  else
+				 return 1; 
+		   }
+		}
+	
+	public static class SpecialityRankComparator implements Comparator<School>{
+		   public int compare(School school1, School school2){
+			  int result = 1;
+			 			  
+			  if(school1.getSchoolRankInSpeciality().getRank() > 0){
+			    try{
+			       if(school1.getSchoolRankInSpeciality().getRank() < school2.getSchoolRankInSpeciality().getRank())
+			    	  result = -1;
+			       else if(school1.getSchoolRankInSpeciality().getRank() > school2.getSchoolRankInSpeciality().getRank())
+			    	   result = 1;
+			       else
+			    	   result = 0;
+			       
+			      // if(result == 0){
+			    	//  if(school1.getName().compareTo(school2.getName()) < 0)
+			    		// result = -1; 
+			    	  //else if(school1.getName().compareTo(school2.getName()) > 0)
+				    	// result = 1;
+			    	  //else
+			    		//  result = 0;
+			       //}  
+			    }
+			    catch(Exception e){
+			 	   e.printStackTrace();
+			    }	
+		      } 
+			  return result;
+		   }
+		}
 }

@@ -29,7 +29,7 @@ public class UserController {
 	    @Autowired
 	    UserService userService;
 	    
-	   //--------------------------- Create School --------------------------// 
+	   //--------------------------- Create User --------------------------// 
 	   
 	   /**
 	   * This method is used to show the form to create an School
@@ -38,7 +38,7 @@ public class UserController {
 	   */
 	   //@PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')")
 	   @RequestMapping(value = "/createUser", method = RequestMethod.GET)
-	   public String createSchool(Model model) {
+	   public String createUser(Model model) {
 	      model.addAttribute("user", new User());
 	      return "user/createUser";
 	   }
@@ -56,6 +56,6 @@ public class UserController {
 		  userService.createUser(user);
 		  model.addAttribute("user", user);
 		  status.setComplete(); //finished the "school" SessionAttribute
-	   	  return "school/createSchoolSuccesess";
+	   	  return "school/createUserSuccesess";
 	   }
 	}

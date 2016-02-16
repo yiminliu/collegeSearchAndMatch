@@ -9,6 +9,8 @@ import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.collegesearch.domain.school.PrincetonReviewGreatSchoolInPopularMajor;
 import com.collegesearch.domain.school.PrincetonReviewPopularMajor;
 import com.collegesearch.domain.school.School;
+import com.collegesearch.domain.school.SchoolRankInSpeciality;
+import com.collegesearch.dao.school.SchoolDao;
 import com.collegesearch.domain.school.UsNewsBestSchoolProgram;
 import com.collegesearch.dao.school.PrincetonReviewGreatSchoolMajorDao;
 import com.collegesearch.dao.school.PrincetonReviewPopularMajorDao;
-import com.collegesearch.dao.school.SchoolDao;
+import com.collegesearch.dao.school.SchoolRankInSpecialityDao;
 import com.collegesearch.dao.school.UsNewsBestSchoolProgramDao;
-import com.collegesearch.exception.DataNotFoundException;
 import com.collegesearch.exception.DatabaseOperationException;
 import com.collegesearch.util.logger.aspect.LogLevel;
 import com.collegesearch.util.logger.aspect.Loggable;
@@ -45,6 +48,9 @@ public class SchoolServiceImpl implements SchoolService {
  
     @Autowired 
     PrincetonReviewGreatSchoolMajorDao princetonReviewGreatSchoolMajorDao;
+    
+    @Autowired
+    SchoolRankInSpecialityDao schoolRankInSpecialityDao;
  
     @Loggable(value = LogLevel.TRACE)
     @Override
@@ -75,33 +81,48 @@ public class SchoolServiceImpl implements SchoolService {
     }
     
     @Loggable(value = LogLevel.TRACE)
+  	@Transactional(readOnly=true)
+    public List<School> getBestBuySchools(){
+    	
+    	return null;
+    	//return schoolDao.getSchoolsByMatchNamePattern(name);
+    }
+    
+    @Loggable(value = LogLevel.TRACE)
     @Override
 	@Transactional(readOnly=true)
 	public List<School> getSchoolsByMajor(String major) {
     	List<School> sList1 = this.getPrincetonReviewGreatSchoolMajor(major);
     	if(major.equalsIgnoreCase("Business") || major.equalsIgnoreCase("Engineering")) {
     		List<School> sList2 = this.getUsNewsBestSchoolPrograms(major);
-    	    Set<School> setboth = new HashSet<School>(sList1);
-    	    setboth.addAll(sList2);
+    	    Set<School> setOfBoth = new HashSet<School>(sList1);
+    	    setOfBoth.addAll(sList2);
     	    sList1.clear();
-    	    sList1.addAll(setboth);
+    	    sList1.addAll(setOfBoth);
     	}
     	return sList1;
+	}
+    
+    @Loggable(value = LogLevel.TRACE)
+    @Override
+	@Transactional(readOnly=true)
+	public List<School> getSchoolsBySpeciality(String speciality) {
+    	List<SchoolRankInSpeciality> specialityList = schoolRankInSpecialityDao.getSchoolRankInSpecialityBySpeciality(speciality);
+    	List<School> schoolList = new ArrayList<School>(specialityList.size());
+    	for(SchoolRankInSpeciality srl : specialityList){
+    		schoolList.add(srl.getSchool());
+    	}
+    	
+    	return schoolList;
 	}
     
     @Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
 	public List<School> getAllSchools(){
-		return schoolDao.findAll();
+    	SimpleExpression expresion = Restrictions.ne("category","Art Schools");
+    	return schoolDao.findAll(expresion);
 	}
-    
-   // @Loggable(value = LogLevel.TRACE)
-	//@Override
-	//@Transactional(readOnly=true)
-    //public List<School> getSchoolsByDescription(String description){
-    //	return (List<School>)SchoolDao.getSchoolsByDiscriptionPatternMatch(description);
-    //}
 	
 	@Loggable(value = LogLevel.TRACE)
 	@Override

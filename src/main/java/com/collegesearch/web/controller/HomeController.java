@@ -19,7 +19,6 @@ import com.collegesearch.domain.school.School;
 
 public class HomeController {
 
-	     
 	   //--------------------------- Home Page --------------------------// 
 	   
 	  /**
