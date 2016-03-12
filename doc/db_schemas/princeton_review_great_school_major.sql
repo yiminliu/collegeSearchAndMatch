@@ -1,4 +1,34 @@
 DROP TABLE IF EXISTS princeton_review_great_school_major;
+DROP TABLE IF EXISTS princeton_review_popular_major;
+CREATE TABLE princeton_review_popular_major
+(
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  Name VARCHAR(100) NOT NULL
+);
+
+Insert princeton_review_popular_major(Name) values
+('Accounting'), 
+('Agriculture'),
+('Biology'), 
+('Business_Finance'),
+('Communications'), 
+('Computer Science and Computer Engineering'), 
+('Criminology'),
+('Education'), 
+('Engineering'),
+('English Literature and Language'),
+('Environmental Studies'), 
+('Health Services'),
+('History'),
+('Journalism'), 
+('Marketing and Sales'),
+('Mathematics'),
+('Mechanical Engineering'), 
+('Nursing'),
+('Political Science and Government'),
+('Psychology');
+
+
 CREATE TABLE princeton_review_great_school_major
 (
   Major_Id INT NOT NULL,
@@ -11,7 +41,7 @@ CREATE TABLE princeton_review_great_school_major
 
 Insert princeton_review_great_school_major values(1, 2046, 'Alfred University');
 Insert princeton_review_great_school_major values(1, 142, 'Auburn University');
-/*Insert princeton_review_great_school_major values(1, -1, 'Babson College');*/
+Insert princeton_review_great_school_major values(1, 10000, 'Babson College');
 Insert princeton_review_great_school_major values(1, 76, 'Baylor University');
 Insert princeton_review_great_school_major values(1, 1119, 'Birmingham-Southern College');
 Insert princeton_review_great_school_major values(1, 37, 'Boston College');
@@ -145,7 +175,7 @@ Insert princeton_review_great_school_major values(3, 1088, 'Wofford College');
 Insert princeton_review_great_school_major values(3, 1234, 'Xavier University of Louisiana');
 
 Insert princeton_review_great_school_major values(4, 127, 'Arizona State University-Tempe');
-/*Insert princeton_review_great_school_major values(4, -1, 'Babson College');*/
+Insert princeton_review_great_school_major values(4, 10000, 'Babson College');
 Insert princeton_review_great_school_major values(4, 2002, 'Bentley University');
 Insert princeton_review_great_school_major values(4, 37, 'Boston College');
 Insert princeton_review_great_school_major values(4, 2010, 'Bryant University');
@@ -317,7 +347,7 @@ Insert princeton_review_great_school_major values(8, 13, 'Cornell University');
 Insert princeton_review_great_school_major values(8, 130, 'Duquesne University');
 Insert princeton_review_great_school_major values(8, 5000, 'Elon University');
 Insert princeton_review_great_school_major values(8, 3003, 'Gonzaga University');
-/*Insert princeton_review_great_school_major values(8, -1, 'Goucher College');*/
+Insert princeton_review_great_school_major values(8, 1112, 'Goucher College');
 Insert princeton_review_great_school_major values(8, 1068, 'Hillsdale College');
 Insert princeton_review_great_school_major values(8, 75, 'Indiana University-Bloomington');
 Insert princeton_review_great_school_major values(8, 1073, 'Knox College');
@@ -355,7 +385,7 @@ Insert princeton_review_great_school_major values(9, 6001, 'Cooper Union');
 Insert princeton_review_great_school_major values(9, 13, 'Cornell University');
 Insert princeton_review_great_school_major values(9, 108, 'Drexel University');
 Insert princeton_review_great_school_major values(9, 8,'Duke University');
-/*Insert princeton_review_great_school_major values(9, -1, 'Franklin W. Olin College of Engineering');*/
+Insert princeton_review_great_school_major values(9, 10001, 'Franklin W. Olin College of Engineering');
 Insert princeton_review_great_school_major values(9, 36,'Georgia Institute of Technology');
 Insert princeton_review_great_school_major values(9, 2,'Harvard University');
 Insert princeton_review_great_school_major values(9, 1014, 'Harvey Mudd College');
@@ -377,7 +407,7 @@ Insert princeton_review_great_school_major values(9, 25, 'University of Californ
 Insert princeton_review_great_school_major values(9, 45, 'University of Texas-Austin');
 Insert princeton_review_great_school_major values(9, 38, 'University of Wisconsin-Madison');
 Insert princeton_review_great_school_major values(9, 71, 'Virginia Tech');
-/*Insert princeton_review_great_school_major values(9, -2, 'Webb Institute');*/
+Insert princeton_review_great_school_major values(9, 10002, 'Webb Institute');
 Insert princeton_review_great_school_major values(9, 63, 'Worcester Polytechnic Institute');
 
 
@@ -505,7 +535,7 @@ Insert princeton_review_great_school_major values(12, 66, 'Purdue University-Wes
 Insert princeton_review_great_school_major values(12, 2011, 'Quinnipiac University');
 Insert princeton_review_great_school_major values(12, 2044, 'Sacred Heart University');
 Insert princeton_review_great_school_major values(12, 1114, 'St. Anselm College');
-Insert princeton_review_great_school_major values(12, 83, 'St. Louis University');
+Insert princeton_review_great_school_major values(12, 83, 'Saint Louis University');
 Insert princeton_review_great_school_major values(12, 134, 'Seton Hall University');
 Insert princeton_review_great_school_major values(12, 2015, 'Simmons College');
 Insert princeton_review_great_school_major values(12, 99, 'SUNY-Stony Brook');
@@ -608,7 +638,7 @@ Insert princeton_review_great_school_major values(14, 38, 'University of Wiscons
 Insert princeton_review_great_school_major values(14, 119, 'Washington State University');
 
 
-/*Insert princeton_review_great_school_major values(15, -1, 'Babson College');*/
+Insert princeton_review_great_school_major values(15, 10000, 'Babson College');
 Insert princeton_review_great_school_major values(15, 76, 'Baylor University');
 Insert princeton_review_great_school_major values(15, 2002, 'Bentley University');
 Insert princeton_review_great_school_major values(15, 130, 'Duquesne University');
@@ -665,7 +695,7 @@ Insert princeton_review_great_school_major values(17, 124, 'Clarkson University'
 Insert princeton_review_great_school_major values(17, 125, 'Colorado State University');
 Insert princeton_review_great_school_major values(17, 6001, 'Cooper Union');
 Insert princeton_review_great_school_major values(17, 108, 'Drexel University');
-/*Insert princeton_review_great_school_major values(17, -1, 'Franklin W. Olin College of Engineering');*/
+Insert princeton_review_great_school_major values(17, 10001, 'Franklin W. Olin College of Engineering');
 Insert princeton_review_great_school_major values(17, 36,'Georgia Institute of Technology');
 Insert princeton_review_great_school_major values(17, 1133, 'Grove City College');
 Insert princeton_review_great_school_major values(17, 1014, 'Harvey Mudd College');
@@ -677,7 +707,7 @@ Insert princeton_review_great_school_major values(17, 122, 'New Jersey Institute
 Insert princeton_review_great_school_major values(17, 89,'North Carolina State University-Raleigh');
 Insert princeton_review_great_school_major values(17, 66, 'Purdue University-West Lafayette');
 Insert princeton_review_great_school_major values(17, 2006, 'Rochester Institute of Technology');
-/*Insert princeton_review_great_school_major values(17, -1, 'Rose-Hulman Institute of Technology');*/
+Insert princeton_review_great_school_major values(17, 10003, 'Rose-Hulman Institute of Technology');
 Insert princeton_review_great_school_major values(17, 9, 'Stanford University');
 Insert princeton_review_great_school_major values(17, 118, 'University at Buffalo-SUNY');
 
@@ -695,7 +725,7 @@ Insert princeton_review_great_school_major values(18, 217, 'Indiana University o
 Insert princeton_review_great_school_major values(18, 111, 'Loyola University of Chicago');
 Insert princeton_review_great_school_major values(18, 7005, 'Montana Tech of the University of Montana');
 Insert princeton_review_great_school_major values(18, 8002, 'Ohio Northern University');
-Insert princeton_review_great_school_major values(18,  83, 'St. Louis University');
+Insert princeton_review_great_school_major values(18,  83, 'Saint Louis University');
 Insert princeton_review_great_school_major values(18, 107,'Texas Christian University');
 Insert princeton_review_great_school_major values(18, 93, 'University of Alabama');
 Insert princeton_review_great_school_major values(18, 5, 'University of Pennsylvania');

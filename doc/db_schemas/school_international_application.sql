@@ -411,7 +411,7 @@ Insert international_student_application values(1106,'St. Michael-s College','02
 Insert international_student_application values(1107,'Hampden-Sydney College','03-01',null,'Yes','Yes','Yes',100,null,null,null,109,41,3,null,'Jason Ferguson, Director of Global Education & Study Abroad, (434) 223-6311, mcooper@hsc.edu',null);
 Insert international_student_application values(1108,'Hollins University','03-01',null,'Yes','Yes','Yes',100,null,null,null,109,41,3,null,'Jason Ferguson, Director of Global Education & Study Abroad, (434) 223-6311, mcooper@hsc.edu',null);
 Insert international_student_application values(1109,'Lake Forest College','02-01','09-01','No','No','No',83,null,6.5,null,362,215,28,null,'Kris Sundberg, Director of International Enrollment, (847) 735-5000, international@lakeforest.edu',null);
-Insert international_student_application values(1110,'Ohio Wesleyan University',null,null,null,'No','No',null,null,null,null,null,null,null,null,'Grace Poling, Director of International Recruitment, (740) 368-3020, owuintl@owu.edu',null);
+Insert international_student_application values(1110,'Ohio Wesleyan University',null,null,'No','No','No',81,null,null,null,null,null,null,null,'Grace Poling, Director of International Recruitment, (740) 368-3020, owuintl@owu.edu',null);
 Insert international_student_application values(1111,'Drew University','02-15',null,'No','No','No',94,null,null,null,330,182,60,null,'Laura Arthur, Director of International Student Services, (973) 408-3182, larthur@drew.edu',null);
 Insert international_student_application values(1112,'Goucher College','02-01','12-01','No','No','Yes',80,96,null,null,468,226,2,null,'Nenelwa Tomi, Coordinator of International Studen Recruitment, (410) 337-6009, jstober@goucher.edu',null);
 Insert international_student_application values(1113,'Siena College','03-01','12-01','No','Yes','Yes',79,null,null,null,96,53,10,null,'Br. Brian Belanger, OFM, Director, Center for International Programs, (518) 786-5047, bbelanger@siena.edu',null);
@@ -538,7 +538,7 @@ Insert international_student_application values(1233,'William Peace University',
 Insert international_student_application values(1234,'Xavier University of Louisiana','03-01','09-30','No','No','No',82,null,null,null,null,null,null,null,'Mr. Torian L. Lee, Director of Center for International Student Progr, (504) 520-5490, tllee@xula.edu',null);
 Insert international_student_application values(1235,'Beacon College','Rolling—beginning 05-01','Rolling—beginning 11-01','Yes','No','Yes',80,null,null,null,null,null,null,null,'Dale Herold, Dean of Admissions & Enrollment Management, (352) 728-1178, ccorrad@beaconcollege.edu',null);
 Insert international_student_application values(1236,'Charter Oak State College',null,null,'No','No','No',null,null,null,null,null,null,null,null,'Lori Pendleton, Director of Admissions, (860) 515-3858, lpendleton@charteroak.edu',null);
-Insert international_student_application values(1237,'Granite State College',null,null,'No','No','No',null,null,null,null,null,null,null,null,'Cortney Vachon, Associate Registrar, (603) 228-3000, gsc,admissions@granite.edu',null);
+Insert international_student_application values(1237,'Granite State College',null,null,'No','No','No',80,null,null,null,null,null,null,null,'Cortney Vachon, Associate Registrar, (603) 228-3000, gsc,admissions@granite.edu',null);
 Insert international_student_application values(1238,'Hampshire College','01-15','11-15','No','No','Yes',91,null,null,null,null,null,null,null,'http://www.usnews.com/rankings',null);
 Insert international_student_application values(1239,'Martin University',null,null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(1240,'National Hispanic University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
@@ -663,7 +663,7 @@ Insert international_student_application values(2111,'College of Mount St. Vince
 Insert international_student_application values(2112,'College of St. Elizabeth','Rolling—beginning 08-15',null,'Yes','No','Yes',79,null,7.0,null,null,null,null,null,'Lenee D. Woodson, Director International and Multicultural Affairs, (973) 290-4227, lwoodson@cse.edu',null);
 Insert international_student_application values(2113,'Lesley University','03-15','05-23','No','No','No',80,null,null,null,null,null,null,null,'Janie Bess, Director, International Student Services, (617) 349-8542, iss@lesley.edu',null);
 Insert international_student_application values(2114,'Point Park University','06-30','11-15','Yes','No','No',61,null,null,null,429,164,22,null,'Rebecca Lee, Dir of International Student Services & Enrollment, (412) 392-3903, iss@pointpark.edu',null);
-Insert international_student_application values(2115,'College of New Rochelle','Rolling',null,'No','No','Yes',null,null,null,null,null,null,null,null,'Carmen Rosa, Associate Registrar, (914) 654-5543, crosa@cnr.edu',null);
+Insert international_student_application values(2115,'College of New Rochelle','Rolling',null,'No','No','Yes',80,null,null,null,null,null,null,null,'Carmen Rosa, Associate Registrar, (914) 654-5543, crosa@cnr.edu',null);
 Insert international_student_application values(2116,'CUNY-Lehman College','Rolling—beginning 03-15','Rolling—beginning 10-01','No','No','Yes',61,null,null,null,null,null,null,null,'Ann O Sullivan, Certification Coordinator, (718) 960-7274, sullivan@lehman.cuny.edu',null);
 Insert international_student_application values(2117,'Rosemont College','Rolling—beginning 08-01','Rolling—beginning 01-05','Yes','Yes','Yes',61,null,null,null,null,null,null,null,'MaryKateKaminski, Admissions Counselor, (610) 527-0200, marykate.kaminski@rosemont.edu',null);
 Insert international_student_application values(2118,'Utica College','Rolling',null,'No','No','Yes',70,null,null,null,null,null,null,null,'Dr. Dorothy Lewis, Interim Dean of International Education, (315) 792-3340, intlpro@utica.edu',null);
@@ -734,7 +734,7 @@ Insert international_student_application values(2182,'Western Connecticut State 
 Insert international_student_application values(2183,'Cambridge College',null,null,'No','No','No',79,null,null,null,null,null,null,null,'Molly Young, International Student Advisor, (617) 873-0169, molly.young@cambridgecollege.edu',null);
 Insert international_student_application values(2184,'Excelsior College',null,null,'No','No','No',69,null,null,null,null,null,null,null,'Trish Nguyen, International Admissions Counselor, (518) 464-8500, international@excelsior.edu',null);
 Insert international_student_application values(2185,'Fashion Institute of Technology',null,null,'No','No','No',80,null,null,null,null,null,null,null,'Erika Rohrbach, International Student Advisor, (212) 217-3700',null);
-Insert international_student_application values(2186,'Goddard College',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
+Insert international_student_application values(2186,'Goddard College',null,null,'No','No','No',80,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(2187,'Gratz College',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(2188,'Mercy College','Rolling—beginning 08-01','Rolling—beginning 08-01/Rolling—beginning 12-01/Rolling—beginning 05-01','No','Yes','Yes',71,null,6.0,null,106,70,16,null,'Makeda King, Director of International Students Office, (914) 674-7284, MKing@mercy.edu',null);
 Insert international_student_application values(2189,'Strayer University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
@@ -863,12 +863,12 @@ Insert international_student_application values(3128,'West Texas A&M University'
 Insert international_student_application values(3129,'Amberton University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(3130,'Ashford University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(3131,'Brandman University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
-Insert international_student_application values(3132,'City University of Seattle','08-01','11-01/02-01/05-01','Yes','No','Yes',null,null,6.0,null,null,null,null,null,'Sabine Saway, Director, International Student Admissions, (800) 426-5596, ssaway@cityu.edu',null);
+Insert international_student_application values(3132,'City University of Seattle','08-01','11-01/02-01/05-01','Yes','No','Yes',76,null,6.0,null,null,null,null,null,'Sabine Saway, Director, International Student Admissions, (800) 426-5596, ssaway@cityu.edu',null);
 Insert international_student_application values(3133,'Golden Gate University','05-15','06-01/01-15','No','No','Yes',62,71,null,null,null,null,null,null,'International Admissions Office (415) 442-7207, iss@ggu.edu',null);
 Insert international_student_application values(3134,'Heritage University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(3135,'John F. Kennedy University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(3136,'Jones International University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
-Insert international_student_application values(3137,'Langston University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
+Insert international_student_application values(3137,'Langston University',null,null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(3138,'Marylhurst University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(3139,'Naropa University','Rolling—beginning 01-15','Rolling—beginning 10-15','No','No','Yes',80,null,null,null,null,null,null,null,'Jennifer Hinton, International Student Advisor, (303) 546-3592, jhinton@naropa.edu',null);
 Insert international_student_application values(3140,'National University','Rolling—beginning 07-04','Rolling—beginning 10-04/Rolling—beginning 01-05/Rolling—beginning 04-05','Yes','No','No',80,null,null,null,null,null,null,null,'Maheba Merhi, Associate Regional Dean, International Programs, (619) 563-7206, mmerhi@nu.edu',null);
@@ -1012,7 +1012,7 @@ Insert international_student_application values(4130,'Lakeland College','Rolling
 Insert international_student_application values(4131,'Lincoln University','07-15','12-01','No','Yes','No',61,null,5.5,null,null,null,4,null,'Duwon Clark, International Student Services Coordinator, (573) 681-5477, clarkd@lincolnu.edu',null);
 Insert international_student_application values(4132,'Lourdes University',null,null,'Yes','No','No',61,null,null,null,null,null,null,null,'Amy Houston, Associate Director of Admissions, (419) 885-5291, ahouston@lourdes.edu',null);
 Insert international_student_application values(4133,'Marygrove College','06-01',null,'Yes','No','Yes',71,null,null,null,null,null,null,null,'Admissions (313) 927-1240, info@marygrove.edu',null);
-Insert international_student_application values(4134,'Metropolitan State University',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
+Insert international_student_application values(4134,'Metropolitan State University','05-01','10-01','No','No','No',61,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(4135,'MidAmerica Nazarene University',null,null,'No','No','No',81,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(4136,'Missouri Baptist University','Rolling',null,'Yes','No','No',80,null,null,null,null,null,null,null,'Mrs. Kari Saunders, Director of International Student Services, (314) 744-5301, saundersk@mobap.edu',null);
 Insert international_student_application values(4137,'Newman University','06-01','11-01','Yes','No','Yes',74,null,6.0,null,null,null,17,null,'Ami Larrea, Academic and International Advisor, (316) 942-4291, larreaa@newmanu.edu',null);
@@ -1246,7 +1246,7 @@ Insert international_student_application values(6071,'Plaza College',null,null,'
 Insert international_student_application values(6072,'Sojourner-Douglass College',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(6073,'Pennsylvania State University-Erie, The Behrend College','02-01','10-01/02-01','Yes','No','No',80,null,null,null,null,null,null,null,'Debbie Hayes, International Student Services, (814) 898-7101, dzh6@psu.edu',null);
 Insert international_student_application values(6074,'Pennsylvania State University-Harrisburg',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
-Insert international_student_application values(6074,'West Virginia University Institute of Technology','Rolling—beginning 08-01',null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
+Insert international_student_application values(6075,'West Virginia University Institute of Technology','Rolling—beginning 08-01',null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
 
 
 Insert international_student_application values(7000,'Carroll College','Rolling—beginning 06-01','Rolling—beginning 09-01','Yes','Yes','Yes',80,86,6.5,null,null,null,null,null,'Michelle Lewis, Director of International Programs, (406) 447-5406, mlewis@carroll.edu',null);
@@ -1413,7 +1413,7 @@ Insert international_student_application values(8091,'Waldorf College',null,null
 Insert international_student_application values(8092,'Wilberforce University',null,null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(8093,'William Penn University',null,null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(8094,'Baker College of Flint',null,null,'No','No','No',79,null,null,null,null,null,null,null,null,null);
-Insert international_student_application values(8095,'Chadron State College',null,null,'No','No','No',85,null,null,null,null,null,null,null,null,null);
+Insert international_student_application values(8095,'Chadron State College',null,null,'No','No','No',80,null,6.5,null,null,null,null,null,null,null);
 Insert international_student_application values(8096,'Donnelly College',null,null,'No','No','No',61,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(8097,'Midstate College',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
 Insert international_student_application values(8098,'Ranken Technical College',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
