@@ -7,9 +7,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 
-import org.hibernate.Session;
+
+
+
+
+//import org.hibernate.Session;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,15 +25,27 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.collegesearch.domain.school.PrincetonReviewGreatSchoolMajor;
+
+
+
+
+import com.collegesearch.dao.school.ASchoolForBStudentDao;
+import com.collegesearch.dao.school.BestSchoolMajorDao;
+//import com.collegesearch.domain.school.PrincetonReviewGreatSchoolInPopularMajor;
+//import com.collegesearch.domain.school.Major;
 import com.collegesearch.domain.school.School;
-import com.collegesearch.domain.school.UsNewsBestSchoolProgram;
+import com.collegesearch.domain.school.BestSchoolMajor;
+//import com.collegesearch.domain.school.School.NameComparator;
 import com.collegesearch.domain.school.School.RankComparator;
+import com.collegesearch.domain.school.School.ToeflComparator;
+//import com.collegesearch.domain.school.School.AcceptanceRateComparator;
+import com.collegesearch.domain.school.BestSchoolMajor.MajorRankComparator;
 import com.collegesearch.domain.user.User;
 import com.collegesearch.service.SchoolService;
 import com.collegesearch.service.system.IndexService;
 import com.collegesearch.service.user.UserService;
 import com.collegesearch.util.school.SchoolUtil;
+//import com.collegesearch.util.school.SchoolUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = "/collegesearch-test-context.xml")
@@ -46,6 +62,12 @@ public class CollegeSearchServiceTest {
 	
 	@Autowired
 	private IndexService indexService;
+	
+	@Autowired
+	BestSchoolMajorDao bestSchoolMajorDao;
+	
+	@Autowired
+	ASchoolForBStudentDao aSchoolForBStudentDao;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -98,7 +120,8 @@ public class CollegeSearchServiceTest {
 	@Test
 	public void testGetSchoolsByMatchNamePattern() {
 		//indexService.initializeIndex();
-		String name = "Penn";
+		//String name = "Penn";
+		String name = "Arkansas Baptist College";
 		List<School> schools = schoolService.getSchoolsByMatchNamePattern(name);
 		assertNotNull(schools);
 		School school = schools.get(0);
@@ -109,39 +132,96 @@ public class CollegeSearchServiceTest {
 	
 	@Test
 	public void testGetSchools() {
-		List<School> schools = schoolService.getAllSchools();
+		
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("category", Arrays.asList(new String[]{"National University"}));
+		params.put("maxResults", Arrays.asList(new String[]{"50"}));
+		List<School> schools = schoolService.getSchools(params);
+		System.out.println(schools.size() + " schools returned.");
+		
 		assertNotNull(schools);
 	}
 	
 	@Test
+	public void testGetSchoolsByAcceptaRate() {
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("acceptRate", Arrays.asList(new String[]{"<25"}));
+		List<School> schools = schoolService.getSchools(params);
+		System.out.println(schools.size() + " schools returned.");
+		Collections.sort(schools,  new RankComparator());
+		assertNotNull(schools);
+	}
+	
+	@Test
+	public void testGetTrimedSchoolsByAcceptaRate() {
+		//LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		//params.put("acceptRate", Arrays.asList(new String[]{">95"}));
+		List<School> schools = schoolService.getAllSchools();
+		//System.out.println(schools.size() + " schools returned.");
+		System.out.println("Now sorting the list...");
+		//Collections.sort(schools,  new AcceptanceRateComparator());
+		System.out.println(schools.size() + " schools returned.");
+		
+		assertNotNull(schools);
+	}
+	
+	@Test
+	public void testGetSchoolsWithLowToefl() {
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("internationalStudentApplication.minimumToeflScore", Arrays.asList(new String[]{"90"}));
+		List<School> schools = schoolService.getSchools(params);
+		Collections.sort(schools, new ToeflComparator()); 
+		//System.out.println(schools.size() + " schools returned.");
+		System.out.println("Now sorting the list...");
+		//Collections.sort(schools,  new AcceptanceRateComparator());
+		System.out.println(schools.size() + " schools returned.");
+		
+		assertNotNull(schools);
+	}
+    
+	@Test
+	public void testGetSchoolsByApplicationFee() {
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("applicationFee", Arrays.asList(new String[]{"0"}));
+		List<School> schools = schoolService.getSchools(params);
+		System.out.println(schools.size() + " schools returned.");
+		Collections.sort(schools,  new RankComparator());
+		assertNotNull(schools);
+	}
+	
+/*	@Test
 	public void testGetUsNewsBestSchoolPrograms() {
 		//String name = "Business";
 		String name = "Engineering";
 		List<School> pList = schoolService.getUsNewsBestSchoolPrograms(name);
 		assertNotNull(pList);
 		//assertEquals(name, school.getName());
-		//assertEquals("Philadelphia", school.getCity());
-		//assertEquals("PA", school.getState());
+		System.out.println("Data = " + pList.toString());
 	}
-	
+	*/
 	@Test
-	public void testPrincetonReviewGreatSchoolMajor() {
-		//String name = "Business";
+	public void testGetBestSchoolMajor() {
+		String name = "Accounting";
 		//String name = "Engineering";
-		String name = "Mechanical Engineering";
+		//String name = "Mechanical";
 		//String name = "Health Services";
-		//String name = "Communications";
-		List<School> pList = schoolService.getPrincetonReviewGreatSchoolMajor(name);
+		//String name = "Computer_Doctorate";
+		//List<School> pList = schoolService.getPrincetonReviewGreatSchoolMajor(name);
+		List<BestSchoolMajor> pList = schoolService.getBestSchoolMajors(name);
+		//List<BestSchoolMajor> pList = bestSchoolMajorDao.getBestSchoolMajorsByMajorId("COMM1");
+		//Collections.sort(pList,  new MajorRankComparator());
 		assertNotNull(pList);
 		assertNotEquals(0, pList.size());
-		for(School s : pList){
-			System.out.println("school = " + s.toString());
+		System.out.println("# of school = " + pList.size());
+		Collections.sort(pList, new MajorRankComparator());
+		for(BestSchoolMajor s : pList){
+			System.out.println(s.getRank() + ": " +"school = " + s.getSchool().getName());
 		}
 		//assertEquals(name, school.getName());
 		//assertEquals("Philadelphia", school.getCity());
 		//assertEquals("PA", school.getState());
 	}
-	
+	/*
 	@Test
 	public void testgetSchoolsByMajor() {
 		//String name = "Business";
@@ -159,17 +239,49 @@ public class CollegeSearchServiceTest {
 		//assertEquals("Philadelphia", school.getCity());
 		//assertEquals("PA", school.getState());
 	}
+	*/
+	
+	@Test
+	public void testgetSchoolsBySpeciality() {
+		String speciality = "Engineering_Doctorate";
+		List<School> pList = schoolService.getSchoolsBySpeciality(speciality);
+		assertNotNull(pList);
+		assertNotEquals(0, pList.size());
+		for(School s : pList){
+			System.out.println("school : rank = " + s.getName() + ": "+ s.getSchoolRankInSpeciality().getRank());
+		}
+		//assertEquals(name, school.getName());
+		//assertEquals("Philadelphia", school.getCity());
+		//assertEquals("PA", school.getState());
+	}
+	
+	@Test
+	public void testgetArtSchools() {
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("category", Arrays.asList(new String[]{"Art Schools"}));
+		List<School> schools = schoolService.getSchools(params);
+		assertNotNull(schools);
+		assertNotEquals(0,schools.size());
+		for(School s : schools){
+			System.out.println("school : name = " + s.getName());
+		}
+		//assertEquals(name, school.getName());
+		//assertEquals("Philadelphia", school.getCity());
+		//assertEquals("PA", school.getState());
+	}
+
+	
 /*
 	@Test
 	public void testGetUsNewsBestSchoolPrograms() {
 		String name = "Business";
-		List<UsNewsBestSchoolProgram> pList = schoolService.getUsNewsBestSchoolPrograms(name);
+		List<BestSchoolMajor> pList = schoolService.getUsNewsBestSchoolPrograms(name);
 		assertNotNull(pList);
 		//assertEquals(name, school.getName());
 		//assertEquals("Philadelphia", school.getCity());
 		//assertEquals("PA", school.getState());
 		List<School> sList = new ArrayList<School>(pList.size());
-		for(UsNewsBestSchoolProgram p : pList){
+		for(BestSchoolMajor p : pList){
 			System.out.println("pList = " + p.toString());
 			School s = schoolService.getSchoolById(p.getId().getSchoolId());
 			s.setRankOverall(p.getRank());
@@ -196,16 +308,17 @@ public class CollegeSearchServiceTest {
 		//params.put("sat1Score", Arrays.asList(new String[]{"1800"}));
 		//params.put("size", Arrays.asList(new String[]{"Small(<2000)"}));
 		//params.put("size", Arrays.asList(new String[]{"between 2000 and 15000"}));
-		params.put("acceptRate", Arrays.asList(new String[]{"<25%"}));
+		params.put("acceptRate", Arrays.asList(new String[]{">95%"}));
 		//params.put("acceptRate", Arrays.asList(new String[]{"between 20% and 50%"}));
 		
 		List<School> pList = schoolService.getSchools(params);
 		Collections.sort(pList,  new RankComparator());
 		assertNotNull(pList);
 		assertNotEquals(0, pList.size());
-		for(School s : pList){
-			System.out.println("school = " + s.toString());
-		}
+		System.out.println(pList.size() + " schools returned");
+		//for(School s : pList){
+		//	System.out.println("school = " + s.toString());
+		//}
 	}
 	
 	@Test
@@ -280,7 +393,7 @@ public class CollegeSearchServiceTest {
 		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
 		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
 		//String name = "University of Pennsylvania";
-		String name = "United States Coast Guard Academy";
+		String name = "University of the West";
 		School school = schoolService.getSchoolByName(name);
 		
 		//assertNotNull(schoolsAdjustedBySAT1Standard);
@@ -292,6 +405,21 @@ public class CollegeSearchServiceTest {
 		//.close();
 	}
 	 
+	@Test
+	public void testGetGreatMajors() {
+		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
+		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
+		String name = "Drexel University";
+		School school = schoolService.getSchoolByName(name);
+		List<BestSchoolMajor> bestMajors = null;//school.getBestMajors();
+		//assertNotNull(schoolsAdjustedBySAT1Standard);
+		//System.out.println("data = "+school.getGoodAtMajors()); 
+		System.out.println("# of best majors = " + bestMajors.size());
+		//System.out.println("best majors = " + bestMajors.get(0).getMajor().getName());
+		for(BestSchoolMajor sm : bestMajors){
+	//		System.out.println("major = " + sm.getMajor().getName());
+		}
+	}
 
 	@Test
 	public void testSearchSchools() {
@@ -348,5 +476,38 @@ public class CollegeSearchServiceTest {
     long totalTime = System.currentTimeMillis() - startTime;
     System.out.println("user: " + user);
 	}
-
+	
+	@Test
+	public void testConvertActToSat() throws Exception {
+	   
+	    int actScore = 22;
+	    int satScore = SchoolUtil.convertActToSat(actScore);
+	    System.out.println("actScore = " + actScore + " : " + "satScore = " + satScore );
+		//School updatedSchool = schoolService.getSchoolByName(name);
+		}
+	
+	@Test
+	public void testGetSchoolAverageSat() {
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("state", Arrays.asList(new String[]{"Ar"}));
+		List<School> schools = schoolService.getSchools(params);
+		assertNotNull(schools);
+		assertNotEquals(0,schools.size());
+		for(School s : schools){
+			s.assignAverageSAT();
+			System.out.println("school:  averageSat" + s.getName() + ": "+s.getAverageSAT());
+		}
+		//assertEquals(name, school.getName());
+		//assertEquals("Philadelphia", school.getCity());
+		//assertEquals("PA", school.getState());
+	}
+	
+	@Test
+	public void testGetASchoolForBStudent() {
+		List<School> schools = schoolService.getAllASchoolsForBStudents();
+		assertNotNull(schools);
+		for(School school : schools){
+			System.out.println("school: " + school.getName());
+		}
+	}	
 }
