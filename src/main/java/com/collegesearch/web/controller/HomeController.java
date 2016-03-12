@@ -36,7 +36,7 @@ public class HomeController {
 	   /**
 	     * This method is used to show the form to search Schools
 		 *
-		 * @return Admin Home Page
+		 * @return admin page
 		 *
 		 */
 		 @RequestMapping(value = "/admin/adminHome", method = RequestMethod.GET)

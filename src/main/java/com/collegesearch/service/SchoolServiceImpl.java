@@ -1,6 +1,7 @@
 package com.collegesearch.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,22 +16,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.collegesearch.domain.school.PrincetonReviewGreatSchoolInPopularMajor;
-import com.collegesearch.domain.school.PrincetonReviewPopularMajor;
+import com.collegesearch.domain.school.BestSchoolMajor.MajorRankComparator;
+import com.collegesearch.domain.school.ASchoolForBStudent;
+import com.collegesearch.domain.school.BestSchoolMajor;
+//import com.collegesearch.domain.school.PrincetonReviewGreatSchoolInPopularMajor;
+import com.collegesearch.domain.school.Major;
 import com.collegesearch.domain.school.School;
 import com.collegesearch.domain.school.SchoolRankInSpeciality;
+import com.collegesearch.dao.school.ASchoolForBStudentDao;
 import com.collegesearch.dao.school.SchoolDao;
-import com.collegesearch.domain.school.UsNewsBestSchoolProgram;
-import com.collegesearch.dao.school.PrincetonReviewGreatSchoolMajorDao;
-import com.collegesearch.dao.school.PrincetonReviewPopularMajorDao;
+//import com.collegesearch.domain.school.BestSchoolMajor;
+import com.collegesearch.dao.school.BestSchoolMajorDao;
+//import com.collegesearch.dao.school.PrincetonReviewGreatSchoolMajorDao;
+import com.collegesearch.dao.school.MajorDao;
 import com.collegesearch.dao.school.SchoolRankInSpecialityDao;
-import com.collegesearch.dao.school.UsNewsBestSchoolProgramDao;
+//import com.collegesearch.dao.school.UsNewsBestSchoolProgramDao;
 import com.collegesearch.exception.DatabaseOperationException;
 import com.collegesearch.util.logger.aspect.LogLevel;
 import com.collegesearch.util.logger.aspect.Loggable;
 import com.collegesearch.util.school.SchoolUtil;
 
-@Service("SchoolService")
+@Service("schoolService")
 @Transactional
 public class SchoolServiceImpl implements SchoolService {
 
@@ -40,18 +46,30 @@ public class SchoolServiceImpl implements SchoolService {
     @Autowired
 	SchoolDao schoolDao;   
     
-    @Autowired
-    UsNewsBestSchoolProgramDao usNewsBestSchoolProgramDao;
+    //@Autowired
+    //UsNewsBestSchoolProgramDao usNewsBestSchoolProgramDao;
     
     @Autowired 
-    PrincetonReviewPopularMajorDao princetonReviewPopularMajorDao;
+    MajorDao majorDao;
+    
+    @Autowired
+    BestSchoolMajorDao bestSchoolMajorDao;
+  
  
     @Autowired 
-    PrincetonReviewGreatSchoolMajorDao princetonReviewGreatSchoolMajorDao;
+    ASchoolForBStudentDao aSchoolForBStudentDao;
     
     @Autowired
     SchoolRankInSpecialityDao schoolRankInSpecialityDao;
  
+    @Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional(readOnly=true)
+	public List<School> getAllSchools(){
+    	SimpleExpression expresion = Restrictions.ne("category","Art Schools");
+    	return schoolDao.findAll(expresion);
+	}
+    
     @Loggable(value = LogLevel.TRACE)
     @Override
 	@Transactional(readOnly=true)
@@ -87,22 +105,22 @@ public class SchoolServiceImpl implements SchoolService {
     	return null;
     	//return schoolDao.getSchoolsByMatchNamePattern(name);
     }
-    
+    /*
     @Loggable(value = LogLevel.TRACE)
     @Override
 	@Transactional(readOnly=true)
 	public List<School> getSchoolsByMajor(String major) {
-    	List<School> sList1 = this.getPrincetonReviewGreatSchoolMajor(major);
-    	if(major.equalsIgnoreCase("Business") || major.equalsIgnoreCase("Engineering")) {
-    		List<School> sList2 = this.getUsNewsBestSchoolPrograms(major);
-    	    Set<School> setOfBoth = new HashSet<School>(sList1);
-    	    setOfBoth.addAll(sList2);
-    	    sList1.clear();
-    	    sList1.addAll(setOfBoth);
-    	}
-    	return sList1;
+       List<School> sList1 = this.getPrincetonReviewGreatSchoolMajor(major);
+       if(major.equalsIgnoreCase("Business") || major.equalsIgnoreCase("Engineering")) {
+    	  List<School> sList2 = this.getUsNewsBestSchoolPrograms(major);
+    	  Set<School> setOfBoth = new HashSet<School>(sList1);
+    	  setOfBoth.addAll(sList2);
+    	  sList1.clear();
+    	  sList1.addAll(setOfBoth);
+       }
+       return sList1;
 	}
-    
+    */
     @Loggable(value = LogLevel.TRACE)
     @Override
 	@Transactional(readOnly=true)
@@ -112,18 +130,9 @@ public class SchoolServiceImpl implements SchoolService {
     	for(SchoolRankInSpeciality srl : specialityList){
     		schoolList.add(srl.getSchool());
     	}
-    	
     	return schoolList;
 	}
-    
-    @Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<School> getAllSchools(){
-    	SimpleExpression expresion = Restrictions.ne("category","Art Schools");
-    	return schoolDao.findAll(expresion);
-	}
-	
+    	
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	public List<School> getSchools(final LinkedHashMap<String, List<String>> queryParams){
@@ -155,13 +164,198 @@ public class SchoolServiceImpl implements SchoolService {
 		      totalCostInt = Integer.valueOf(totalCost.substring(1));
 		   schools = filterByTotalCost(schools, totalCostInt);
 		}   
-		
 		if(SchoolUtil.applicantDataExist(queryParams))
 		   return doMatch( schools, queryParams);	
 	
 		return schools;
 	}
+	/*
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional(readOnly=true)
+	public List<School> getPrincetonReviewGreatSchoolMajor(String majorName){
+		List<Major> pList = null;
+		List<School> sList = null;
+		Session session = getSession();
+		try{
+		    Major major = majorDao.getMajorByName(majorName, session);
+		    if(major != null){
+		       pList = princetonReviewGreatSchoolMajorDao.getPrincetonReviewGreatSchoolMajorsByMajorId(major.getId(), session);
+		       sList = new ArrayList<School>(pList.size());
+	  	       for(Major m : pList){
+	  	   	       //School school = getSchoolById(m.getId().getSchoolId(), session);
+			       //sList.add(school);
+	  	    	   //System.out.println("major: "+ m.getId() + ", " + m.getName() + ", " + m.getSchools().size());
+	  	    	   //System.out.println(" # " + m.getBestSchoolMajors().size());
+	  	    	   //List<BestSchoolMajor> aList = new ArrayList<BestSchoolMajor>(m.getBestSchoolMajors().size());
+	  	    	   //aList.addAll(m.getBestSchoolMajors());
+	  	    	   //Collections.sort(aList, new MajorRankComparator());
+	  	    	   //for(BestSchoolMajor s : aList){
+	  	    		// System.out.println("major: " + s.getMajor().getName() + "; " + "name of school: " + s.getSchool().getName() + "rank: " + s.getRank());
+	  	    	   //}
+	  	    	 //  for(School s :m.getSchools()){
+	  	    	//	 System.out.println("name of school: " + s.getName());
+	  	    	  // }
+	  	         }    
+	 	    }  
+		}
+		catch(HibernateException hbe){
+		    if(hbe.getCause() != null)
+		       throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
+	  	    else
+	           throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  hbe.getMessage());
+		}
+		catch(RuntimeException e){
+		   if(e.getCause() != null)
+		  	  throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
+		   else
+		      throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  e.getMessage(), e);	
+		}
+		return sList;
+	}
+	*/
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional(readOnly=true)
+	public List<BestSchoolMajor> getBestSchoolMajors(String majorName){
+		List<BestSchoolMajor> list = null;
+		Session session = getSession();
+		try{
+		    Major major = majorDao.getMajorByName(majorName, session);
+		    if(major != null)
+		       list = bestSchoolMajorDao.getBestSchoolMajorsByMajorId(major.getId(), session);
+		    Collections.sort(list,  new MajorRankComparator());
+		}
+		catch(HibernateException hbe){
+		    if(hbe.getCause() != null)
+		       throw new DatabaseOperationException("Error occured during getBestSchoolsOfMajor(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
+	  	    else
+	           throw new DatabaseOperationException("Error occured during getBestSchoolsOfMajor(), due to: " +  hbe.getMessage());
+		}
+		catch(RuntimeException e){
+		   if(e.getCause() != null)
+		  	  throw new DatabaseOperationException("Error occured during getBestSchoolsOfMajor(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
+		   else
+		      throw new DatabaseOperationException("Error occured during getBestSchoolsOfMajor(), due to: " +  e.getMessage(), e);	
+		}
+		return list;
+	}
+	/*
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional(readOnly=true)
+	public List<School> getUsNewsBestSchoolPrograms(String programName){
+		List<BestSchoolMajor> pList = null;
+		List<School> sList = null;
+		Integer id = 0;
+		if (programName.equalsIgnoreCase("Business"))
+			id = 1;
+		else if (programName.equalsIgnoreCase("Engineering"))
+			id = 2;
+		try{
+		    pList = usNewsBestSchoolProgramDao.getUsNewsBestSchoolProgramsByProgramId(id);
+		    sList = new ArrayList<School>(pList.size());
+	  	    for(BestSchoolMajor p : pList){
+	  	    	//School school = getSchoolById(p.getId().getSchoolId());
+				//school.setRankOverall(p.getRank());
+				//sList.add(school);
+	 	    }  
+	 	}
+		catch(HibernateException hbe){
+		   if(hbe.getCause() != null)
+		      throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
+	  	   else
+	          throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage());
+		}
+		catch(RuntimeException e){
+			if(e.getCause() != null)
+		  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
+		  	else
+		  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage(), e);	
+		}
+		sList = getSchoolsForUsNewsBestSchoolPrograms(pList);
+		return sList;
+	}
+	*/
+	/*
+	@Loggable(value = LogLevel.TRACE)
+	@Transactional(readOnly=true)
+	private List<School> getSchoolsForUsNewsBestSchoolPrograms(List<BestSchoolMajor> pList){
+		
+		List<School> sList = new ArrayList<School>(pList.size());
+	  	for(BestSchoolMajor p : pList){
+	  	    try {
+	  	       // School school = getSchoolById(p.getId().getSchoolId());
+	  	       // school.setRankOverall(p.getRank());
+				//sList.add(school);
+		    }
+			catch(HibernateException hbe){
+			   if(hbe.getCause() != null)
+			      throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
+		  	   else
+		          throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage());
+			}
+			catch(RuntimeException e){
+				if(e.getCause() != null)
+			  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
+			  	else
+			  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage(), e);	
+			}
+	    }   
+	    return sList;
+	}
+	*/	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public Integer createSchool(School School){
+		return schoolDao.createSchool(School); 
+	}
 	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public School updateSchool(School school){
+		School retrievedSchool = null;
+		try{
+		   //retrievedSchool = schoolDao.getSchoolByName(getSession(), school.getName());
+		   //if(retrievedSchool == null)
+			//  throw new DataNotFoundException("No school found with name: " + school.getName()); 
+			schoolDao.updateSchool(getSession(), school); 
+			return school;
+		}
+		catch(Exception e){
+			throw e;
+		}
+	}	
+		
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public void deleteSchool(School school){
+		schoolDao.deleteSchool(school); 
+	}	
+	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	@Transactional
+	public List<School> getAllASchoolsForBStudents(){
+		List<ASchoolForBStudent> origList = aSchoolForBStudentDao.getAllASchoolForBStudent();
+		List<School> schools = new ArrayList<School>(origList.size());
+		for(ASchoolForBStudent aSchool : origList){
+			schools.add(aSchool.getSchool());
+		}
+		return schools;
+	}
+	
+	/*************** Internally used utility methods *****************/
+	protected synchronized Session getSession(){
+		Session session = sessionFactory.getCurrentSession();
+		if (session == null)
+		   session = sessionFactory.openSession();
+	    return session;
+    }
+		
 	private List<School> doMatch(List<School> oriSchoolList, final LinkedHashMap<String, List<String>> queryParams){
 		List<School> finalSchoolList = null;
 		String studentSat1Score = SchoolUtil.getValue(queryParams, "sat1Score");
@@ -192,7 +386,7 @@ public class SchoolServiceImpl implements SchoolService {
 		   adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
 		   for(School school : oriSchoolList){
 			   if(SchoolUtil.isTestScoreSatisfied(score, school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
-				   adjustedSchoolList.add(school);
+				  adjustedSchoolList.add(school);
 		   } 
 		} 
 		//if SAT1 score is not present, check ACT score
@@ -204,15 +398,13 @@ public class SchoolServiceImpl implements SchoolService {
 				 if(acceptRate == null)
 					 acceptRate = 100f; 
 				 if(school.getActPercentile25() != null && school.getActPercentile25() != 0){
-					 System.out.println("ACT:"+school.getName() + school.getActPercentile25() + "/"+school.getActPercentile75());
 			        if(SchoolUtil.isTestScoreSatisfied(score, school.getActPercentile25(), school.getActPercentile75(), acceptRate))
 			           adjustedSchoolList.add(school);
 				 }
 				 else if(school.getSat1Percentile25() != null && school.getSat1Percentile75() != null){
 					int satScore = SchoolUtil.convertActToSat(score);
-					System.out.println("SAT:"+school.getName() + school.getSat1Percentile25() + "/"+school.getSat1Percentile75());
 				    if(SchoolUtil.isTestScoreSatisfied(satScore, school.getSat1Percentile25(), school.getSat1Percentile75(), acceptRate))
-				    	adjustedSchoolList.add(school);
+				       adjustedSchoolList.add(school);
 				 }
 					 
 			 }
@@ -223,10 +415,10 @@ public class SchoolServiceImpl implements SchoolService {
 		   return oriSchoolList;
 	}
 	
-	//6 cases: 
+	//use cases: 
 	//1. student' Toefl <==> school average Toefl;  2. student' Toefl <==> school minimum Toefl
 	//3. student' Ielts <==> school average Ieltsl; 4. student' Ielts <==> school minimum Ielts
-	//5. student' Ielts <==> school average Toefl; 4. student' Ielts <==> school minimum Toefl
+	//5. student' Ielts <==> school average Toefl;  6. student' Ielts <==> school minimum Toefl
 	private List<School> eveluateToeflAndIeltsScores(List<School> oriSchoolList, String studentToeflScore, String studentIeltsScore){
 		int score = 0;
 		Integer minToefl = null;
@@ -239,24 +431,24 @@ public class SchoolServiceImpl implements SchoolService {
 			studentIeltsScore != null && studentIeltsScore.length() > 0 && !studentIeltsScore.equals("0")){
 		    adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
 		    for(School school : oriSchoolList){
-			   minToefl = school.getInternationalStudentApplication().getMinimumToeflScore();
-			   avgToefl = school.getInternationalStudentApplication().getAverageToeflScore();
-			   minIelts = school.getInternationalStudentApplication().getMinimumIeltsScore();
-			   avgIelts = school.getInternationalStudentApplication().getAverageIeltsScore(); 
+			    minToefl = school.getInternationalStudentApplication().getMinimumToeflScore();
+			    avgToefl = school.getInternationalStudentApplication().getAverageToeflScore();
+			    minIelts = school.getInternationalStudentApplication().getMinimumIeltsScore();
+			    avgIelts = school.getInternationalStudentApplication().getAverageIeltsScore(); 
 		
-			   //student's Toefl score presents		   
-			   if(studentToeflScore != null && studentToeflScore.length() > 0 && !studentToeflScore.equals("0")){ 
-			      score = Integer.parseInt(studentToeflScore);  
-			      //school's average Toefl requirements present
-			      if(avgToefl != null && avgToefl > 0 && score > avgToefl){
-			         school.setAnticipationIndex(((score-avgToefl)*1.0f/avgToefl)*1.1f);
-				     adjustedSchoolList.add(school);
-			      }
-			      //only school's minimum Toefl requirement presents   
-			      else if(minToefl != null && minToefl > 0 && score > minToefl){
-				     school.setAnticipationIndex(((score-minToefl)*1.0f/minToefl)*1.0f);
-				     adjustedSchoolList.add(school);
-			      }
+			    //student's Toefl score presents		   
+			    if(studentToeflScore != null && studentToeflScore.length() > 0 && !studentToeflScore.equals("0")){ 
+			       score = Integer.parseInt(studentToeflScore);  
+			       //school's average Toefl requirements present
+			       if(avgToefl != null && avgToefl > 0 && score > avgToefl){
+			          school.setAnticipationIndex(((score-avgToefl)*1.0f/avgToefl)*1.1f);
+				      adjustedSchoolList.add(school);
+			       }
+			       //only school's minimum Toefl requirement presents   
+			       else if(minToefl != null && minToefl > 0 && score > minToefl){
+				      school.setAnticipationIndex(((score-minToefl)*1.0f/minToefl)*1.0f);
+				      adjustedSchoolList.add(school);
+			       }
 			   }  
 		
 			   //student's Toefl score not present but Ielts score presents
@@ -299,142 +491,7 @@ public class SchoolServiceImpl implements SchoolService {
 		return finalSchoolList;
 	}
 	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<School> getPrincetonReviewGreatSchoolMajor(String majorName){
-		List<PrincetonReviewGreatSchoolInPopularMajor> pList = null;
-		List<School> sList = null;
-		Session session = getSession();
-		try{
-		    PrincetonReviewPopularMajor major = princetonReviewPopularMajorDao.getPrincetonReviewPopularMajorByName(majorName, session);
-		    if(major != null){
-		       pList = princetonReviewGreatSchoolMajorDao.getPrincetonReviewGreatSchoolMajorsByMajorId(major.getId(), session);
-		       sList = new ArrayList<School>(pList.size());
-	  	       for(PrincetonReviewGreatSchoolInPopularMajor m : pList){
-	  	   	       School school = getSchoolById(m.getId().getSchoolId(), session);
-			       sList.add(school);
-	  	       }    
-	 	    }  
-		}
-		catch(HibernateException hbe){
-		    if(hbe.getCause() != null)
-		       throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
-	  	    else
-	           throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage());
-		}
-		catch(RuntimeException e){
-		   if(e.getCause() != null)
-		  	  throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
-		   else
-		      throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage(), e);	
-		}
-		return sList;
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<School> getUsNewsBestSchoolPrograms(String programName){
-		List<UsNewsBestSchoolProgram> pList = null;
-		List<School> sList = null;
-		Session session;
-		Integer id = 0;
-		if (programName.equalsIgnoreCase("Business"))
-			id = 1;
-		else if (programName.equalsIgnoreCase("Engineering"))
-			id = 2;
-		try{
-		    pList = usNewsBestSchoolProgramDao.getUsNewsBestSchoolProgramsByProgramId(id);
-		    sList = new ArrayList<School>(pList.size());
-	  	    for(UsNewsBestSchoolProgram p : pList){
-	  	    	School school = getSchoolById(p.getId().getSchoolId());
-				school.setRankOverall(p.getRank());
-				sList.add(school);
-	 	    }  
-	 	}
-		catch(HibernateException hbe){
-		   if(hbe.getCause() != null)
-		      throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
-	  	   else
-	          throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage());
-		}
-		catch(RuntimeException e){
-			if(e.getCause() != null)
-		  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
-		  	else
-		  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage(), e);	
-		}
-		sList = getSchoolsForUsNewsBestSchoolPrograms(pList);
-		return sList;
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Transactional(readOnly=true)
-	private List<School> getSchoolsForUsNewsBestSchoolPrograms(List<UsNewsBestSchoolProgram> pList){
-		
-		List<School> sList = new ArrayList<School>(pList.size());
-	  	for(UsNewsBestSchoolProgram p : pList){
-	  	    try {
-	  	        School school = getSchoolById(p.getId().getSchoolId());
-	  	        school.setRankOverall(p.getRank());
-				sList.add(school);
-		    }
-			catch(HibernateException hbe){
-			   if(hbe.getCause() != null)
-			      throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
-		  	   else
-		          throw new DatabaseOperationException("Error occured during getItems(), due to: " +  hbe.getMessage());
-			}
-			catch(RuntimeException e){
-				if(e.getCause() != null)
-			  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
-			  	else
-			  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage(), e);	
-			}
-	    }   
-	    return sList;
-	}
-		
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional
-	public Integer createSchool(School School){
-		return schoolDao.createSchool(School); 
-	}
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional
-	public School updateSchool(School school){
-		School retrievedSchool = null;
-		try{
-		   //retrievedSchool = schoolDao.getSchoolByName(getSession(), school.getName());
-		   //if(retrievedSchool == null)
-			//  throw new DataNotFoundException("No school found with name: " + school.getName()); 
-			schoolDao.updateSchool(getSession(), school); 
-			return school;
-		}
-		catch(Exception e){
-			throw e;
-			
-		}
-	
-	}	
-	
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional
-	public void deleteSchool(School school){
-		schoolDao.deleteSchool(school); 
-	}	
-	
-	protected synchronized Session getSession(){
-		Session session = sessionFactory.getCurrentSession();
-		if (session == null)
-		   session = sessionFactory.openSession();
-	    return session;
-    }
+
 	
 	/*
 	private List<School> filterResultByTestScore(final LinkedHashMap<String, List<String>> queryParams, List<School> schools, String nameOfTest) {

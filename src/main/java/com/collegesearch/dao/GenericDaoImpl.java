@@ -2,6 +2,7 @@ package com.collegesearch.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,17 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-//import javax.ws.rs.core.MultivaluedMap;
-
-
-
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 import org.hibernate.exception.DataException;
@@ -57,7 +51,7 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 	 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(){
+	public Collection<T> findAll(){
 		Criteria criteria = currentSession().createCriteria(type);
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
@@ -185,7 +179,8 @@ public class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T,
 		return (List<T>)criteria.list();			
 	}
 	
-	
+	/************ Util Methods ************/
+		
 	protected synchronized Session currentSession() {
 	    Session session = null;
 		try{

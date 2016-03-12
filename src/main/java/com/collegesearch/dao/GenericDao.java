@@ -1,6 +1,7 @@
 package com.collegesearch.dao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface GenericDao <T, PK extends Serializable>{
 	
 	T findById(PK id);
 	T findById(PK id, Session session);
-	List<T> findAll();
+	Collection<T> findAll();
 	List<T> findAll(SimpleExpression simpleExpression);
 	List<T> findByParameter(String parameterName, String value);
 	List<T> findByParameter(String parameterName, String value, Session session);

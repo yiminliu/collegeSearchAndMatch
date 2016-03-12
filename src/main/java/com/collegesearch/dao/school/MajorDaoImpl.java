@@ -9,16 +9,16 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.collegesearch.dao.GenericDaoImpl;
-import com.collegesearch.domain.school.PrincetonReviewPopularMajor;
+import com.collegesearch.domain.school.Major;
 
 
-@Repository("princetonReviewPopularMajorDao")
-public class PrincetonReviewPopularMajorDaoImpl extends GenericDaoImpl<PrincetonReviewPopularMajor, Integer> implements PrincetonReviewPopularMajorDao {
+@Repository("majorDao")
+public class MajorDaoImpl extends GenericDaoImpl<Major, String> implements MajorDao {
 						
 	@Override
 	@Transactional(readOnly=true, propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED)
-	public PrincetonReviewPopularMajor getPrincetonReviewPopularMajorById(Integer majorId){
-	   List<PrincetonReviewPopularMajor> majorList = findByParameter("id.majorId", majorId);
+	public Major getMajorById(String majorId){
+	   List<Major> majorList = findByParameter("id.majorId", majorId);
 	   if(majorList != null && majorList.size()>0)
 		  return majorList.get(0); 
 	   else
@@ -27,8 +27,8 @@ public class PrincetonReviewPopularMajorDaoImpl extends GenericDaoImpl<Princeton
 	
 	@Override
 	//@Transactional(readOnly=true, propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED)
-	public PrincetonReviewPopularMajor getPrincetonReviewPopularMajorByName(String name){
-		List<PrincetonReviewPopularMajor> majorList = findByParameter("name", name);
+	public Major getMajorByName(String name){
+		List<Major> majorList = findByParameter("name", name);
 	    if(majorList != null && majorList.size()>0)
 		   return majorList.get(0); 
 		else
@@ -37,8 +37,8 @@ public class PrincetonReviewPopularMajorDaoImpl extends GenericDaoImpl<Princeton
 	
 	@Override
 	//@Transactional(readOnly=true, propagation=Propagation.REQUIRED, isolation=Isolation.READ_COMMITTED)
-	public PrincetonReviewPopularMajor getPrincetonReviewPopularMajorByName(String name, Session session){
-		List<PrincetonReviewPopularMajor> majorList = findByParameter("name", name);
+	public Major getMajorByName(String name, Session session){
+		List<Major> majorList = findByParameter("name", name);
 	    if(majorList != null && majorList.size()>0)
 		   return majorList.get(0); 
 		else

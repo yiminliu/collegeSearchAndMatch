@@ -115,7 +115,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	       
 	        //----------- Compose hibernate criteria -------------//
 	 		//------ conditional pattern match -------//
-    		if(!exactMatch && ("itemcode".equalsIgnoreCase(key) || ("material.materialcategory".equalsIgnoreCase(key)))){
+    		if(!exactMatch && ("itemcode".equalsIgnoreCase(key))){
     		   if(values != null && values.size() > 1)	
     			   schoolCriteria = generateWildcardDisjunctionCriteria(schoolCriteria, key, values);
     		   else
@@ -124,7 +124,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
             }
     		//------ unconditional pattern match -------//
    	     
-		    if("itemdesc.fulldesc".equalsIgnoreCase(key) || "itemdesc.itemdesc1".equalsIgnoreCase(key) || "colorcategory".equalsIgnoreCase(key)){
+		    if("itemdesc.fulldesc".equalsIgnoreCase(key)){
 		      	if(values != null && values.size() > 1)	
 	     		   schoolCriteria = generateWildcardDisjunctionCriteria(schoolCriteria, key, values);
 	     		else
@@ -166,7 +166,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		 	       internationalApplicationCriteria.add(Restrictions.le(key, Integer.parseInt(value)));
 		 	       internationalApplicationCriteria.add(Restrictions.gt(key, 0));
 		 		   break;   
-		       case "internationalStudentApplication.toeflScore":
+		       case "internationalStudentApplication.toeflScore": case "internationalStudentApplication.minimumToeflScore":
 		 		   key = "minimumToeflScore"; 
 		 		   if(internationalApplicationCriteria == null)
 		 			  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
@@ -229,10 +229,9 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	 	   	}	      	    	
 	    }
         schoolCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        //schoolCriteria.addOrder(Order.asc("itemcode"));
+        //schoolCriteria.addOrder(Order.asc("rankOverall"));
         System.out.println("getItemsByQueryParameters() using criteria = " +schoolCriteria.toString());
-        System.out.println("maxResults="+maxResults);
-		try {
+     	try {
 			//if(maxResults > 0) 
 		    //   schools =  (List<School>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setMaxResults(maxResults).setCacheable(true).list();//executeCriteria(schoolCriteria);//(List<Product>)schoolCriteria.list();			
 			//else
@@ -306,6 +305,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	   // retrieve item list
 	   return (List<School>)fullTextQuery.list();     
 	}
+	
 	
 	@Override
 	public void updateSchool(Session session, School school){

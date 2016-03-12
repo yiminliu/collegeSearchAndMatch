@@ -1,5 +1,6 @@
 package com.collegesearch.web.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -22,10 +23,15 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.collegesearch.domain.school.School;
+import com.collegesearch.domain.school.BestSchoolMajor;
 import com.collegesearch.domain.school.School.RankComparator;
 import com.collegesearch.domain.school.School.NameComparator;
 import com.collegesearch.domain.school.School.AcceptanceRateComparator;
 import com.collegesearch.domain.school.School.SpecialityRankComparator;
+import com.collegesearch.domain.school.School.TotalCostComparator;
+import com.collegesearch.domain.school.School.ToeflComparator;
+import com.collegesearch.domain.school.School.SatComparator;
+import com.collegesearch.domain.school.BestSchoolMajor.MajorRankComparator;
 import com.collegesearch.domain.school.enums.States;
 import com.collegesearch.domain.school.enums.PopularMajors;
 import com.collegesearch.exception.DataNotFoundException;
@@ -83,54 +89,95 @@ public class SchoolController {
 		  return "school/successResult";
 	 }
 	  
-	  /**
-		  * This method is used to process the School search based on input search criteria
-		  *
-		  * @return String the School search resulting page which shows all Schools match the search criteria
-		  */
-		  @RequestMapping(value="/listSchoolsByFeature", method = RequestMethod.GET)
-		  public String listSchoolsByFeature(@RequestParam("feature") final String feature,  @RequestParam(value = "size", required=false) int size, Model model, SessionStatus status) {
-		      List<School> schools = null;
-			  try{
-			     schools = schoolService.getAllSchools();
-			  }
-			  catch(DataNotFoundException e){
-				 status.setComplete(); //finished the "School" SessionAttribute
-		    	 throw e;
-			  }
-			  catch(Exception e){
-				  status.setComplete(); //finished the "School" SessionAttribute
-		    	  throw e;
-			  }
-			  if(feature != null) {
-			     switch(feature){
-			       case ("lowAcceptanceRate"):
-			    	    for(School school : schools){
-			    	    	if(school.getAcceptRate() == null)
-			    	    	   schools.remove(school);	
-			    	    }
-			    	    Collections.sort(schools, new AcceptanceRateComparator());
-			            break;  
+	 /**
+	   * This method is used to process the School search based on input search criteria
+	   *
+	   * @return String the School search resulting page which shows all Schools match the search criteria
+  	   */
+	    @RequestMapping(value="/listSchoolsByFeature", method = RequestMethod.GET)
+		public String listSchoolsByFeature(@RequestParam("feature") final String feature,  @RequestParam(value = "size", required=false) int numberOfSchools, Model model, SessionStatus status) {
+		   List<School> schools = null;
+		   
+		   if(feature != null) {
+			  LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		      switch(feature){
+		             case ("lowAcceptanceRate"):
+		               params.put("acceptRate", Arrays.asList(new String[]{"<25"}));
+		   		       params.put("category", Arrays.asList(new String[]{"National University", "National Liberal Arts College",
+	    			            "Regional University-North", "Regional University-South", 
+	    			            "Regional University-Midwest", "Regional University-West", 
+	    			            "Regional College-North", "Regional College-South",
+	    	 		            "Regional College-Midwest", "Regional College-West"}));
+		   		    
+		   		       schools = schoolService.getSchools(params);
+			     	   Collections.sort(schools, new AcceptanceRateComparator());
+			     	   model.addAttribute("title", "100  Colleges With Highest Acceptance Rate");
+			           break;  
 			       case ("highAcceptanceRate"):
-			    	    for(School school : schools){
-			    	    	if(school.getAcceptRate() == null)
-			    	    	   schools.remove(school);
-			    	    }
-			            Collections.sort(schools, Collections.reverseOrder(new AcceptanceRateComparator()));
-				        break;
+			    	   params.put("acceptRate", Arrays.asList(new String[]{">80"}));
+					   params.put("category", Arrays.asList(new String[]{"National University", "National Liberal Arts College",
+	    			            "Regional University-North", "Regional University-South", 
+	    			            "Regional University-Midwest", "Regional University-West", 
+	    			            "Regional College-North", "Regional College-South",
+	    	 		            "Regional College-Midwest", "Regional College-West"}));
+					   schools = schoolService.getSchools(params);
+					   model.addAttribute("title", "100 Colleges With Highest Acceptance Rate");
+			           Collections.sort(schools, Collections.reverseOrder(new AcceptanceRateComparator()));
+				       break;
+			       case ("lowCost"):
+			           List<School> orgSchools = schoolService.getAllSchools();
+			           schools = new ArrayList<School>(orgSchools.size());
+			           for(School school : orgSchools){
+			        	   if(school.getTuitionFee() != null && school.getRoomBoard() != null){
+			        		  school.setTotalCost(school.getTuitionFee() + school.getRoomBoard());   
+			        	   	  schools.add(school);
+			        	   }	 
+			        	   Collections.sort(schools, new TotalCostComparator()); 
+			        	   model.addAttribute("title", "100 Colleges With Lowest Cost");
+			           }
+				       break;    
+			       case ("lowToefl"):
+			           params.put("internationalStudentApplication.minimumToeflScore", Arrays.asList(new String[]{"80"}));
+			           schools = schoolService.getSchools(params);
+			           Collections.sort(schools, new ToeflComparator()); 
+			           model.addAttribute("title", "100 Colleges With Lowest TOEFL Score Requirement");
+			           break;    
 			       case ("lowSat"):
-				       //Collections.sort(schools,  new SATComparator());
-			    	    break;
-			     }
+			    	   schools = schoolService.getAllSchools();
+		               for(School school : schools){
+		            	   school.assignAverageSAT();
+		               }
+				       Collections.sort(schools,  new SatComparator());
+				       model.addAttribute("title", "100 Colleges With Lowest SAT/ACT Score Requirement");
+			    	   break;
+			       case ("ASchoolsForBStudents"):
+			    	   schools = schoolService.getAllASchoolsForBStudents();
+		               Collections.sort(schools,  new RankComparator());
+				       model.addAttribute("title", "A-Plus Schools For B-Students");
+			    	   break;	   
 			  }
-			  if(size > 0 && size < schools.size())
-			  	 schools = schools.subList(0, size); 
-			  
-			  model.addAttribute("schoolList", schools);
-			  model.addAttribute("operation", "listSchools");
-			  status.setComplete(); //finish the "School" SessionAttribute
-			  return "school/successResult";
+		  }
+		  else {
+			  try{
+				  schools = schoolService.getAllSchools();
+			   }
+			   catch(DataNotFoundException e){
+				  status.setComplete(); //finished the "School" SessionAttribute
+			      throw e;
+			   }
+			   catch(Exception e){
+				  status.setComplete(); //finished the "School" SessionAttribute
+			   	  throw e;
+			   }	   
+		  }
+		  if(numberOfSchools > 0 && numberOfSchools < schools.size())
+		  	 schools = schools.subList(0, numberOfSchools); 
+		     model.addAttribute("schoolList", schools);
+			 model.addAttribute("operation", "listSchools");
+			 status.setComplete(); //finish the "School" SessionAttribute
+			 return "school/successFeatureResult";
 		 }
+	    
 		    
 	/**
 	  * This method is to show School detail information for the given School code within query string
@@ -195,11 +242,11 @@ public class SchoolController {
 	  }
 	  
 	  /**
-		  * This method is to show School detail information for the given School code within query string
-		  * @return String the name of the School detail page
-		  */
-		  @RequestMapping(value="getGreatSchoolsByMajor/{major}", method = RequestMethod.GET)
-		  public String getBestSchoolsByMajor(@PathVariable("major") String major, Model model){
+		* This method is to show School detail information for the given School code within query string
+		* @return String the name of the School detail page
+		*/
+	/*	@RequestMapping(value="getGreatSchoolsByMajor/{major}", method = RequestMethod.GET)
+		public String getBestSchoolsByMajor(@PathVariable("major") String major, Model model){
 		     List<School> schools = null;
 			 try{
 			    schools = schoolService.getSchoolsByMajor(major);
@@ -215,7 +262,7 @@ public class SchoolController {
 			 return "school/successResult";
 		  }
 			    
-		    
+	*/	    
 	    
 	 /**
 	   * This method is used to show the form to search Schools
@@ -313,56 +360,23 @@ public class SchoolController {
 		*
 		* @return String the School search resulting page which shows all Schools match the search criteria
 		*/
-		@RequestMapping(value="/getUsNewsBestSchoolPrograms/{programName}", method = RequestMethod.GET)
-		public String getUsNewsBestSchoolPrograms(@PathVariable("programName") String programName, Model model, SessionStatus status) {
-		     List<School> schools = null;
-		     try{
-		    	 schools = schoolService.getUsNewsBestSchoolPrograms(programName);
-			 }
-			 catch(DataNotFoundException e){
-			    status.setComplete(); //finished the "School" SessionAttribute
-		    	throw e;
-			 }
-			 catch(Exception e){
-			    status.setComplete(); //finished the "School" SessionAttribute
-		    	throw e;
-			 }
-			 //if(schools == null)
-			 //   throw new DataNotFoundException();
-			 Collections.sort(schools,  new RankComparator());
-			 model.addAttribute("schoolList", schools);
-			 status.setComplete(); //finish the "School" SessionAttribute
-			 return "school/successResult";
-		 } 
-	   
-	  /**
-	    * This method is used to process the School search based on input search criteria
-		*
-		* @return String the School search resulting page which shows all Schools match the search criteria
-		*/
-		@RequestMapping(value="/getPrincetonReviewGreatSchoolMajors/{major}", method = RequestMethod.GET)
-		public String getPrincetonReviewGreatSchoolMajors(@PathVariable("major") String major, Model model, SessionStatus status) {
-		     List<School> schools = null;
-		     try{
-		    	 schools = schoolService.getPrincetonReviewGreatSchoolMajor(major);
-			 }
-			 catch(DataNotFoundException e){
-			    status.setComplete(); //finished the "School" SessionAttribute
-		    	throw e;
-			 }
-			 catch(Exception e){
-			    status.setComplete(); //finished the "School" SessionAttribute
-		    	throw e;
-			 }
-			 //if(schools == null)
-			 //   throw new DataNotFoundException();
-			 Collections.sort(schools,  new NameComparator());
-			 model.addAttribute("schoolList", schools);
-			 model.addAttribute("operation", "getPrincetonReviewGreatSchoolMajors");
-			 model.addAttribute("title", major);
-			 status.setComplete(); //finish the "School" SessionAttribute
-			 return "school/successResult";
-		 } 
+	
+		@RequestMapping(value="/getBestSchoolMajors/{major}", method = RequestMethod.GET)
+		public String getBestSchoolsMajors(@PathVariable("major") String major, Model model, SessionStatus status) {
+	       List<BestSchoolMajor> bestSchoolMajorList = null;
+		   try{
+		       bestSchoolMajorList = schoolService.getBestSchoolMajors(major);
+		   }
+		   catch(Exception e){
+			   status.setComplete(); //finished the "School" SessionAttribute
+			   throw e;
+		   }
+		   model.addAttribute("bestSchoolMajorList", bestSchoolMajorList);
+		   model.addAttribute("operation", "getBestSchoolMajors");
+		   model.addAttribute("title", major);
+		   status.setComplete(); //finish the "School" SessionAttribute
+		   return "school/successMajorResult";
+	    }
 	   	
 	    //--------------------------- Create School --------------------------// 
 	   
@@ -586,7 +600,7 @@ public class SchoolController {
 	     
 	     @ModelAttribute("acceptanceRateList")
 	     public void listOfacceptanceRate(Model model) {
-	     	 model.addAttribute("acceptanceRateList", Arrays.asList("<25%", "between 25% and 50%", "between 50% and 75%", "between 75% and 100%"));
+	     	 model.addAttribute("acceptanceRateList", Arrays.asList("<25%", "between 25% and 50%", "between 50% and 75%", ">75%"));
 	     }
 	     
 	     @ModelAttribute("tuitionRangeList")
