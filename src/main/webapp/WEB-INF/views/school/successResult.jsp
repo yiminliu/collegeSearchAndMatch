@@ -17,6 +17,9 @@
         <c:when test="${not empty title && operation eq 'getSchoolsInSpeciality'}">
            <div class="page_title_wide">Top Colleges in ${title} Program (${fn:length(schoolList)} found)</div>
         </c:when>
+        <c:when test="${not empty title && operation eq 'listSchools'}">
+           <div class="page_title_wide">${title}</div>
+        </c:when>
         <c:when test="${not empty title}">
            <div class="page_title_wide">Great Colleges in ${title} Majors (${fn:length(schoolList)} found)</div>
         </c:when>
@@ -46,7 +49,9 @@
 	   	    <th>SAT1/ACT<font size="1"> (25th-75th%)</font></th>
 	 	    <!--<th>SAT II Required</th>-->
 	  	    <th>Ave. GPA</th>
-		    <th>TOEFL Score (Min/Avg)</th>				
+		    <th>TOEFL Score (Min/Avg)</th>	
+		    <th>SAT/ACT Not Required</th>
+		    <th>TOEFL Accepted Instead of SAT/ACT</th>			
 		    <!--<th>Selectivity</th>-->
 		    <th>Appl. Deadline</th>
 		    <th>Appl. Fee</th>
@@ -179,7 +184,16 @@
                         </c:choose>
                       </c:otherwise>
                    </c:choose>
-			 <!--<td>${school.selectivity}</td>-->
+                   <td>${school.satActNotRequired}</td>
+                   <c:choose>
+			   <c:when test="${school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct eq 'Yes'}">
+			      <td>${school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct}</td>
+			   </c:when>
+                     <c:otherwise>
+                        <td></td> 
+                     </c:otherwise>
+                  </c:choose>                    
+			<!--<td>${school.selectivity}</td>-->
 			<c:choose>
 			   <c:when test="${school.applicationDeadline != null}">
 			      <td>${school.applicationDeadline}</td>

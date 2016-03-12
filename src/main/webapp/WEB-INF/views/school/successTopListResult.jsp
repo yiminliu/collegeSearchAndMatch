@@ -34,12 +34,14 @@
                 <th>Type</th>-->
 				<!--<th>Tuition+Fees<font size="1"></font></th>
 				<th>Room+Board<font size="1"></font></th>-->
-				<th>Total Cost<font size="1"></font>
+				<th>Total Cost<font size="1"></font></th>
 				<th>Accept. Rate<font size="1"></font></th>
 				<th>SAT I/ACT<font size="1">(25th - 75th%)</font></th>
 				<th>SAT II Required</th>
 				<th>Ave. GPA</th>
 				<th>TOEFL Score (Min/Avg)</th>
+				<th>SAT/ACT Not Required</th>
+		            <th>TOEFL Accepted Instead of SAT/ACT</th>
 				<!--<th>Selectivity</th>-->
 				<th>Appl. Deadline<font size="1">(mm-dd)</font></th>
 				<th>Appl. Fee<font size="1"></font></th>
@@ -58,7 +60,7 @@
 			     </c:when>  
 			     <c:when test="${operation eq 'getPrincetonReviewGreatSchoolMajors'}">
 			     </c:when> 
-			     <otherwise> 		
+			     <c:otherwise> 		
 					   <c:choose>
                                   <c:when test="${school.rankOverall > 0}">
 					      <td>${school.rankOverall}</td>
@@ -70,7 +72,7 @@
 					      <td>Not Reported</td>
 					   </c:otherwise>
 					</c:choose> 
-		    		</otherwise>
+		    		</c:otherwise>
 		    	   </c:choose>	
             		<!--<td>${school.size}</td>
                     <td>${school.type}</td>-->
@@ -150,6 +152,15 @@
                         </c:choose>
                       </c:otherwise>
                     </c:choose>
+                    <td>${school.satActNotRequired}</td>
+                   <c:choose>
+			   <c:when test="${school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct eq 'Yes'}">
+			      <td>${school.internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct}</td>
+			   </c:when>
+                     <c:otherwise>
+                        <td></td> 
+                     </c:otherwise>
+                  </c:choose>    
 					<!--<td>${school.selectivity}</td>-->
 					<c:choose>
 					  <c:when test="${school.applicationDeadline != null}">

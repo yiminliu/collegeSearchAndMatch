@@ -13,32 +13,34 @@
   <div class="container">
     <div class="content">  
       <table class="section_title_center">
-        <tr><td>Chose Your Colleges Based on Your Preferences and Qualifications</td></tr>
+        <tr><td>Choose Colleges -- College Search & Match Engines</td></tr>
       </table>     
       <table class="center_element_text" style="border:1px; width: 100%">
         <tr>
            <td>
              <ul style="list-style-type:none">
-                <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Your Suitable Colleges</a></li>
-                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Match You and the Suitable Colleges <span style="color:red">  *JUST FOR YOU*</span></a></li>
+                <!--<li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Colleges by Your Preferences</a></li>
+                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Find Colleges by Your Preferences and Qualifications<span style="color:red">  *JUST FOR YOU*</span></a></li>-->
+                <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%">Find Colleges by Your Preferences</a></li>
+                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;">Find Colleges by Your Preferences and Qualifications<span style="color:red"><br>*JUST FOR YOU*</span></a></li>
              </ul>
            </td>
         </tr>
       </table>
       <table class="section_title_center">
-        <tr><td>Application Made Easier for International Students</td></tr>
+        <tr><td>Application Made Easy for International Students</td></tr>
       </table>     
       <table class="center_element_text" style="border:1px; width: 100%">
         <tr>
            <td>
              <ul style="list-style-type:none">
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional Admission</a></li>
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Accepts TOEFL Instead of SAT/ACT</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional Admissions</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Accepting TOEFL Instead of SAT/ACT</a></li>
              </ul>
            </td>
         </tr>
       </table>
-      <table class="section_title_center">
+      <!--<table class="section_title_center">
         <tr><td>Application Made Easier</td></tr>
       </table>     
       <table class="center_element_text" style="border:1px; width: 100%">
@@ -49,9 +51,21 @@
              </ul>
            </td>
         </tr>
-      </table>
+      </table>-->
       <table class="section_title_center">
-        <tr><td>College Rankings in Different Categories</td></tr>
+        <tr><td>Get A College's Information</td></tr>
+      </table>  
+      <form:form method="GET" action="searchSchoolsByMatchNamePattern" modelAttribute="school">
+         <table class="table_center" style="margin-top:15px; margin-bottom:15px">
+            <tr>
+               <!--<td><form:label path="name">Get College Information:</form:label></td>-->
+               <td><form:input path="name" placeholder="College Name"/></td>
+               <td><input name="submit" type="submit" value="Go" /></td>
+            </tr>
+         </table>
+      </form:form> 
+      <table class="section_title_center">
+        <tr><td>Rankings By Categories</td></tr>
       </table>  
       <!--<table class="center_element" style="border-spacing: 80px, -90px">-->
        <spring:url var="action" value="/school/searchSchools" />
@@ -63,13 +77,6 @@
                  <tr>
                    <td><input name="submit" type="submit" value="National Universities" class="submit_button"/>
                      <form:hidden path="category" value="National University"/>
-                     <form:select id="nationalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">Top 50</form:option>
-                       <form:option value="100">Top 100</form:option>
-                       <form:option value="150">Top 150</form:option>
-                       <form:option value="200">Top 200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                 </tr>
               </table>
@@ -81,13 +88,6 @@
                  <tr>
                    <td><input name="submit" type="submit" value="National Liberal Art Colleges" class="submit_button" />
                      <form:hidden path="category" value="National Liberal Arts College"/>
-                     <form:select id="liberalArtLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                  </tr>
               </table>
@@ -99,16 +99,9 @@
              <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
                  <tr>
-                   <td><input name="submit" type="submit" value="Reginal Universities-North" class="submit_button"/>
+                   <td><input name="submit" type="submit" value="Regional Universities-North" class="submit_button"/>
                      <form:hidden path="category" value="Regional University-North"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
-                   </td> 
+                 </td> 
                 </tr>
               </table>
             </form:form>
@@ -117,15 +110,8 @@
             <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
                  <tr>
-                   <td><input name="submit" type="submit" value="Reginal Universities-West" class="submit_button"/>
+                   <td><input name="submit" type="submit" value="Regional Universities-West" class="submit_button"/>
                      <form:hidden path="category" value="Regional University-West"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                  </tr>
               </table>
@@ -139,13 +125,6 @@
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Universities-Midwest" class="submit_button"/>
                      <form:hidden path="category" value="Regional University-Midwest"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                 </tr>
               </table>
@@ -157,13 +136,6 @@
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Universities-South" class="submit_button"/>
                      <form:hidden path="category" value="Regional University-South"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                  </tr>
               </table>
@@ -175,15 +147,8 @@
              <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
                  <tr>
-                   <td><input name="submit" type="submit" value="Reginal Colleges-North" class="submit_button"/>
+                   <td><input name="submit" type="submit" value="Regional Colleges-North" class="submit_button"/>
                      <form:hidden path="category" value="Regional College-North"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                 </tr>
               </table>
@@ -193,15 +158,8 @@
             <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
                  <tr>
-                   <td><input name="submit" type="submit" value="Reginal Colleges-West" class="submit_button"/>
+                   <td><input name="submit" type="submit" value="Regional Colleges-West" class="submit_button"/>
                      <form:hidden path="category" value="Regional College-West"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                  </tr>
               </table>
@@ -215,13 +173,6 @@
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Colleges-Midwest" class="submit_button"/>
                      <form:hidden path="category" value="Regional College-Midwest"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                 </tr>
               </table>
@@ -233,13 +184,6 @@
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Colleges-South" class="submit_button"/>
                      <form:hidden path="category" value="Regional College-South"/>
-                     <form:select id="reginalLimit" path="maxResults" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:50px;">
-                       <form:option value="50" selected="selected">50</form:option>
-                       <form:option value="100">100</form:option>
-                       <form:option value="150">150</form:option>
-                       <form:option value="200">200</form:option>
-                       <form:option value="1000" >All</form:option>
-                     </form:select>
                    </td> 
                  </tr>
               </table>
@@ -248,7 +192,7 @@
         </tr>
       </table> 
       <table class="section_title_center">
-        <tr><td>College Rankings in Different Specialities</td></tr>
+        <tr><td>Rankings By Specialities</td></tr>
       </table>
       <table>
          <tr>
@@ -260,115 +204,128 @@
           </td>
           <td>
             <ul>
-		  <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Business_Doctorate" />">Business Programs (Doctorate Degree Offered)</a></li>
-	        <li></li>
-	      </ul>
+		  <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Business" />">Business Programs</a></li>
+		  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?category=Art Schools">Art Schools</a></li>
+	       </ul>
           </td>
        </tr>
       </table> 
       <table class="section_title_center">
-        <tr><td>Get A College's Information</td></tr>
-      </table>  
-      <form:form method="GET" action="searchSchoolsByMatchNamePattern" modelAttribute="school">
-         <table class="table_center" style="margin-top:15px; margin-bottom:15px">
-            <tr>
-               <!--<td><form:label path="name">Get College Information:</form:label></td>-->
-               <td><form:input path="name" placeholder="College Name"/></td>
-               <td><input name="submit" type="submit" value="Go" /></td>
-            </tr>
-         </table>
-   </form:form>   
-	  <!-- <table>
-	     <tr>
-	        <td>
-	          <ul>                        
-		         <li><a href="http://localhost:8080/collegeSearch/school/getUsNewsBestSchoolPrograms/Business">Best Business Programs</a></li>
-		     
-		      </ul>
-		   </td>
-	  	   <td>
-		      <ul>
-			     <li><a href="http://localhost:8080/collegeSearch/school/getSchools?category=Liberal Arts">Top Liberal Arts Colleges</a></li>
-		         <li><a href="http://localhost:8080/collegeSearch/school/getUsNewsBestSchoolPrograms/Engineering">Best Engineering Programs</a></li>
-		      
-		      </ul>
-		   </td>
-	   </tr>
-	  </table>-->
-      <table class="section_title_center">
-        <tr><td>Top Colleges for Popular Majors</td></tr>
+        <tr><td>Rankings By Majors</td></tr>
       </table> 
       <table class="center_element" style="margin-top:0px;">
-        <tr>
+        <tr><td><span class="section_title_center">Business Programs</span></td></tr>
+	  <tr>
+	    <td>
+	      <ul>
+		  <li><a href="<spring:url value="/school/getBestSchoolMajors/Accounting" />">Accounting</a></li>
+		  <li><a href="<spring:url value="/school/getBestSchoolMajors/Finance"/>">Finance</a></li>
+	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Entrepreneurship"/>">Entrepreneurship</a></li>
+	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Insurance"/>">Insurance</a></li>
+	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/International Business"/>">International Business</a></li>
+	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Management"/>">Management</a></li>
+	      </ul>
+         </td>
+         <td>
+	      <ul>
+ 	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Marketing and Sales">Marketing and Sales</a></li>
+	    	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Management Information Systems"/>">Management Information Systems</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Production and Operations Management"/>">Production/Operations Management</a></li>
+	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Quantitative Analysis"/>">Quantitative Analysis</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Real Estate"/>">Real Estate</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Supply Chain Management and Logistics"/>">Supply Chain Management and Logistics</a></li>
+	      </ul>
+	   </td>
+	 </tr>
+	 <tr><td><span class="section_title_center">Engineering Programs</span></td></tr>
+	 <tr>
+	   <td>
+	      <ul>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Aerospace-Aeronautical-Astronautical_Doctorate"/>">Aerospace/Aeronautical/Astronautical_Doctorate</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Aerospace-Aeronautical-Astronautical_No_Doctorate"/>">Aerospace/Aeronautical/Astronautical_No_Doctorate</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Biological and Agricultural_Doctorate"/>">Biological/Agricultural_Doctorate</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Biomedical_Doctorate"/>">Biomedical_Doctorate</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Biomedical_No_Doctorate"/>">Biomedical_No_Doctorate</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Chemical_Doctorate"/>">Chemical_Doctorate</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Computer Science and Computer Engineering-D"/>">Computer Science/Computer Engineering Majors-D</a></li>
+		   <li><a href="<spring:url value="/school/getBestSchoolMajors/Computer Science and Computer Engineering-ND"/>">Computer Science/Computer Engineering Majors-ND</a></li>
+	         <li><a href="<spring:url value="/school/getBestSchoolMajors/Engineering"/>">Engineering</a></li>
+	 
+		</ul>
+        </td>
+        <td>
+	     <ul>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Civil_Doctorate"/>">Civil_Doctorate</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Civil_No_Doctorate"/>">Civil_No_Doctorate</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Electrical-Electronic-Communications_Doctorate"/>">Electrical/Electronic/Communications_Doctorate</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Electrical-Electronic-Communications_No_Doctorate"/>">Electrical/Electronic/Communications_No_Doctorate</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Environmental and Environmental Health_Doctorate"/>">Environmental/Environmental Health_Doctorate</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Industrial and Manufacturing_Doctorate"/>">Industrial/Manufacturing_Doctorate</a></li>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Mechanical Engineering-D">Mechanical Engineering-D</a></li>
+	  	  <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Mechanical Engineering-ND">Mechanical Engineering-ND</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Engineering"/>">Engineering</a></li>
+	 
+	     </ul>
+	  </td>
+	 </tr>
+	 <tr><td><span class="section_title_center">Humanities Programs</span></td></tr>
+       <tr>
          <td>
            <ul>
-		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Accounting" />">Accounting Majors</a></li>
-		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Agriculture"/>">Agriculture Majors</a></li>
-		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Biology"/>">Biology Majors</a></li>
-	   	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Business_Finance"/>">Business/Finance Majors</a></li>
-	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Communications"/>">Communications Majors</a></li>
-	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Computer Science and Computer Engineering"/>">Computer Science/Computer Engineering Majors</a></li>
-		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Criminology"/>">Criminology Majors</a></li>
-	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Education"/>">Education Majors</a></li>
-		  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/English Literature and Language"/>">English Literature and Language Majors</a></li>
-	 	  <li><a href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/Engineering"/>">Engineering Majors</a></li>
+              <li><a href="<spring:url value="/school/getBestSchoolMajors/Communications"/>">Communications</a></li>
+		  <li><a href="<spring:url value="/school/getBestSchoolMajors/Criminology"/>">Criminology</a></li>
+	   	  <li><a href="<spring:url value="/school/getBestSchoolMajors/English Literature and Language"/>">English Literature and Language</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Education"/>">Education</a></li>	
+	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/History">History</a></li>
 	     </ul>
         </td>
         <td>
 	     <ul>
- 	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Environmental Studies">Environmental Studies Majors</a></li>
-		  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
-	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/History">History Majors</a></li>
-	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Journalism">Journalism Majors</a></li>
-	        <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Marketing and Sales">Marketing and Sales Majors</a></li>
-	    	  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mathematics">Mathematics Majors</a></li>
-	  	  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Mechanical Engineering">Mechanical Engineering Majors</a></li>
-	  	  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Nursing">Nursing Majors</a></li>
-		  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Political Science and Government">Political Science/Government Majors</a></li>
-		  <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Psychology">Psychology Majors</a></li>
- 	     </ul>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Journalism">Journalism</a></li>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Mathematics">Mathematics</a></li>
+	  	  <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Nursing">Nursing</a></li>
+	  	  <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Political Science and Government">Political Science/Government</a></li>
+		  <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Psychology">Psychology</a></li>
+ 	    </ul>
+	  </td>
+	 </tr>
+	 <tr><td><span class="section_title_center">Science Programs</span></td></tr>
+       <tr>
+         <td>
+           <ul>
+           	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Agriculture"/>">Agriculture</a></li>
+		  <li><a href="<spring:url value="/school/getBestSchoolMajors/Biology"/>">Biology</a></li>
+	     </ul>
+        </td>
+        <td>
+	     <ul>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Environmental Studies">Environmental Studies</a></li>
+	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Health Services">Health Services</a></li>
+	     </ul>
 	  </td>
 	 </tr>
       </table>
       <table class="section_title_center">
-        <tr><td>Colleges with Special Features</td></tr>
-      </table> 
-      <table class="center_element" style="width:80%">
-	    <tr>
-          <td>
-		    <ul>
-		  	  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?satActNotRequired=Yes">Colleges Do Not Require SAT or ACT</a></li>
-              <!--<li><a href="http://localhost:8080/collegeSearch/school/searchSchools?school.internationalStudentApplication.financialAid=yes">Colleges Provides Financial Aids for International Students</a></li>-->
-              <li><a href="http://localhost:8080/StrutsApp/search/Search.action?searchAction=Business">Value Colleges(quality/price ratio and the scholarships or grants)</a></li>
-            </ul>
-          </td>
-          <td>
-		    <ul>
-			  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?toeflAcceptedInsteadOfSatOrAct=Yes">Colleges Accepts TOEFL Instead of SAT or ACT</a></li>
-  		    </ul>
-	      </td>
-	    </tr>
-      </table>
-       <table class="section_title_center">
-        <tr><td>Optimized College Lists</td></tr>
+         <tr><td>Colleges with Special Features</td></tr>
       </table> 
       <table class="center_element" style="margin-top:0px;">
-	    <tr>
-         <td>
-            <ul>
-               <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=highAcceptanceRate&size=100" />">Colleges with Highest Acceptance rate</a></li>
-               <li><a href="<spring:url value="/school/searchSchools?acceptRate>95" />">Colleges with Lowest SAT/ACT</a></li>
-		   <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">High Acceptance Rate in Top 50 National Colleges</a></li>
-		   <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Accounting">High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
-            </ul>
-       </td>
-       <td>
-		<ul>
-		   <li><a href="<spring:url value="/school/searchSchools?acceptRate<25%" />">Colleges with lowest Acceptance rate</a></li>
-		   <li><a href="<spring:url value="/school/searchSchools?applicationFee=0" />">Colleges No Requiring Application Fee</a></li>
-	   	   <li><a href="http://localhost:8080/collegeSearch/school/getPrincetonReviewGreatSchoolMajors/Health Services">Health Services Majors</a></li>
-		</ul>
-	    </td>
+	   <tr>
+            <td>
+               <ul>
+                  <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=highAcceptanceRate&size=100" />">100 Colleges with Highest Acceptance rate</a></li>
+                  <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowSat&size=100" />">100 Colleges with Lowest SAT/ACT</a></li>
+		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=ASchoolsForBStudents&size=100"/>">A-Plus Colleges for B-Students</a></li>
+		      <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?acceptRate>95">High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
+               </ul>
+            </td>
+            <td>
+		   <ul>
+		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowCost&size=100" />">100 Colleges with Lowest Cost</a></li>
+		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowToefl&size=100" />">100 Colleges with Lowest TOEFL/IELTS Scores</a></li>
+		      <li><a href="<spring:url value="/school/searchSchools?applicationFee=0" />">Colleges With No Application Fee</a></li>
+	 	      <li><a href="<spring:url value="/school/searchSchools?acceptRate<25%" />">100 Colleges with Lowest Acceptance Rate</a></li>
+	   	   </ul>
+	      </td>
 	   </tr>
       </table>
       <!-- 

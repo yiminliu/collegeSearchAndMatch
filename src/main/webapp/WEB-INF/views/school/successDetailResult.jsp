@@ -412,10 +412,10 @@
                  <c:forEach var="major" items="${school.bestMajors}" varStatus="loopStatus">
                     <c:choose>
                	     <c:when test="${loopStatus.index == fn:length(school.bestMajors)-1}">
-               	        <a style="text-decoration: none;" id="major" href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/${major.name}" />">${major.name}</a>
+               	        <a style="text-decoration: none;" id="major" href="<spring:url value="/school/getBestSchoolMajors/${major.name}" />">${major.name}</a>
                        </c:when>
                        <c:otherwise>
-				  <a style="text-decoration: none;" id="major" href="<spring:url value="/school/getPrincetonReviewGreatSchoolMajors/${major.name}" />">${major.name}</a>,
+				  <a style="text-decoration: none;" id="major" href="<spring:url value="/school/getBestSchoolMajors/${major.name}" />">${major.name}</a>,
 			     </c:otherwise>
 			  </c:choose>                    
                 </c:forEach>  
