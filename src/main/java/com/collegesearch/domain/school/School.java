@@ -2,9 +2,9 @@ package com.collegesearch.domain.school;
 
 // Generated Jul 11, 2015 5:53:42 PM by Hibernate Tools 4.0.0
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,6 +29,8 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
+
+import com.collegesearch.util.school.SchoolUtil;
 
 
 /**
@@ -81,27 +83,29 @@ public class School implements java.io.Serializable {
 	private String  website;
 	private Integer maxResults;
 	private Integer totalCost;
-	private InternationalStudentApplication internationalStudentApplication;
+	private Integer averageSAT;
+	private SchoolInternationalApplication schoolInternationalApplication;
 	private SchoolRankInSpeciality schoolRankInSpeciality;
 	private Float anticipationIndex;
 	private String applicationNote;
-	private List<PrincetonReviewPopularMajor> bestMajors = new ArrayList<PrincetonReviewPopularMajor>();
-	
+	private ASchoolForBStudent aSchoolForBStudent;
+	private Set<Major> bestMajors = new HashSet<Major>();
+		
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "princeton_review_great_school_major", catalog = "school", joinColumns = { 
+	@JoinTable(name = "best_school_major", catalog = "school", joinColumns = { 
 			@javax.persistence.JoinColumn(name = "School_Id", nullable = false, updatable = false) }, 
 			inverseJoinColumns = {@javax.persistence.JoinColumn(name = "Major_Id", nullable = false, updatable = false) })
-	public List<PrincetonReviewPopularMajor> getBestMajors() {
+	public Set<Major> getBestMajors() {
 		return this.bestMajors;
 	}
 
-	public void setBestMajors(List<PrincetonReviewPopularMajor> bestMajors) {
+	public void setBestMajors(Set<Major> bestMajors) {
 		this.bestMajors = bestMajors;
 	}
    
-	public void addBestMajors(PrincetonReviewPopularMajor major){
+	public void addBestMajors(Major major){
 		if(bestMajors == null)
-			bestMajors = new ArrayList<PrincetonReviewPopularMajor>();
+			bestMajors = new HashSet<Major>();
 		bestMajors.add(major);
 	}
 	
@@ -110,13 +114,13 @@ public class School implements java.io.Serializable {
 	//@Fetch(FetchMode.JOIN)
 	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	@IndexedEmbedded
-	public InternationalStudentApplication getInternationalStudentApplication() {
-		return internationalStudentApplication;
+	public SchoolInternationalApplication getInternationalStudentApplication() {
+		return schoolInternationalApplication;
 	}
 
 	public void setInternationalStudentApplication(
-			InternationalStudentApplication internationalStudentApplication) {
-		this.internationalStudentApplication = internationalStudentApplication;
+			SchoolInternationalApplication schoolInternationalApplication) {
+		this.schoolInternationalApplication = schoolInternationalApplication;
 	}
 	
 	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -129,6 +133,15 @@ public class School implements java.io.Serializable {
 
 	public void setSchoolRankInSpeciality(SchoolRankInSpeciality schoolRankInSpeciality) {
 		this.schoolRankInSpeciality = schoolRankInSpeciality;
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+	public ASchoolForBStudent getaSchoolForBStudent() {
+		return aSchoolForBStudent;
+	}
+
+	public void setaSchoolForBStudent(ASchoolForBStudent aSchoolForBStudent) {
+		this.aSchoolForBStudent = aSchoolForBStudent;
 	}
 	
 	@DocumentId
@@ -460,24 +473,6 @@ public class School implements java.io.Serializable {
 	public void setEarlyDecisionDeadline(String earlyDecisionDeadline) {
 		this.earlyDecisionDeadline = earlyDecisionDeadline;
 	}
-
-	@Transient
-	public Integer getMaxResults() {
-		return maxResults;
-	}
-
-	public void setMaxResults(Integer maxResults) {
-		this.maxResults = maxResults;
-	}
- 
-	@Transient
-	public Integer getTotalCost() {
-		return totalCost;
-	}
-
-	public void setTotalCost(Integer totalCost) {
-		this.totalCost = totalCost;
-	}
 		
 	@Column(name = "Accept_Rate")
 	public Float getAcceptRate() {
@@ -585,6 +580,42 @@ public class School implements java.io.Serializable {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	@Transient
+	public Integer getMaxResults() {
+		return maxResults;
+	}
+
+	public void setMaxResults(Integer maxResults) {
+		this.maxResults = maxResults;
+	}
+ 
+	@Transient
+	public Integer getTotalCost() {
+		return totalCost;
+	}
+	
+	public void setTotalCost(Integer totalCost) {
+		this.totalCost = totalCost;
+	}
+	
+	@Transient
+	public Integer getAverageSAT() {
+		return averageSAT;
+	}
+
+	public void setAverageSAT(Integer averageSAT) {
+		this.averageSAT = averageSAT;
+	}
+	
+	public void assignAverageSAT() {
+		if(averageSAT == null){
+		   if(sat1Percentile25 != null && sat1Percentile25 != 0 && sat1Percentile75 != null && sat1Percentile75 != 0)
+		      averageSAT = (sat1Percentile25 + sat1Percentile75)/2;
+		   else if(actPercentile25 != null && actPercentile25 != 0 && actPercentile75 != null && actPercentile75 != 0)
+			  averageSAT = (SchoolUtil.convertActToSat(actPercentile25) + SchoolUtil.convertActToSat(actPercentile75))/2; 
+	       }
 	}
 
 	@Transient
@@ -726,40 +757,108 @@ public class School implements java.io.Serializable {
 	}
 	
 	public static class AcceptanceRateComparator implements Comparator<School>{
+	   public int compare(School school1, School school2){
+		  if(school1 == null)
+			 return 1;
+		  if(school2 == null)
+			 return -1; 
+		  if(school1.getAcceptRate() == null && school2.getAcceptRate() == null)
+			 return 0;
+		  if(school1.getAcceptRate() == null)
+			 return 1;
+		  if(school2.getAcceptRate() == null)
+			 return -1;			 
+		  if(school1.getAcceptRate() < school2.getAcceptRate())
+		  	 return -1;
+		  if (school1.getAcceptRate() > school2.getAcceptRate())
+			 return 1;
+		  if (school1.getAcceptRate() == school2.getAcceptRate())
+			 return school1.getRankOverall().compareTo(school2.getRankOverall());
+		  else
+			 return 1; 
+	   }
+	}
+	
+	public static class TotalCostComparator implements Comparator<School>{
+	   public int compare(School school1, School school2){
+		  if(school1 == null)
+			 return 1;
+		  if(school2 == null)
+			 return -1; 
+		  if(school1.getTotalCost() == null && school2.getTotalCost() == null)
+			 return 0;
+		  if(school1.getTotalCost() == null)
+			 return 1;
+		  if(school2.getTotalCost() == null)
+			 return -1;			 
+		  if(school1.getTotalCost() < school2.getTotalCost())
+		  	 return -1;
+		  if (school1.getTotalCost() > school2.getTotalCost())
+			 return 1;
+		  if (school1.getTotalCost() == school2.getTotalCost())
+			 return school1.getRankOverall().compareTo(school2.getRankOverall());
+		  else
+			 return 1; 
+	  }
+	}
+	
+	public static class ToeflComparator implements Comparator<School>{
+	   public int compare(School school1, School school2){
+		  if(school1 == null)
+			 return 1;
+		  if(school2 == null)
+			 return -1; 
+		  if(school1.getInternationalStudentApplication().getMinimumToeflScore() == null && school2.getInternationalStudentApplication().getMinimumToeflScore() == null)
+			 return 0;
+		  if(school1.getInternationalStudentApplication().getMinimumToeflScore() == null)
+			 return 1;
+		  if(school2.getInternationalStudentApplication().getMinimumToeflScore() == null)
+			 return -1;			 
+		  if(school1.getInternationalStudentApplication().getMinimumToeflScore() < school2.getInternationalStudentApplication().getMinimumToeflScore())
+		  	 return -1;
+		  if(school1.getInternationalStudentApplication().getMinimumToeflScore() > school2.getInternationalStudentApplication().getMinimumToeflScore())
+			 return 1;
+		  if(school1.getInternationalStudentApplication().getMinimumToeflScore() == school2.getInternationalStudentApplication().getMinimumToeflScore())
+	  		 return school1.getRankOverall().compareTo(school2.getRankOverall());
+		  else
+			 return 1; 
+	  }
+	}
+	
+	public static class SatComparator implements Comparator<School>{
 		   public int compare(School school1, School school2){
 			  if(school1 == null)
 				 return 1;
 			  if(school2 == null)
 				 return -1; 
-			  if(school1.getAcceptRate() == null && school2.getAcceptRate() == null)
+			  if(school1.getAverageSAT() == null && school2.getAverageSAT() == null)
 				 return 0;
-			  if(school1.getAcceptRate() == null)
+			  if(school1.getAverageSAT() == null)
 				 return 1;
-			  if(school2.getAcceptRate() == null)
+			  if(school2.getAverageSAT() == null)
 				 return -1;			 
-			  if(school1.getAcceptRate() < school2.getAcceptRate())
-			  	 return -1;
-			  if (school1.getAcceptRate() > school2.getAcceptRate())
-				 return 1;
-			  if (school1.getAcceptRate() == school2.getAcceptRate())
-				 return 0;
+			  //if(school1.getSat1Percentile25() < school2.getSat1Percentile25())
+			  //   return -1;
+			  //if (school1.getSat1Percentile25() > school2.getSat1Percentile25())
+			  //    return 1;
+			  if (school1.getAverageSAT().equals(school2.getAverageSAT()))
+				 return school1.getRankOverall().compareTo(school2.getRankOverall());
 			  else
-				 return 1; 
-		   }
+				 return school1.getAverageSAT().compareTo(school2.getAverageSAT()); 
+		  }
 		}
 	
 	public static class SpecialityRankComparator implements Comparator<School>{
-		   public int compare(School school1, School school2){
-			  int result = 1;
-			 			  
-			  if(school1.getSchoolRankInSpeciality().getRank() > 0){
-			    try{
-			       if(school1.getSchoolRankInSpeciality().getRank() < school2.getSchoolRankInSpeciality().getRank())
-			    	  result = -1;
-			       else if(school1.getSchoolRankInSpeciality().getRank() > school2.getSchoolRankInSpeciality().getRank())
-			    	   result = 1;
-			       else
-			    	   result = 0;
+	   public int compare(School school1, School school2){
+		  int result = 1;
+		  if(school1.getSchoolRankInSpeciality().getRank() > 0){
+	         try{
+		        if(school1.getSchoolRankInSpeciality().getRank() < school2.getSchoolRankInSpeciality().getRank())
+		     	   result = -1;
+			    else if(school1.getSchoolRankInSpeciality().getRank() > school2.getSchoolRankInSpeciality().getRank())
+			       result = 1;
+			    else
+			       result = 0;
 			       
 			      // if(result == 0){
 			    	//  if(school1.getName().compareTo(school2.getName()) < 0)
@@ -769,12 +868,12 @@ public class School implements java.io.Serializable {
 			    	  //else
 			    		//  result = 0;
 			       //}  
-			    }
-			    catch(Exception e){
-			 	   e.printStackTrace();
-			    }	
-		      } 
-			  return result;
-		   }
+			 }
+			 catch(Exception e){
+			    e.printStackTrace();
+			 }	
+		   } 
+		   return result;
 		}
+	  }
 }
