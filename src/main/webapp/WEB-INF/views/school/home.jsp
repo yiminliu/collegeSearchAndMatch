@@ -13,7 +13,7 @@
   <div class="container">
     <div class="content">  
       <table class="section_title_center">
-        <tr><td>Choose Colleges -- College Search & Match Engines</td></tr>
+        <tr><td>Find Ideal Colleges From 2000 Colleges for You</td></tr>
       </table>     
       <table class="center_element_text" style="border:1px; width: 100%">
         <tr>
@@ -22,7 +22,7 @@
                 <!--<li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Colleges by Your Preferences</a></li>
                 <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Find Colleges by Your Preferences and Qualifications<span style="color:red">  *JUST FOR YOU*</span></a></li>-->
                 <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%">Find Colleges by Your Preferences</a></li>
-                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;">Find Colleges by Your Preferences and Qualifications<span style="color:red"><br>*JUST FOR YOU*</span></a></li>
+                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;">Find Colleges by Your Preferences and Qualifications<span style="color:red"><br>*JUST FOR YOU*</br></span></a></li>
              </ul>
            </td>
         </tr>
