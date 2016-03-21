@@ -98,13 +98,6 @@ public class SchoolServiceImpl implements SchoolService {
     	return schoolDao.getSchoolsByMatchNamePattern(name);
     }
     
-    @Loggable(value = LogLevel.TRACE)
-  	@Transactional(readOnly=true)
-    public List<School> getBestBuySchools(){
-    	
-    	return null;
-    	//return schoolDao.getSchoolsByMatchNamePattern(name);
-    }
     /*
     @Loggable(value = LogLevel.TRACE)
     @Override
@@ -152,68 +145,29 @@ public class SchoolServiceImpl implements SchoolService {
 		  	else
 		  	   throw new DatabaseOperationException("Error occured during getItems(), due to: " +  e.getMessage(), e);	
 		}
+		return schools;
+	}
+	
+	@Loggable(value = LogLevel.TRACE)
+	@Override
+	public List<School> matchEngine(final LinkedHashMap<String, List<String>> queryParams){
+		//step 1: retrieve schools
+		List<School> schools = getSchools(queryParams);
+		if(SchoolUtil.applicantDataExist(queryParams)){
+		   //step 2 evaluate student testing scores
+		   schools = evaluateStudentScoresAgainstSchoolRequirements(schools, queryParams);
+		   //step 3 evaluate "totalCost"
+		   if(SchoolUtil.getValue(queryParams, "totalCost") != null)
+		      schools = evaluateTotalCost(schools, queryParams);
+		}
 		if(SchoolUtil.getValue(queryParams, "maxResults") != null) {
 		   int maxResults = Integer.valueOf(SchoolUtil.getValue(queryParams, "maxResults"));
 		   if(maxResults > 0 && maxResults < schools.size())
-			  	 schools = schools.subList(0, maxResults); 
-		}   
-		if(SchoolUtil.getValue(queryParams, "totalCost") != null) {
-		   String totalCost = SchoolUtil.getValue(queryParams, "totalCost");
-		   int totalCostInt = -1;
-		   if(totalCost != null && totalCost.length()>0)
-		      totalCostInt = Integer.valueOf(totalCost.substring(1));
-		   schools = filterByTotalCost(schools, totalCostInt);
-		}   
-		if(SchoolUtil.applicantDataExist(queryParams))
-		   return doMatch( schools, queryParams);	
-	
+		   	  schools = schools.subList(0, maxResults); 
+		   }   
 		return schools;
 	}
-	/*
-	@Loggable(value = LogLevel.TRACE)
-	@Override
-	@Transactional(readOnly=true)
-	public List<School> getPrincetonReviewGreatSchoolMajor(String majorName){
-		List<Major> pList = null;
-		List<School> sList = null;
-		Session session = getSession();
-		try{
-		    Major major = majorDao.getMajorByName(majorName, session);
-		    if(major != null){
-		       pList = princetonReviewGreatSchoolMajorDao.getPrincetonReviewGreatSchoolMajorsByMajorId(major.getId(), session);
-		       sList = new ArrayList<School>(pList.size());
-	  	       for(Major m : pList){
-	  	   	       //School school = getSchoolById(m.getId().getSchoolId(), session);
-			       //sList.add(school);
-	  	    	   //System.out.println("major: "+ m.getId() + ", " + m.getName() + ", " + m.getSchools().size());
-	  	    	   //System.out.println(" # " + m.getBestSchoolMajors().size());
-	  	    	   //List<BestSchoolMajor> aList = new ArrayList<BestSchoolMajor>(m.getBestSchoolMajors().size());
-	  	    	   //aList.addAll(m.getBestSchoolMajors());
-	  	    	   //Collections.sort(aList, new MajorRankComparator());
-	  	    	   //for(BestSchoolMajor s : aList){
-	  	    		// System.out.println("major: " + s.getMajor().getName() + "; " + "name of school: " + s.getSchool().getName() + "rank: " + s.getRank());
-	  	    	   //}
-	  	    	 //  for(School s :m.getSchools()){
-	  	    	//	 System.out.println("name of school: " + s.getName());
-	  	    	  // }
-	  	         }    
-	 	    }  
-		}
-		catch(HibernateException hbe){
-		    if(hbe.getCause() != null)
-		       throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  hbe.getMessage() + ". Root cause -- " + hbe.getCause().getMessage(), hbe);	
-	  	    else
-	           throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  hbe.getMessage());
-		}
-		catch(RuntimeException e){
-		   if(e.getCause() != null)
-		  	  throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  e.getMessage() + ". Root cause: " + e.getCause().getMessage(), e);	
-		   else
-		      throw new DatabaseOperationException("Error occured during getPrincetonReviewGreatSchoolMajor(), due to: " +  e.getMessage(), e);	
-		}
-		return sList;
-	}
-	*/
+	
 	@Loggable(value = LogLevel.TRACE)
 	@Override
 	@Transactional(readOnly=true)
@@ -356,34 +310,83 @@ public class SchoolServiceImpl implements SchoolService {
 	    return session;
     }
 		
-	private List<School> doMatch(List<School> oriSchoolList, final LinkedHashMap<String, List<String>> queryParams){
-		List<School> finalSchoolList = null;
+	private List<School> evaluateStudentScoresAgainstSchoolRequirements(final List<School> oriSchoolList, final LinkedHashMap<String, List<String>> queryParams){
+		List<School> finalSchoolList = new ArrayList<School>(oriSchoolList.size());
+				
+		/******** retrieve testing scores from user input ********/
 		String studentSat1Score = SchoolUtil.getValue(queryParams, "sat1Score");
 		String studentActScore = SchoolUtil.getValue(queryParams, "actScore");
-		String studentToeflScore = SchoolUtil.getValue(queryParams, "internationalStudentApplication.toeflScore");
-		String studentIeltsScore = SchoolUtil.getValue(queryParams, "internationalStudentApplication.ieltsScore");
-		if(studentSat1Score != null || studentActScore != null)
-			finalSchoolList = eveluateSatOrAct(oriSchoolList, studentSat1Score, studentActScore);	
-		else
-			finalSchoolList = oriSchoolList;
-		if(studentToeflScore != null || studentIeltsScore != null)
-		    finalSchoolList = eveluateToeflAndIeltsScores(finalSchoolList, studentToeflScore, studentIeltsScore);
+		String studentToeflScore = SchoolUtil.getValue(queryParams, "toeflScore");
+		String studentIeltsScore = SchoolUtil.getValue(queryParams, "ieltsScore");
+		String gpa = SchoolUtil.getValue(queryParams, "gpa");
 		
-		/*String gpa = SchoolUtil.getValue(queryParams, "gpa");
-		if(gpa != null)
-			finalSchools = eveluateGPA(finalSchools, gpa);
-		*/	
+		/******** Walk through each school *********/
+		for(School school : oriSchoolList){
+			/******** step 1: evaluate SAT/ACT ********/
+			if(studentSat1Score != null || studentActScore != null)
+			   if(!evaluateSatOrAct(school, studentSat1Score != null? Integer.valueOf(studentSat1Score):0, studentActScore != null? Integer.valueOf(studentActScore):0))
+			      continue;	
+		 
+	        /******** step 2: evaluate TOEFL/IELTS *******/
+		    if(studentToeflScore != null || studentIeltsScore != null)
+		       if(!eveluateToeflOrIelts(school, studentToeflScore != null? Integer.valueOf(studentToeflScore):0, studentIeltsScore))
+		          continue;   
+		    
+		    /******** step 3: evaluate GPA *******/
+		    if(gpa != null)
+			   if(!eveluateGpa(school, gpa != null ? Float.parseFloat(gpa):0))
+				  continue;
+			
+			finalSchoolList.add(school);	
+		}
 		return finalSchoolList;
 	}
 	
-	private List<School> eveluateSatOrAct(List<School> oriSchoolList, String sat1Score, String actScore){
+	private boolean evaluateSatOrAct(School school, int studentSat1Score, int studentActScore){
+	   int score = 0; 	
+	   ///// direct compare /////
+	   //case 1: student sat1 != null && school sat1 != null
+	   if(studentSat1Score != 0 && school.getSat1Percentile25() != null && school.getSat1Percentile25() != 0){System.out.println("school="+school.getName());
+	     if(SchoolUtil.isTestScoreSatisfied(studentSat1Score, school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
+		     return true;
+	   }   
+	   //case 2: student act != null && school act != null
+	   else if(studentActScore != 0 && school.getActPercentile25() != null && school.getActPercentile25() != 0){
+		   if(SchoolUtil.isTestScoreSatisfied(studentActScore, school.getActPercentile25(), school.getActPercentile75(), school.getAcceptRate()))
+		      return true;
+	   }
+	   ///// indirect compare /////
+	   //case 3: student sat1 != null && student act == null && school sat1 == null && school act != null
+	   else if((studentSat1Score != 0 && studentActScore == 0) && 
+		  (school.getSat1Percentile25() == null || school.getSat1Percentile25() == 0) &&
+		  (school.getActPercentile25() != null && school.getActPercentile25() != 0)){
+		   score = SchoolUtil.convertSatToAct(studentSat1Score);
+		   if(SchoolUtil.isTestScoreSatisfied(score, school.getActPercentile25(), school.getActPercentile75(), school.getAcceptRate()))
+			  return true;
+	   }   
+	   //case 4: student sat1 == null && student act != null && school sat1 != null && school act == null
+	   else if((studentSat1Score == 0 && studentActScore != 0) && 
+	      (school.getSat1Percentile25() != null && school.getSat1Percentile25() != 0) &&
+	      (school.getActPercentile25() == null || school.getActPercentile25() == 0)){
+		   score = SchoolUtil.convertSatToAct(studentActScore);
+		   if(SchoolUtil.isTestScoreSatisfied(score, school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
+		      return true;
+	   } 
+	   //case 5: student has neither sat nor act
+	   else if(school.getInternationalStudentApplication().getToeflAcceptedInsteadOfSatOrAct().equalsIgnoreCase("Yes")){
+		   return true;
+	   }
+	   return false;
+    }
+
+	private List<School> evaluateSatOrAct(List<School> oriSchoolList, String sat1Score, String actScore){
 		int score = 0;
 		Float acceptRate = null;
-		List<School> adjustedSchoolList = null;
+		List<School> adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
 		//check SAT1 score first
 		if(sat1Score != null && sat1Score.length() > 0 && !sat1Score.equals("0")){
-		   score = Integer.parseInt(sat1Score);
-		   adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
+		   score = Integer.valueOf(sat1Score);
+		   //adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
 		   for(School school : oriSchoolList){
 			   if(SchoolUtil.isTestScoreSatisfied(score, school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
 				  adjustedSchoolList.add(school);
@@ -391,8 +394,8 @@ public class SchoolServiceImpl implements SchoolService {
 		} 
 		//if SAT1 score is not present, check ACT score
 		else if(actScore != null && actScore.length() > 0 && !actScore.equals("0")){
-			 score = Integer.parseInt(actScore);
-			 adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
+			 score = Integer.valueOf(actScore);
+			 //adjustedSchoolList = new ArrayList<School>(oriSchoolList.size());
 			 for(School school : oriSchoolList){
 				 acceptRate = school.getAcceptRate();
 				 if(acceptRate == null)
@@ -405,14 +408,101 @@ public class SchoolServiceImpl implements SchoolService {
 					int satScore = SchoolUtil.convertActToSat(score);
 				    if(SchoolUtil.isTestScoreSatisfied(satScore, school.getSat1Percentile25(), school.getSat1Percentile75(), acceptRate))
 				       adjustedSchoolList.add(school);
-				 }
-					 
+				 }					 
 			 }
 		}		
 		if(adjustedSchoolList != null)
 		   return adjustedSchoolList;
 		else
 		   return oriSchoolList;
+	}
+	
+	//use cases: 
+	//1. student' Toefl <==> school average Toefl;  
+	//2. student' Toefl <==> school minimum Toefl
+	//3. student' Ielts <==> school average Ieltsl; 
+	//4. student' Ielts <==> school minimum Ielts
+	//5. student' Ielts <==> school average Toefl;  
+	//6. student' Ielts <==> school minimum Toefl
+	private boolean eveluateToeflOrIelts(School school, int studentToeflScore, String studentIeltsScore){
+		int score = 0;
+		float studentIeltsScoreFloat = 0f;
+		
+		int minToefl = 0;
+		int avgToefl = 0;
+		float minIelts = 0f;
+		float avgIelts = 0f;
+		
+		if(school.getInternationalStudentApplication().getMinimumToeflScore() != null)
+		   minToefl = school.getInternationalStudentApplication().getMinimumToeflScore();
+		if(school.getInternationalStudentApplication().getAverageToeflScore() != null)
+		   avgToefl = school.getInternationalStudentApplication().getAverageToeflScore();
+		if(school.getInternationalStudentApplication().getMinimumIeltsScore() != null)
+		   minIelts = school.getInternationalStudentApplication().getMinimumIeltsScore();
+		if(school.getInternationalStudentApplication().getAverageIeltsScore() != null)
+		   avgIelts = school.getInternationalStudentApplication().getAverageIeltsScore(); 
+				
+		if(studentIeltsScore != null)
+		   studentIeltsScoreFloat = Float.valueOf(studentIeltsScore);
+		
+		//Direct evaluation
+		//case 1: both student's Toefl score and school's toefl requirements present
+		if(studentToeflScore > 0 && (avgToefl > 0 || minToefl > 0)){ 
+		   //school's average Toefl requirements present
+		   if(avgToefl > 0 && studentToeflScore > avgToefl){
+		      school.setAnticipationIndex(((studentToeflScore-avgToefl)*1.0f/avgToefl)*1.1f);
+		      return true;
+		   }
+		   //only school's minimum Toefl requirement presents   
+		   else if(minToefl > 0 && studentToeflScore > minToefl){
+		      school.setAnticipationIndex(((studentToeflScore-minToefl)*1.0f/minToefl)*1.0f);
+		      return true;
+		   }
+		}  
+	    //case 2: both student's Ielts score presents and school's Ielts requirements present
+		else if(studentIeltsScoreFloat > 0 && (avgIelts > 0 || minIelts > 0)){
+		     //school's average Ielts requirement presents 
+		     if(avgIelts > 0 && studentIeltsScoreFloat >= avgIelts){
+			    school.setAnticipationIndex(((studentIeltsScoreFloat-avgIelts)/avgIelts)*1.1f);
+		        return true;
+			 }
+			 //school's minimum Ielts requirement presents
+			 else if(minIelts > 0 && studentIeltsScoreFloat >= minIelts){
+			    school.setAnticipationIndex(((studentIeltsScoreFloat-minIelts)/minIelts)*1.0f);
+			    return true;
+			 }	
+		}     
+		//Indirect evaluation    
+		//case 3: student's Toefl score presents and school's toefl requirements not present but school's Ielts requirements present
+		//therefore, need to convert student's toefl to Ielts
+		else if(studentToeflScore > 0 && (minIelts > 0 || avgIelts > 0)){
+			studentIeltsScoreFloat = SchoolUtil.convertToeflToIelts(studentToeflScore);	
+			//school's average Ielts requirement presents
+			if(avgIelts > 0 && studentIeltsScoreFloat >= avgIelts){
+			   school.setAnticipationIndex(((studentIeltsScoreFloat-avgIelts)/avgIelts)*1.1f);
+			   return true;
+			}
+			//school's minimum Ielts requirement presents   
+			else if(minIelts > 0 && studentIeltsScoreFloat >= minIelts){
+			   school.setAnticipationIndex(((studentIeltsScoreFloat-minIelts)/minIelts)*1.0f);
+			   return true;
+			}
+		}
+		//case 4:Ielts score presents and school's Ielts not requirements present, but school's toefl requirements present     
+		else if(studentIeltsScoreFloat > 0 && (minToefl > 0 || avgToefl > 0)){
+			score = SchoolUtil.convertIeltsToToefl(studentIeltsScore);
+			//school's average Toefl requirement presents
+			if(avgToefl > 0 && score >= avgToefl){
+			   school.setAnticipationIndex(((score-avgToefl)/avgToefl)*1.1f);
+			   return true;
+			}
+			//school's minimal Toefl requirement presents   
+			else if(minToefl > 0 && score >= minToefl){
+			   school.setAnticipationIndex(((score-minToefl)/minToefl)*1.0f);
+			   return true;
+			}
+		}			  
+		return false;
 	}
 	
 	//use cases: 
@@ -433,8 +523,8 @@ public class SchoolServiceImpl implements SchoolService {
 		    for(School school : oriSchoolList){
 			    minToefl = school.getInternationalStudentApplication().getMinimumToeflScore();
 			    avgToefl = school.getInternationalStudentApplication().getAverageToeflScore();
-			    minIelts = school.getInternationalStudentApplication().getMinimumIeltsScore();
-			    avgIelts = school.getInternationalStudentApplication().getAverageIeltsScore(); 
+			    minIelts = 0;//school.getInternationalStudentApplication().getMinimumIeltsScore();
+			    avgIelts = 0;//school.getInternationalStudentApplication().getAverageIeltsScore(); 
 		
 			    //student's Toefl score presents		   
 			    if(studentToeflScore != null && studentToeflScore.length() > 0 && !studentToeflScore.equals("0")){ 
@@ -481,7 +571,30 @@ public class SchoolServiceImpl implements SchoolService {
 		return adjustedSchoolList;
 	}
 	
-	private List<School> filterByTotalCost(List<School> oriSchoolList, int totalCost){
+	private boolean eveluateGpa(School school, float studentGpa){
+	   if(school.getAverageGpa() != null && school.getAverageGpa() <= studentGpa)
+		  return true;
+	   else
+		  return false;
+	}
+	
+	private List<School> evaluateTotalCost(final List<School> oriSchoolList, final LinkedHashMap<String, List<String>> queryParams){
+		   int totalCostInt = -1;	
+		   String totalCost = SchoolUtil.getValue(queryParams, "totalCost");
+		   if(totalCost != null && !totalCost.equals("0")) {
+		      totalCostInt = Integer.valueOf(totalCost.substring(1));
+	   		  ArrayList<School> finalSchoolList = new ArrayList<School>();
+			  for(School school : oriSchoolList){
+			 	  if(school.getTuitionFee() != null && school.getRoomBoard() != null && (school.getTuitionFee() + school.getRoomBoard()) < totalCostInt)
+			 		 finalSchoolList.add(school);
+			   }
+			   return finalSchoolList;
+		   }  
+		   else
+			   return oriSchoolList;
+	}
+	
+	private List<School> evaluateTotalCost(List<School> oriSchoolList, int totalCost){
 		ArrayList<School> finalSchoolList = new ArrayList<School>();
 		for(School school : oriSchoolList){
 			if(school.getTuitionFee() != null && school.getRoomBoard() != null && 
@@ -490,40 +603,5 @@ public class SchoolServiceImpl implements SchoolService {
 		}
 		return finalSchoolList;
 	}
-	
 
-	
-	/*
-	private List<School> filterResultByTestScore(final LinkedHashMap<String, List<String>> queryParams, List<School> schools, String nameOfTest) {
-		List<School> schoolsAdjustedByTestScore = null;
-		int sat1Score = 0;
-		String data = SchoolUtil.getValue(queryParams, nameOfTest);
-		if(data != null && data.length() > 0)
-		   sat1Score = Integer.parseInt(data);
-		if(sat1Score > 0) {
-		   schoolsAdjustedByTestScore = new ArrayList<School>(schools.size());
-		   for(School school : schools){
-			   if(SchoolUtil.isTestScoreSatisfied(sat1Score, school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate(), 1))
-			      schoolsAdjustedByTestScore.add(school);
-		   } 
-		}
-		return  schoolsAdjustedByTestScore;
-	}
-	
-	private List<School> filterResultByToefl(final LinkedHashMap<String, List<String>> queryParams, List<School> schools) {
-		List<School> schoolsAdjusted = null;
-		int toeflScore = 0;
-		String data = SchoolUtil.getValue(queryParams, "toefl");
-		if(data != null && data.length() > 0)
-			toeflScore = Integer.parseInt(data);
-		if(toeflScore > 0) {
-		   schoolsAdjusted = new ArrayList<School>(schools.size());
-		   for(School school : schools){
-			   if(school.getToefl() > 0)
-			      schoolsAdjusted.add(school);
-		   } 
-		}
-		return  schoolsAdjusted;
-	}
-	*/
 }

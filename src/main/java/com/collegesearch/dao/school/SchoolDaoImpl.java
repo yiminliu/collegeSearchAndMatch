@@ -52,7 +52,6 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		session.setCacheMode(CacheMode.REFRESH);
     	Query query = session.createQuery("From School where name = :name");
         query.setString("name", normalizeKey(name));
-		//return (School)query.setCacheable(false).uniqueResult();
 		return (School)query.uniqueResult();
 	}
 	
@@ -80,6 +79,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	   String key, value = null;
 	   List<String> values = null;
 	   String stringValue = null;
+	   boolean searchForArtSchool = false;
     		
 	   while(it.hasNext()) {
 		    //--------------- Process the input data --------------//
@@ -103,7 +103,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	 	   	}
 	  	    //if((values != null && !values.isEmpty()) && value == null)
 	  	    if(values != null && !values.isEmpty())	
-	        value = values.get(0) == null? values.get(0) : values.get(0).trim();
+	           value = values.get(0) == null? null : values.get(0).trim();
 	        if(value == null || value.isEmpty())
 	           continue;	
 	        if(key.equalsIgnoreCase("rankOverall") && value.startsWith("Top"))
@@ -122,8 +122,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
     			   schoolCriteria.add(Restrictions.ilike(key, value.toUpperCase(), MatchMode.START));
 	           continue;
             }
-    		//------ unconditional pattern match -------//
-   	     
+    		//------ unconditional pattern match -------//   	     
 		    if("itemdesc.fulldesc".equalsIgnoreCase(key)){
 		      	if(values != null && values.size() > 1)	
 	     		   schoolCriteria = generateWildcardDisjunctionCriteria(schoolCriteria, key, values);
@@ -137,16 +136,18 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	 		    continue;
 	 	   	}  
     		//------- add association criteria --------//
-	 	  // 	if(SchoolNewFeature.allProperties().contains(key) && value != null && !value.isEmpty()) {	
-	   	  //	   if(newFeatureCriteria == null)
-	      //	      newFeatureCriteria = schoolCriteria.createCriteria("newFeature", JoinType.LEFT_OUTER_JOIN);
-	   	  //     newFeatureCriteria = addNewFeatureRestrictions(newFeatureCriteria, key, value);
-	      // 	   continue;
-		  //  }
-	 	  //newFeatureCriteria.add(Restrictions.eq(key, Grade.instanceOf(value)));
-	 	  
-	 	   	switch(key) {
-	  	   	   case "rankOverall": case "tuitionFee": case "roomBoard": 
+	 	    // 	if(SchoolNewFeature.allProperties().contains(key) && value != null && !value.isEmpty()) {	
+	   	    //	   if(newFeatureCriteria == null)
+	        //	      newFeatureCriteria = schoolCriteria.createCriteria("newFeature", JoinType.LEFT_OUTER_JOIN);
+	   	    //     newFeatureCriteria = addNewFeatureRestrictions(newFeatureCriteria, key, value);
+	        // 	   continue;
+		    //  }
+	 	    //newFeatureCriteria.add(Restrictions.eq(key, Grade.instanceOf(value)));
+	 	    switch(key) {
+	 	       case "sat1Score": case "actScore": case "gpa": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
+	 	       case "toefl": case "ieltsScore": case "toeflScore": 
+	 	      	   break; 
+	  	   	   case "rankOverall": case "tuitionFee": case "roomBoard":  
 	 	   		   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
 	 	   		   break;
 	  	   	   case "applicationFee":	
@@ -155,7 +156,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	  	       //case "totalCost": 
 	 	   	   //	   schoolCriteria.add(Restrictions.le(sum("tuitionFee", "roomBoard"), Integer.parseInt(value))); 
 	 	   	   //	   break;
-	 	   	   case "toefl":
+	 	   	   /* case "toefl":
 	 	   	       schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
 	 	   	       schoolCriteria.add(Restrictions.gt(key, 0)); 
 		   	       break;
@@ -173,7 +174,8 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		 	       internationalApplicationCriteria.add(Restrictions.le(key, Integer.parseInt(value)));
 		 	       internationalApplicationCriteria.add(Restrictions.gt(key, 0));
 		   	       break;  
-		       case "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct":
+		       */
+	  	   	   case "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct":
 			       key = "toeflAcceptedInsteadOfSatOrAct"; 
 				   if(internationalApplicationCriteria == null)
 				   	  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
@@ -185,8 +187,6 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 			 		  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
 			 	   internationalApplicationCriteria.add(Restrictions.eq(key, value).ignoreCase()); 
 			   	   break;  
-		       case "sat1Score": case "actScore": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
- 	   		       break;  
 		       case "size": case "acceptRate":   
  	   		       if(value.indexOf("between") >= 0){
  		              String lowerValue = value.substring(value.indexOf("between") + 8, value.indexOf("and")-1);
@@ -226,8 +226,14 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	 	   	   default:     
 	 	   		   schoolCriteria.add(Restrictions.eq(key, value).ignoreCase());
 	 	   		   break;
-	 	   	}	      	    	
+	 	   	}	 	
+	 	    if(key.equalsIgnoreCase("category") && value.equalsIgnoreCase("Art Schools"))
+	 	       searchForArtSchool = true;
 	    }
+	    //get rid of the "Art Schools" category from the regular schools
+	    if(!searchForArtSchool)
+ 	   	   schoolCriteria.add(Restrictions.ne("category", "Art Schools").ignoreCase());
+	    
         schoolCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         //schoolCriteria.addOrder(Order.asc("rankOverall"));
         System.out.println("getItemsByQueryParameters() using criteria = " +schoolCriteria.toString());

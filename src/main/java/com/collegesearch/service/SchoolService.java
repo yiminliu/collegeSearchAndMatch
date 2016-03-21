@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 
+
+
 //import javax.ws.rs.core.MultivaluedMap;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
@@ -35,4 +37,6 @@ public interface SchoolService {
 	public void deleteSchool(School school);
 	//public void updateSchool(MultivaluedMap<String, String> queryParams);
     public List<School> getAllASchoolsForBStudents();
+    //public List<School> matchEngine(List<School> oriSchoolList, final LinkedHashMap<String, List<String>> queryParams);
+    public List<School> matchEngine(final LinkedHashMap<String, List<String>> queryParams);
 }

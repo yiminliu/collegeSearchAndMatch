@@ -66,6 +66,8 @@ public class School implements java.io.Serializable {
 	private Integer actPercentile75;
 	private Integer sat1Score;
 	private Integer actScore;
+	private Integer toeflScore;
+	private Integer ieltsScore;
 	private String  satActNotRequired;
 	private Integer numberOfRequiredSat2;
 	private Float   averageGpa;
@@ -88,7 +90,6 @@ public class School implements java.io.Serializable {
 	private SchoolRankInSpeciality schoolRankInSpeciality;
 	private Float anticipationIndex;
 	private String applicationNote;
-	private ASchoolForBStudent aSchoolForBStudent;
 	private Set<Major> bestMajors = new HashSet<Major>();
 		
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -133,15 +134,6 @@ public class School implements java.io.Serializable {
 
 	public void setSchoolRankInSpeciality(SchoolRankInSpeciality schoolRankInSpeciality) {
 		this.schoolRankInSpeciality = schoolRankInSpeciality;
-	}
-	
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-	public ASchoolForBStudent getaSchoolForBStudent() {
-		return aSchoolForBStudent;
-	}
-
-	public void setaSchoolForBStudent(ASchoolForBStudent aSchoolForBStudent) {
-		this.aSchoolForBStudent = aSchoolForBStudent;
 	}
 	
 	@DocumentId
@@ -293,6 +285,24 @@ public class School implements java.io.Serializable {
 
 	public void setActScore(Integer actScore) {
 		this.actScore = actScore;
+	}
+	
+	@Transient
+	public Integer getToeflScore() {
+		return toeflScore;
+	}
+
+	public void setToeflScore(Integer toeflScore) {
+		this.toeflScore = toeflScore;
+	}
+
+	@Transient
+	public Integer getIeltsScore() {
+		return ieltsScore;
+	}
+
+	public void setIeltsScore(Integer ieltsScore) {
+		this.ieltsScore = ieltsScore;
 	}
 
 	@Column(name = "ACT_percentile_25")
@@ -717,37 +727,33 @@ public class School implements java.io.Serializable {
 				+ website + "]";
 	}
 
+	
+	
 	public static class RankComparator implements Comparator<School>{
-	   public int compare(School school1, School school2){
-		  int result = 1;
-		  result = school1.getCategory().compareTo(school2.getCategory());
-		  if(result > 1)
-			 return 1;
-		  
-		  if(school1.getRankOverall() > 0){
-		    try{
-		       if(school1.getRankOverall() < school2.getRankOverall())
-		    	  result = -1;
-		       else if(school1.getRankOverall() > school2.getRankOverall())
-		    	   result = 1;
-		       else
-		    	   result = 0;
-		       
-		      // if(result == 0){
-		    	//  if(school1.getName().compareTo(school2.getName()) < 0)
-		    		// result = -1; 
-		    	  //else if(school1.getName().compareTo(school2.getName()) > 0)
-			    	// result = 1;
-		    	  //else
-		    		//  result = 0;
-		       //}  
-		    }
-		    catch(Exception e){
-		 	   e.printStackTrace();
-		    }	
-	      } 
-		  return result;
-	   }
+		   public int compare(School school1, School school2){
+			  int result = 1;
+			  if(school1 == null)
+				 return 1;
+			  if(school2 == null)
+				 return -1; 
+			  result = school1.getCategory().compareTo(school2.getCategory());
+			  if(result > 1)
+				 return 1;
+			  if(school1.getRankOverall() > 0){
+			     try{
+			       if(school1.getRankOverall() < school2.getRankOverall())
+			    	  result = -1;
+			       else if(school1.getRankOverall() > school2.getRankOverall())
+			    	   result = 1;
+			       else if(school1.getRankOverall() == school2.getRankOverall())
+			    	   result = school1.getName().compareTo(school2.getName());
+			     }
+			     catch(Exception e){
+			       e.printStackTrace();
+			     }	
+		      } 
+			  return result;
+		   }
 	}
 	
 	public static class NameComparator implements Comparator<School>{
@@ -858,7 +864,7 @@ public class School implements java.io.Serializable {
 			    else if(school1.getSchoolRankInSpeciality().getRank() > school2.getSchoolRankInSpeciality().getRank())
 			       result = 1;
 			    else
-			       result = 0;
+			       result = school1.getName().compareTo(school2.getName());
 			       
 			      // if(result == 0){
 			    	//  if(school1.getName().compareTo(school2.getName()) < 0)
@@ -876,4 +882,30 @@ public class School implements java.io.Serializable {
 		   return result;
 		}
 	  }
+	
+	/*
+	public static class SpecialityRankComparator implements Comparator<School>{
+		   public int compare(School school1, School school2){
+			  if(school1 == null)
+				 return 1;
+			  if(school2 == null)
+				 return -1; 
+			  if(school1.getSchoolRankInSpeciality() == null && school2.getSchoolRankInSpeciality() == null)
+				 return 0;
+			  if(school1.getSchoolRankInSpeciality() == null)
+				 return 1;
+			  if(school2.getSchoolRankInSpeciality() == null)
+				 return -1;			 
+			  if(school1.getSchoolRankInSpeciality().getRank() > 0){
+		         if(school1.getSchoolRankInSpeciality().getRank() < school2.getSchoolRankInSpeciality().getRank())
+			    	return -1;
+				 else if(school1.getSchoolRankInSpeciality().getRank() > school2.getSchoolRankInSpeciality().getRank())
+				    return 1;
+				 else if(school1.getSchoolRankInSpeciality().getRank() == school2.getSchoolRankInSpeciality().getRank())
+				    return school1.getName().compareTo(school2.getName());
+			  } 
+			  return 1;   
+			}
+		  }
+	*/	  
 }

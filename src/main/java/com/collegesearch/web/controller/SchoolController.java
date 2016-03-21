@@ -62,6 +62,57 @@ public class SchoolController {
 	   
 	//--------------------------- Search School --------------------------// 
 	/**
+	   * This method is used to show the form to search Schools
+	   * @return all schools
+	   *
+	   */
+	   @RequestMapping(value = "/showSearchSchoolForm", method = RequestMethod.GET)
+	   public String showSearchSchoolForm(Model model) {
+	       model.addAttribute("school", new School());	
+	       return "school/searchSchools";
+	   }
+		   
+	 /**
+	   * This method is used to show the form to search Schools
+	   * @return all schools
+	   */
+	   @RequestMapping(value = "/showSearchSchoolByNameForm", method = RequestMethod.GET)
+	   public String showSearchSchoolByNameForm(Model model) {
+	       model.addAttribute("school", new School());	
+	       return "school/searchSchoolByNameForm";
+	   }	   
+		 
+	/**
+	  * This method is used to show the form to search Schools
+	  * @return all schools
+	  */
+	  @RequestMapping(value = "/showSearchEngineForm", method = RequestMethod.GET)
+	  public String showSearchEngineForm(Model model) {
+	     model.addAttribute("school", new School());	
+	     return "school/searchEngine";
+	  }	
+			   
+	/**
+	  * This method is used to show the form to search Schools
+	  * @return satisfied schools
+	  */
+	  @RequestMapping(value = "/showMatchEngineForm", method = RequestMethod.GET)
+	  public String showMatchEngineForm(Model model) {
+	     model.addAttribute("school", new School());	
+	     return "school/matchEngine";
+	  }
+		  
+	/**
+	  * This method is used to show the form to search Schools
+	  * @return satisfied schools
+	  */
+	  @RequestMapping(value = "/showNoSATMatchEngineForm", method = RequestMethod.GET)
+	  public String showNoSATMatchEngineForm(Model model) {
+	     model.addAttribute("school", new School());	
+	     return "school/matchEngineNoSAT";
+	  }	  
+	  
+	/**
 	  * This method is used to process the School search based on input search criteria
 	  *
 	  * @return String the School search resulting page which shows all Schools match the search criteria
@@ -211,20 +262,40 @@ public class SchoolController {
 		 catch(Exception e){
 		   throw e;
 		 }
-		 //if(schoolList == null)
-		 //   throw new DataNotFoundException(name);
 		 model.addAttribute("schoolList", schoolList);
 		 status.setComplete();
 	  	 return "school/successResult";
 	  }
 			   
-			   
+	  /**
+		* This method is used to process the School search based on input search criteria
+		*
+		* @return String the School search resulting page which shows all Schools match the search criteria
+		*/
+	
+		@RequestMapping(value="/getBestSchoolMajors/{major}", method = RequestMethod.GET)
+		public String getBestSchoolsByMajor(@PathVariable("major") String major, Model model, SessionStatus status) {
+	       List<BestSchoolMajor> bestSchoolMajorList = null;
+		   try{
+		       bestSchoolMajorList = schoolService.getBestSchoolMajors(major);
+		   }
+		   catch(Exception e){
+			   status.setComplete(); //finished the "School" SessionAttribute
+			   throw e;
+		   }
+		   model.addAttribute("bestSchoolMajorList", bestSchoolMajorList);
+		   model.addAttribute("operation", "getBestSchoolMajors");
+		   model.addAttribute("title", major);
+		   status.setComplete(); //finish the "School" SessionAttribute
+		   return "school/successMajorResult";
+	    }
+	   			   
 	/**
 	  * This method is to show School detail information for the given School code within query string
 	  * @return String the name of the School detail page
 	  */
 	  @RequestMapping(value="getSchoolsInSpeciality/{speciality}", method = RequestMethod.GET)
-	  public String getSchoolsInSpeciality(@PathVariable("speciality") String speciality, Model model){
+	  public String getSchoolsBySpeciality(@PathVariable("speciality") String speciality, Model model){
 	     List<School> schools = null;
 		 try{
 		    schools = schoolService.getSchoolsBySpeciality(speciality);
@@ -232,8 +303,6 @@ public class SchoolController {
 		 catch(Exception e){
 		    throw e;
 		 }
-		 //if(schools == null)
-		 //   throw new DataNotFoundException(major);
 		 Collections.sort(schools, new SpecialityRankComparator());
 		 model.addAttribute("schoolList", schools);
 		 model.addAttribute("operation", "getSchoolsInSpeciality");
@@ -264,57 +333,7 @@ public class SchoolController {
 			    
 	*/	    
 	    
-	 /**
-	   * This method is used to show the form to search Schools
-	   * @return all schools
-	   *
-	   */
-	   @RequestMapping(value = "/showSearchSchoolForm", method = RequestMethod.GET)
-	   public String showSearchSchoolForm(Model model) {
-	       model.addAttribute("school", new School());	
-	       return "school/searchSchools";
-	   }
-		   
-	 /**
-	   * This method is used to show the form to search Schools
-	   * @return all schools
-	   */
-	   @RequestMapping(value = "/showSearchSchoolByNameForm", method = RequestMethod.GET)
-	   public String showSearchSchoolByNameForm(Model model) {
-	       model.addAttribute("school", new School());	
-	       return "school/searchSchoolByNameForm";
-	   }	   
-		 
-	/**
-	  * This method is used to show the form to search Schools
-	  * @return all schools
-	  */
-	  @RequestMapping(value = "/showSearchEngineForm", method = RequestMethod.GET)
-	  public String showSearchEngineForm(Model model) {
-	     model.addAttribute("school", new School());	
-	     return "school/searchEngine";
-	  }	
-			   
-	/**
-	  * This method is used to show the form to search Schools
-	  * @return satisfied schools
-	  */
-	  @RequestMapping(value = "/showMatchEngineForm", method = RequestMethod.GET)
-	  public String showMatchEngineForm(Model model) {
-	     model.addAttribute("school", new School());	
-	     return "school/matchEngine";
-	  }
-		  
-	/**
-	  * This method is used to show the form to search Schools
-	  * @return satisfied schools
-	  */
-	  @RequestMapping(value = "/showNoSATMatchEngineForm", method = RequestMethod.GET)
-	  public String showNoSATMatchEngineForm(Model model) {
-	     model.addAttribute("school", new School());	
-	     return "school/matchEngineNoSAT";
-	  }	  
-	  
+	 
 	/**
 	  * This method is used to process the School search based on input search criteria
 	  * @return String the School search resulting page which shows all Schools match the search criteria
@@ -334,50 +353,66 @@ public class SchoolController {
 		   status.setComplete(); //finished the "School" SessionAttribute
 	       throw e;
 		 }
-		 //if(schools == null)
-		 //   throw new DataNotFoundException();
-		 //int limit = 0;
-		 //if(SchoolUtil.getValue(allRequestParams, "maxResults") != null)
-		 //   limit = Integer.parseInt(SchoolUtil.getValue(allRequestParams, "maxResults"));
-		 //if(limit > 0 && limit < schools.size())
-		 // 	 schools = schools.subList(0, limit); 
 		 //Collections.sort(schools,  new RankComparator());
 		 model.addAttribute("schoolList",  schools);
-		 model.addAttribute("operation", "searchSchools");
+		 model.addAttribute("operation", "listSchools");
 		 status.setComplete(); //finish the "School" SessionAttribute
-		 if(SchoolUtil.getValue(allRequestParams, "category") != null){   
+		 if(SchoolUtil.getValue(allRequestParams, "category") != null)
 			model.addAttribute("category", SchoolUtil.getValue(allRequestParams, "category"));
-		    status.setComplete();
-			return "school/successTopListResult";
-		 }	  
-		 else
-		    return "school/successResult";
-	    }
-	   
+		 else if(SchoolUtil.getValue(allRequestParams, "internationalStudentApplication.conditionalAdmissionOffered") != null)   
+			model.addAttribute("title", "Colleges with Conditional Admissions");
+		 else if(SchoolUtil.getValue(allRequestParams, "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct") != null)  
+			model.addAttribute("title", "Colleges Accepting TOEFL Instead of SAT/ACT");
+			
+		 return "school/successListResult";
+		}
 	  
 	  /**
-		* This method is used to process the School search based on input search criteria
-		*
-		* @return String the School search resulting page which shows all Schools match the search criteria
-		*/
-	
-		@RequestMapping(value="/getBestSchoolMajors/{major}", method = RequestMethod.GET)
-		public String getBestSchoolsMajors(@PathVariable("major") String major, Model model, SessionStatus status) {
-	       List<BestSchoolMajor> bestSchoolMajorList = null;
-		   try{
-		       bestSchoolMajorList = schoolService.getBestSchoolMajors(major);
-		   }
-		   catch(Exception e){
+		 * This method is used to process the School search based on input search criteria
+		 * @return String the School search resulting page which shows all Schools match the search criteria
+		 */
+		 @RequestMapping(value="/searchEngine", method = RequestMethod.GET)
+		 //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") School school, Model model, BindingResult result, SessionStatus status) {
+		 public String searchEngine(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, Model model, SessionStatus status) {
+		    List<School> schools = null;
+		    try{
+			    schools = schoolService.getSchools(allRequestParams);
+			}
+			catch(Exception e){
 			   status.setComplete(); //finished the "School" SessionAttribute
-			   throw e;
-		   }
-		   model.addAttribute("bestSchoolMajorList", bestSchoolMajorList);
-		   model.addAttribute("operation", "getBestSchoolMajors");
-		   model.addAttribute("title", major);
-		   status.setComplete(); //finish the "School" SessionAttribute
-		   return "school/successMajorResult";
-	    }
-	   	
+		       throw e;
+			}
+			//Collections.sort(schools,  new RankComparator());
+			model.addAttribute("schoolList",  schools);
+			model.addAttribute("operation", "searchSchools");
+			status.setComplete(); //finish the "School" SessionAttribute
+		    return "school/successResult";
+		 }
+		  
+	   
+	  /**
+		 * This method is used to process the School search based on input search criteria
+		 * @return String the School search resulting page which shows all Schools match the search criteria
+		 */
+		 @RequestMapping(value="/matchEngine", method = RequestMethod.GET)
+		 //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") School school, Model model, BindingResult result, SessionStatus status) {
+		 public String matchEngine(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, Model model, SessionStatus status) {
+		    List<School> schools = null;
+		    try{
+			    schools = schoolService.matchEngine(allRequestParams);
+			}
+			catch(Exception e){
+			   status.setComplete(); //finished the "School" SessionAttribute
+		       throw e;
+			}
+			//Collections.sort(schools,  new RankComparator());
+			model.addAttribute("schoolList",  schools);
+			model.addAttribute("operation", "matchEngine");
+			status.setComplete(); //finish the "School" SessionAttribute
+ 		    return "school/successMatchResult";
+		 }
+		   	  
+	  
 	    //--------------------------- Create School --------------------------// 
 	   
 	 /**

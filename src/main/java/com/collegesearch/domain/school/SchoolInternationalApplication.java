@@ -36,8 +36,8 @@ public class SchoolInternationalApplication  implements java.io.Serializable {
     private String  toeflAcceptedInsteadOfSatOrAct;
     private Integer minimumToeflScore;
     private Integer averageToeflScore;
-    private Integer minimumIeltsScore;
-    private Integer averageIeltsScore;
+    private Float   minimumIeltsScore;
+    private Float   averageIeltsScore;
     private Integer toeflScore;
 	private Float   ieltsScore;
     private Integer internationalStudentsApplying;
@@ -47,9 +47,9 @@ public class SchoolInternationalApplication  implements java.io.Serializable {
     private String  contact;
     private String  note;
     private School  school;
-    private Float internationalStudentAcceptRate;
-    private Float internationalStudentRetentionRate;
-    private String website;
+    private Float   internationalStudentAcceptRate;
+    private Float   internationalStudentRetentionRate;
+    private String  website;
 
        
     @GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "school"))
@@ -148,20 +148,20 @@ public class SchoolInternationalApplication  implements java.io.Serializable {
     }
     
     @Column(name="Minimum_IELTS_Score_Required", length=10)
-    public Integer getMinimumIeltsScore() {
+    public Float getMinimumIeltsScore() {
         return this.minimumIeltsScore;
     }
     
-    public void setMinimumIeltsScore(Integer minimumIeltsScore) {
+    public void setMinimumIeltsScore(Float minimumIeltsScore) {
         this.minimumIeltsScore = minimumIeltsScore;
     }
     
     @Column(name="Average_IELTS_Score_Required", length=10)
-    public Integer getAverageIeltsScore() {
+    public Float getAverageIeltsScore() {
         return this.averageIeltsScore;
     }
     
-    public void setAverageIeltsScore(Integer averageIeltsScore) {
+    public void setAverageIeltsScore(Float averageIeltsScore) {
         this.averageIeltsScore = averageIeltsScore;
     }
     
@@ -296,7 +296,7 @@ public class SchoolInternationalApplication  implements java.io.Serializable {
     		String applicationDeadlineSpring, String separateApplicationFormRrequired, 
     		String conditionalAdmissionOffered, String toeflAcceptedInsteadOfSatOrAct, 
     		Integer minimumToeflScoreRequired, Integer averageToeflScoreRequired, 
-    		Integer minimumIeltsScoreRequired, Integer averageIeltsScoreRequired, 
+    		Float minimumIeltsScoreRequired, Float averageIeltsScoreRequired, 
     		Integer internationalStudentsApplying, Integer internationalStudentsAccepted, 
     		Integer internationalFreshmenEnrolled, String intlFinancialAid, String contact, String note) {
        this.id = id;

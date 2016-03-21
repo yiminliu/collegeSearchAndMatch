@@ -50,15 +50,18 @@ public class SchoolUtil {
 	}
 	
 	public static boolean applicantDataExist(final LinkedHashMap<String, List<String>> queryParams){
-		return getValue(queryParams, "internationalStudentApplication.toeflScore") !=null? true : 
-			   getValue(queryParams, "internationalStudentApplication.ieltsScore") !=null? true : 
+		return getValue(queryParams, "toeflScore") !=null? true : 
+			   getValue(queryParams, "ieltsScore") !=null? true : 
 			   getValue(queryParams, "sat1Score") != null? true : 
 			   getValue(queryParams, "actScore") !=null? true :	
-			   getValue(queryParams, "gpa") !=null? true : false;
+			   getValue(queryParams, "gpa") !=null? true :
+		       getValue(queryParams, "totalCost") !=null? true : false;
+		
 	}
 
-	public static Integer adjustSchoolStandardforSatOrActScores(int percentile25, int percentile75, float acceptRate) {
-		
+	public static Integer adjustSchoolStandardforSatOrActScores(int percentile25, int percentile75, Float acceptRate) {
+		if(acceptRate == null)
+		   acceptRate = 50f;	
 		if(percentile25 <= 0 || percentile75 <= 0) {
 		   return 0;
 		}	
@@ -75,7 +78,7 @@ public class SchoolUtil {
 			ajustedThreashold = percentile75 * 1.1f; //for top 30-40 return 105% of Percentile75
 		else if(acceptRate > 40 && acceptRate <= 50) 
 			ajustedThreashold = percentile75 * 1.0f;  //for top 40-50 return 100% of Percentile75
-		else if(acceptRate > 50 && acceptRate <= 60) 
+		/*else if(acceptRate > 50 && acceptRate <= 60) 
 			ajustedThreashold = ((percentile75 * 0.9f) > percentile50? (percentile75 * 0.9f) : percentile50);  
 		else if(acceptRate > 60 && acceptRate <= 70) //for top 40-60 return (Percentile25 + Percentile75)/2
 			ajustedThreashold = ((percentile75 * 0.8f) > percentile50? (percentile75 * 0.8f) : percentile50);    //for top 60-70 return 80% of Percentile75
@@ -84,7 +87,8 @@ public class SchoolUtil {
 			ajustedThreashold = ((percentile50 * 0.9f) > percentile25? (percentile50 * 0.9f) : percentile25);  
 		else if(acceptRate > 80 && acceptRate <= 90)                     //for top > 60 Percentile25
 			ajustedThreashold = ((percentile50 * 0.8f) > percentile25? (percentile50 * 0.8f) : percentile25);  
-		else if(acceptRate > 90)
+		else if(acceptRate > 90)*/
+		else
 			ajustedThreashold = percentile25;
 		return Math.round(ajustedThreashold);
 	}
@@ -124,7 +128,7 @@ public class SchoolUtil {
 		return Math.round(ajustedThreashold);
 	}
 	
-	public static boolean isTestScoreSatisfied(int testScore, int percentile25, int percentile75, float acceptRate){
+	public static boolean isTestScoreSatisfied(int testScore, int percentile25, int percentile75, Float acceptRate){
 		int standardValue = 0;
 		standardValue = adjustSchoolStandardforSatOrActScores(percentile25, percentile75, acceptRate);
 		if(standardValue  == 0 )
@@ -221,6 +225,37 @@ public class SchoolUtil {
 		return sat;
 	}
 	
+	public static int convertSatToAct(int num){
+		int result = 0;		
+		if(num == 1600) result = 36;	
+		else if(num >= 1540 && num <= 1590) result = 35;	
+		else if(num >= 1490 && num <= 1530) result = 34;		
+		else if(num >= 1440 && num <= 1480) result = 33;
+		else if(num >= 1400 && num <= 1430) result = 32;	
+		else if(num >= 1360 && num <= 1390) result = 31;	
+		else if(num >= 1330 && num <= 1350) result = 30;	
+		else if(num >= 1290 && num <= 1320) result = 29;	
+		else if(num >= 1250 && num <= 1280) result = 28;	
+		else if(num >= 1210 && num <= 1240) result = 27;	
+		else if(num >= 1170 && num <= 1200) result = 26;	
+		else if(num >= 1130 && num <= 1160) result = 25;	
+		else if(num >= 1090 && num <= 1120) result = 24;	
+		else if(num >= 1050 && num <= 1080) result = 23;	
+		else if(num >= 1020 && num <= 1040) result = 22;	
+		else if(num >= 980 && num <= 1010) result = 21;	
+		else if(num >= 940 && num <= 970) result = 20;
+		else if(num >= 900 && num <= 930) result = 19;
+		else if(num >= 860 && num <= 890) result = 18;
+		else if(num >= 820 && num <= 850) result = 17;	
+		else if(num >= 770 && num <= 810) result = 16;	
+		else if(num >= 720 && num <= 760) result = 15;	
+		else if(num >= 670 && num <= 710) result = 14;	
+		else if(num >= 620 && num <= 660) result = 13;	
+		else if(num >= 560 && num <= 610) result = 12;	
+		else if(num >= 510 && num <= 550) result = 11;
+	    return result;
+	}
+	
 	public static int convertIeltsToToefl(String ielts){
 		int toefl = 0;
 		switch(ielts){
@@ -282,5 +317,27 @@ public class SchoolUtil {
 			   102–109*	7.5
 			   110–114	8
 			   115–117	8.5
-			   118–120	9	*/	   
+			   118–120	9	*/	
+	
+	public static float convertToeflToIelts(int num){
+		float result = 0;
+		if(num == 0) result = 0;	
+		else if(num >= 1 && num <= 9) result = 1.0f;
+		else if(num >= 10 && num <= 19) result = 2.0f;
+		else if(num >= 20 && num <= 25) result = 3.0f;
+		else if(num >= 26 && num <= 31) result = 4.0f;	
+		else if(num >= 32 && num <= 34) result = 4.5f;		
+		else if(num >= 35 && num <= 45) result = 5.0f;
+		else if(num >= 46 && num <= 59) result = 5.5f;	
+		else if(num >= 60 && num <= 78) result = 6.0f;	
+		else if(num >= 79 && num <= 93) result = 6.5f;	
+		else if(num >= 94 && num <= 101) result = 7.0f;	
+		else if(num >= 102 && num <= 109) result = 7.5f;	
+		else if(num >= 110 && num <= 114) result = 8.0f;	
+		else if(num >= 115 && num <= 117) result = 8.5f;	
+		else if(num >= 118 && num <= 120) result = 9.0f;	
+		
+	    return result;
+	}
+	
 }
