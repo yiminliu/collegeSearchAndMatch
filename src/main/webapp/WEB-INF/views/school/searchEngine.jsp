@@ -11,7 +11,7 @@
 <body background="http://localhost:8080/collegeSearch/static/images/search_bg3.jpg">
   <div class="container">
      <div><%@ include file="/WEB-INF/views/general/header.jsp"%></div>
-     <spring:url var="action" value="/school/searchSchools" />
+     <spring:url var="action" value="/school/searchEngine" />
      <table class="center_element_text" style="width:70%; margin-top:5px; margin-bottom:8px; padding:0px; border-spacing: 30px 0px;">
        <tr>
           <td style="background-color:Azure;"><h4>Find out suitable colleges by specifying the following criteria</h4></td>

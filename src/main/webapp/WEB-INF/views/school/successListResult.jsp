@@ -17,6 +17,9 @@
         <c:when test="${not empty category}">
            <div class="page_title_wide">Top ${category}(${fn:length(schoolList)} found)</div>
         </c:when>   
+        <c:when test="${not empty title && operation eq 'listSchools'}">
+           <div class="page_title_wide">${title}(${fn:length(schoolList)} found)</div>
+        </c:when>
         <c:otherwise>          
            <div class="page_title">Search Result(${fn:length(schoolList)} found)</div>
         </c:otherwise>
@@ -26,7 +29,7 @@
            <table class="datatable" style="font-size: 80%">
              <tr style="background-color: Ivory;">
               	<th>School</th>
-               	<c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
+               	<c:if test="${category ne 'Art Schools'}">
 				   <th>Rank</th>
 				   <!--<th>Last Year Rank</th>-->
 				</c:if>   
@@ -58,7 +61,7 @@
 			     <c:when test="${operation eq 'getSchoolsInSpeciality'}">
 				  <td>${school.schoolRankInSpeciality.rank}</td>
 			     </c:when>  
-			     <c:when test="${operation eq 'getPrincetonReviewGreatSchoolMajors'}">
+			     <c:when test="${category eq 'Art Schools'}">
 			     </c:when> 
 			     <c:otherwise> 		
 					   <c:choose>
@@ -187,12 +190,9 @@
 	    </c:if>
 	    <div>
 	      <table  class="center" style="margin: 0 auto; cellspacing: 30px; cellpadding: 30px; border-spacing: 50px;">
-             <tr>
+              <tr>
                 <td><a id="schoolHome" href="<spring:url value="/school/home" />" class="button_m"><span style="cellspacing: 30px; cellpadding: 30px;">School Home</span></a></td>
-                <c:if test="${operation eq 'searchSchools'}">
-		           <td ><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_m"><span style="cellspacing: 30px; cellpadding: 30px;">Search Again</span></a></td>
-       	        </c:if>
-             </tr>
+              </tr>
          </table>
        </div>
      </div> <!--content-->
