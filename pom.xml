@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -58,17 +58,20 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.12.4</version>
             </plugin>
-            <!--<plugin>
-	            <groupId>org.codehaus.mojo</groupId>
-            	<artifactId>tomcat-maven-plugin</artifactId>
+            <plugin>
+	            <groupId>org.apache.tomcat.maven</groupId>
+            	<artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
 	            <configuration>
 		           <url>http://127.0.0.1:8080/manager</url>
 		           <server>TomcatServer</server>
-		           <path>C:/Program Files/Java/Apache/apache-tomcat-7.0.47/webapps</path>
+		           <username>admin</username>  
+                   <password>admin</password>  
+		           <path>C:/Program Files/Java/Apache/apache-tomcat-8.0.32/webapps</path>
 	            </configuration>
-           </plugin>-->
+           </plugin>
           
-          <plugin>
+          <!--<plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
@@ -80,7 +83,6 @@
                   <war>${basedir}/target/collegeSearch.war</war>
                   <useTestScope>true</useTestScope>
                   <webApp> 
-                     <!--<contextPath>/collegeSearch</contextPath>-->
                      <contextPath>/${project.artifactId}</contextPath>
                      <resourceBases>
                         <resourceBase>${project.basedir}/src/main/webapp</resourceBase>
@@ -96,7 +98,7 @@
                      </connector>
                    </connectors>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
         
