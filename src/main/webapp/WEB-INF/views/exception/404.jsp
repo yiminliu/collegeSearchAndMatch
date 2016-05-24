@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-     <title>College Consulting - Page Not Found</title>
+     <title>College Consulting System -- Page Not Found</title>
   </head>
   <body>
     <div class="container"> 

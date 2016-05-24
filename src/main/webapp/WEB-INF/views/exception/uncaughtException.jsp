@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-     <title>Item Management System -- Error Page </title>
+     <title>College Consulting System -- Error Page </title>
   </head>
   <body>
       <div class="container">

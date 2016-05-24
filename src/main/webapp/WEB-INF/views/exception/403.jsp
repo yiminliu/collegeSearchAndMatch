@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-     <title>Item Management System - Access Denied</title>
+     <title>College Consulting System - Access Denied</title>
   </head>
   <body>
     <%@ include file="/WEB-INF/views/general/header.jsp"%>
