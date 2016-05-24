@@ -9,9 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 //import java.util.Map;
 
-
-
-
+import java.util.Set;
 
 
 //import org.hibernate.Session;
@@ -26,19 +24,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
-
-
-
-
 import com.collegesearch.dao.school.ASchoolForBStudentDao;
 import com.collegesearch.dao.school.BestSchoolMajorDao;
+import com.collegesearch.domain.school.Major;
 //import com.collegesearch.domain.school.PrincetonReviewGreatSchoolInPopularMajor;
 //import com.collegesearch.domain.school.Major;
 import com.collegesearch.domain.school.School;
 import com.collegesearch.domain.school.BestSchoolMajor;
 //import com.collegesearch.domain.school.School.NameComparator;
 import com.collegesearch.domain.school.School.RankComparator;
+import com.collegesearch.domain.school.School.RankByCategoryComparator;
 import com.collegesearch.domain.school.School.ToeflComparator;
 //import com.collegesearch.domain.school.School.AcceptanceRateComparator;
 import com.collegesearch.domain.school.BestSchoolMajor.MajorRankComparator;
@@ -90,13 +85,13 @@ public class CollegeSearchServiceTest {
 
 	@Test
 	public void testGetSchoolById() {
-		Integer id = 4;
+		Integer id = 5;
 		School school = schoolService.getSchoolById(id);
 		assertNotNull(school);
 		assertEquals(id, school.getId());
 		assertEquals("Philadelphia", school.getCity());
 		assertEquals("PA", school.getState());
-		System.out.println("School name = " + school.getName());
+		System.out.println("Applicant name = " + school.getName());
 	}
 
 	@Test
@@ -107,7 +102,7 @@ public class CollegeSearchServiceTest {
 		assertEquals(name, school.getName());
 		assertEquals("Philadelphia", school.getCity());
 		assertEquals("PA", school.getState());
-		System.out.println("School name = " + school.getName());
+		System.out.println("Applicant name = " + school.getName());
 	}
 
 	@Test
@@ -116,26 +111,29 @@ public class CollegeSearchServiceTest {
 		School school = schoolService.getSchoolByName(name);
 		assertNotNull(school);
 		assertEquals(name, school.getName());
-		System.out.println("School name = " + school.getName());
+		System.out.println("Applicant name = " + school.getName());
 	}
 	
 	@Test
 	public void testGetSchoolsByMatchNamePattern() {
-		//indexService.initializeIndex();
-		String name = "Penn";
+		indexService.initializeIndex();
+		String name = "yale";
 		List<School> schools = schoolService.getSchoolsByMatchNamePattern(name);
 		assertNotNull(schools);
-		School school = schools.get(0);
-		assertNotNull(school);
+		System.out.println("number of schools " + schools.size()); 
+		//School school = schools.get(0);
+		//assertNotNull(school);
+		for(School school : schools){
 		//assertEquals(name, school.getName());
-		System.out.println("School name = " + school.getName());
+		   System.out.println("school name = " + school.getName());
+		}   
 	}
 	
 	@Test
 	public void testGetSchools() {
 		
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-		params.put("category", Arrays.asList(new String[]{"National University"}));
+		params.put("category", Arrays.asList(new String[]{"NU"}));
 		params.put("maxResults", Arrays.asList(new String[]{"50"}));
 		List<School> schools = schoolService.getSchools(params);
 		System.out.println(schools.size() + " schools returned.");
@@ -143,10 +141,24 @@ public class CollegeSearchServiceTest {
 		assertNotNull(schools);
 	}
 	
-	@Test
+	//@Test
 	public void testGetSchoolsByAcceptaRate() {
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-		params.put("acceptRate", Arrays.asList(new String[]{"<25"}));
+		//params.put("acceptRate", Arrays.asList(new String[]{">99"}));
+		params.put("acceptRate", Arrays.asList(new String[]{"(between 25% and 50%)"}));
+		List<School> schools = schoolService.getSchools(params);
+		System.out.println(schools.size() + " schools returned.");
+		Collections.sort(schools,  new RankComparator());
+		for(School school : schools){
+		    //System.out.printf("school: %s, rank: %f %n", school.getName(), school.getRankOverall());
+		}			
+		assertNotNull(schools);
+	}
+	
+	@Test
+	public void testGetSchoolsBySize() {
+		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
+		params.put("size", Arrays.asList(new String[]{"(between 2000 and 15000)"}));
 		List<School> schools = schoolService.getSchools(params);
 		System.out.println(schools.size() + " schools returned.");
 		Collections.sort(schools,  new RankComparator());
@@ -169,7 +181,8 @@ public class CollegeSearchServiceTest {
 	@Test
 	public void testGetSchoolsWithLowToefl() {
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-		params.put("internationalStudentApplication.minimumToeflScore", Arrays.asList(new String[]{"90"}));
+		//params.put("internationalStudentApplication.minimumToeflScore", Arrays.asList(new String[]{"90"}));
+		params.put("randomApplicant.toeflScore", Arrays.asList(new String[]{"90"}));
 		List<School> schools = schoolService.getSchools(params);
 		Collections.sort(schools, new ToeflComparator()); 
 		//System.out.println(schools.size() + " schools returned.");
@@ -197,7 +210,7 @@ public class CollegeSearchServiceTest {
 		//String name = "Mechanical";
 		//String name = "Health Services";
 		//String name = "Computer_Doctorate";
-		//List<School> pList = schoolService.getPrincetonReviewGreatSchoolMajor(name);
+		//List<Applicant> pList = schoolService.getPrincetonReviewGreatSchoolMajor(name);
 		List<BestSchoolMajor> pList = schoolService.getBestSchoolMajors(name);
 		//List<BestSchoolMajor> pList = bestSchoolMajorDao.getBestSchoolMajorsByMajorId("COMM1");
 		//Collections.sort(pList,  new MajorRankComparator());
@@ -220,10 +233,10 @@ public class CollegeSearchServiceTest {
 		String name = "Mechanical Engineering";
 		//String name = "Health Services";
 		//String name = "Communications";
-		List<School> pList = schoolService.getSchoolsByMajor(name);
+		List<Applicant> pList = schoolService.getSchoolsByMajor(name);
 		assertNotNull(pList);
 		assertNotEquals(0, pList.size());
-		for(School s : pList){
+		for(Applicant s : pList){
 			System.out.println("school = " + s.toString());
 		}
 		//assertEquals(name, school.getName());
@@ -233,7 +246,7 @@ public class CollegeSearchServiceTest {
 	*/
 	
 	@Test
-	public void testgetSchoolsBySpeciality() {
+	public void testGetSchoolsBySpeciality() {
 		String speciality = "Engineering_Doctorate";
 		List<School> pList = schoolService.getSchoolsBySpeciality(speciality);
 		assertNotNull(pList);
@@ -266,24 +279,26 @@ public class CollegeSearchServiceTest {
 		//params.put("internationalFinancialAid", Arrays.asList(new String[]{"Yes"}));
 		//params.put("toefl", Arrays.asList(new String[]{"95"}));
 		//params.put("rankOverall", Arrays.asList(new String[]{"Top 25"}));
-		//params.put("type", Arrays.asList(new String[]{"Private"}));
-		//params.put("state", Arrays.asList(new String[]{"CA"}));
-		params.put("category", Arrays.asList(new String[]{"National University"}));
+		params.put("type", Arrays.asList(new String[]{"Private"}));
+		params.put("state", Arrays.asList(new String[]{"CA"}));
+		params.put("averageGpa", Arrays.asList(new String[]{"< 3.5"}));
+		//params.put("category", Arrays.asList(new String[]{"NU"}));
 		//params.put("tuitionFee", Arrays.asList(new String[]{"< 20000"}));
 		//params.put("roomBoard", Arrays.asList(new String[]{"< 20000"}));
 		//params.put("totalCost", Arrays.asList(new String[]{"<20000"}));
 		//params.put("sat1Score", Arrays.asList(new String[]{"1800"}));
 		//params.put("size", Arrays.asList(new String[]{"Small(<2000)"}));
 		//params.put("size", Arrays.asList(new String[]{"between 2000 and 15000"}));
-		params.put("acceptRate", Arrays.asList(new String[]{">95%"}));
+		//params.put("acceptRate", Arrays.asList(new String[]{">95%"}));
 		//params.put("acceptRate", Arrays.asList(new String[]{"between 20% and 50%"}));
+		//params.put("satActNotRequired", Arrays.asList(new String[]{"Yes"}));
 		
 		List<School> pList = schoolService.getSchools(params);
-		Collections.sort(pList,  new RankComparator());
+		Collections.sort(pList,  new RankByCategoryComparator());
 		assertNotNull(pList);
 		assertNotEquals(0, pList.size());
 		System.out.println(pList.size() + " schools returned");
-		//for(School s : pList){
+		//for(Applicant s : pList){
 		//	System.out.println("school = " + s.toString());
 		//}
 	}
@@ -293,21 +308,23 @@ public class CollegeSearchServiceTest {
 		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
 		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-		String sat1Score = "1200";
+		
+		String sat1Score = "600";
 		String actScore = "28";
-		//params.put("sat1Score", Arrays.asList(new String[]{sat1Score}));
-		params.put("actScore", Arrays.asList(new String[]{actScore}));
+		//params.put("randomApplicant.sat1Score", Arrays.asList(new String[]{sat1Score}));
+		params.put("randomApplicant.sat1ReadingScore", Arrays.asList(new String[]{sat1Score}));
+		params.put("randomApplicant.sat1MathScore", Arrays.asList(new String[]{sat1Score}));
 		
 		List<School> sList = schoolService.getSchools(params);
 		List<School> schoolsAdjustedBySAT1Standard = new ArrayList<School>(sList.size());
-		//for(School school : sList){
+		//for(Applicant school : sList){
 		//    if(Integer.valueOf(sat1Score) >= SchoolUtil.adjustSchoolStandardforSatOrActScores(school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
 		//      schoolsAdjustedBySAT1Standard.add(school);
 		//} 
 		//assertNotNull(schoolsAdjustedBySAT1Standard);
 		System.out.println("number of schools returned = "+sList.size()); 
 		assertNotEquals(0, sList.size());
-		//for(School s : pList){
+		//for(Applicant s : pList){
 		//	System.out.println("school = " + s.toString());
 		//}
 	}
@@ -318,7 +335,7 @@ public class CollegeSearchServiceTest {
 		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
 		String toeflScore = "60";
-		String ieltsScore = "8";
+		//String ieltsScore = "8";
 		//params.put("internationalStudentApplication.toeflScore", Arrays.asList(new String[]{toeflScore}));
 		//params.put("internationalStudentApplication.ieltsScore", Arrays.asList(new String[]{ieltsScore}));
 		//params.put("internationalStudentApplication.conditionalAdmissionOffered", Arrays.asList(new String[]{"Yes"}));
@@ -326,15 +343,16 @@ public class CollegeSearchServiceTest {
 		
 		
 		List<School> sList = schoolService.getSchools(params);
+		Collections.sort(sList, new RankComparator());
 		List<School> schoolsAdjustedBySAT1Standard = new ArrayList<School>(sList.size());
-		//for(School school : sList){
+		//for(Applicant school : sList){
 		//    if(Integer.valueOf(sat1Score) >= SchoolUtil.adjustSchoolStandardforSatOrActScores(school.getSat1Percentile25(), school.getSat1Percentile75(), school.getAcceptRate()))
 		//      schoolsAdjustedBySAT1Standard.add(school);
 		//} 
 		//assertNotNull(schoolsAdjustedBySAT1Standard);
 		System.out.println("number of schools returned = "+sList.size()); 
 		assertNotEquals(0, sList.size());
-		//for(School s : pList){
+		//for(Applicant s : pList){
 		//	System.out.println("school = " + s.toString());
 		//}
 	}
@@ -349,7 +367,7 @@ public class CollegeSearchServiceTest {
 		//assertNotNull(schoolsAdjustedBySAT1Standard);
 		System.out.println("data = "+school.getInternationalStudentApplication().getInternationalStudentAcceptRate()); 
 		System.out.println("data = "+school.getInternationalStudentApplication().getInternationalStudentRetentionRate()); 
-		//for(School s : pList){
+		//for(Applicant s : pList){
 		//	System.out.println("school = " + s.toString());
 		//}
 	}
@@ -365,7 +383,7 @@ public class CollegeSearchServiceTest {
 		
 		//assertNotNull(schoolsAdjustedBySAT1Standard);
 		System.out.println("data = "+school.getInternationalStudentApplication().getWebsite()); 
-			//for(School s : pList){
+			//for(Applicant s : pList){
 		//	System.out.println("school = " + s.toString());
 		//}
 		//org.hibernate.SessionFactory sf = new org.hibernate.SessionFactory();
@@ -374,62 +392,71 @@ public class CollegeSearchServiceTest {
 	 
 	@Test
 	public void testGetGreatMajors() {
-		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
-		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
 		String name = "Drexel University";
 		School school = schoolService.getSchoolByName(name);
-		List<BestSchoolMajor> bestMajors = null;//school.getBestMajors();
+		Set<Major> bestMajors = school.getBestMajors();
 		//assertNotNull(schoolsAdjustedBySAT1Standard);
 		//System.out.println("data = "+school.getGoodAtMajors()); 
 		System.out.println("# of best majors = " + bestMajors.size());
 		//System.out.println("best majors = " + bestMajors.get(0).getMajor().getName());
-		for(BestSchoolMajor sm : bestMajors){
+		for(Major sm : bestMajors){
 	//		System.out.println("major = " + sm.getMajor().getName());
 		}
 	}
 
+	
+	/*
 	@Test
 	public void testSearchSchools() {
 		//MultivaluedMap<String,String> params = new MultivaluedMapImpl();
 		//params.put("inactivecode", Arrays.asList(new String[]{"N"}));
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-		params.put("internationalFinancialAid", Arrays.asList(new String[]{"Yes"}));
+		params.put("getInternationalStudentApplication().financialAid", Arrays.asList(new String[]{"Yes"}));
 		
-		List<School> pList = schoolService.getSchools(params);
+		List<Applicant> pList = schoolService.getSchools(params);
 		assertNotNull(pList);
 		assertNotEquals(0, pList.size());
-		for(School s : pList){
+		for(Applicant s : pList){
 			System.out.println("school = " + s.toString());
 		}
 	}
-	
+	*/
 	@Test
 	public void testConvertActToSat() throws Exception {
 	   
 	    int actScore = 22;
 	    int satScore = SchoolUtil.convertActToSat(actScore);
 	    System.out.println("actScore = " + actScore + " : " + "satScore = " + satScore );
-		//School updatedSchool = schoolService.getSchoolByName(name);
-		}
+		//Applicant updatedSchool = schoolService.getSchoolByName(name);
+	}
 	
 	@Test
 	public void testMatchEngine() {
 		LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-		params.put("state", Arrays.asList(new String[]{"PA"}));
-		//params.put("name", Arrays.asList(new String[]{"Pennsylvania College of Art and Design"}));
-		
+		//params.put("state", Arrays.asList(new String[]{"PA"}));
+		//params.put("name", Arrays.asList(new String[]{"Yale University"}));
+		params.put("category", Arrays.asList(new String[]{"NU"}));
+		String sat1Score = "650";
+		//String actScore = "28";
+		//params.put("randomApplicant.sat1Score", Arrays.asList(new String[]{sat1Score}));
+		params.put("randomApplicant.toeflScore", Arrays.asList(new String[]{"90"}));
+		params.put("randomApplicant.gpaScore", Arrays.asList(new String[]{"3.5"}));
+		params.put("randomApplicant.sat1ReadingScore", Arrays.asList(new String[]{sat1Score}));
+		params.put("randomApplicant.sat1MathScore", Arrays.asList(new String[]{sat1Score}));
+		//params.put("randomApplicant.satSubjects", Arrays.asList(new String[]{"Math Level1", "Biology"}));
+				
 		//params.put("totalCost", Arrays.asList(new String[]{"<20000"}));
-		//params.put("sat1Score", Arrays.asList(new String[]{"850"}));
-		//params.put("toeflScore", Arrays.asList(new String[]{"80"}));
+		//params.put("randomApplicant.sat1Score", Arrays.asList(new String[]{"1400"}));
+		
 		//params.put("actScore", Arrays.asList(new String[]{"25"}));
 		//params.put("ieltsScore", Arrays.asList(new String[]{"6"}));
-		//params.put("gpa", Arrays.asList(new String[]{"3.0"}));
-		List<School> schools = schoolService.matchEngine(params);
+		//params.put("randomApplicant.gpaScore", Arrays.asList(new String[]{"3.5"}));
+		List<School> schools = schoolService.matchEngineInternational(params);
 		assertNotNull(schools);
-		assertNotEquals(0,schools.size());
-		System.out.println(schools.size());
+		//assertNotEquals(0,schools.size());
+		System.out.println(schools.size() + " returned back to client.");
 		for(School s : schools){
-			//System.out.printf("school: %s, gpa: %f %n", s.getName(), s.getAverageGpa());
+			System.out.printf("school: %s, gpa: %f %n", s.getName(), s.getAverageGpa());
 			//System.out.printf("25perc SAT: %d, 50perc SAT: %d, 25perc Act: %d, %n", s.getSat1Percentile25(), s.getAverageSAT(), s.getActPercentile25());
 			//System.out.printf("minToefl: %d, aveToefl: %d, ielts: %d, %n", s.getInternationalStudentApplication().getMinimumToeflScore(), s.getInternationalStudentApplication().getAverageToeflScore(), s.getInternationalStudentApplication().getAverageIeltsScore());
 			//System.out.println("********");
@@ -458,14 +485,14 @@ public class CollegeSearchServiceTest {
 	public void testUpdateSchool() throws Exception {
 	    System.out.println("testUpdateItemWithJsonObject: ");
 	    String name = "Yale University";
-	    //School school = new School("Yale University");
+	    //Applicant school = new Applicant("Yale University");
 	    School school = schoolService.getSchoolByName(name);
 	    school.setAcceptRate(10.1f);
 	    schoolService.updateSchool(school);
 	    //assertEquals(school.getAcceptRate(), 10.0F);
 	    System.out.println("school accept rate = " + school.getAcceptRate());
 	    System.out.println("school = " + school.toString());
-		//School updatedSchool = schoolService.getSchoolByName(name);
+		//Applicant updatedSchool = schoolService.getSchoolByName(name);
 		}
 	
 	@Test
