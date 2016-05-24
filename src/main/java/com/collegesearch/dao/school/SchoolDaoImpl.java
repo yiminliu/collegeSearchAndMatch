@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-
-
-
 import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
@@ -50,15 +47,16 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	@Override
 	public School getSchoolByName(Session session, String name) {
 		session.setCacheMode(CacheMode.REFRESH);
-    	Query query = session.createQuery("From School where name = :name");
+    	Query query = session.createQuery("From Applicant where name = :name");
         query.setString("name", normalizeKey(name));
 		return (School)query.uniqueResult();
 	}
 	
 	@Override
 	public List<School> getSchoolsByMatchNamePattern(String name) {
-		return (List<School>)searchByKeywordQuery("name", name, "wildcard");
+		//return (List<School>)searchByKeywordQuery("name", name, "wildcard");
 		//return (List<School>)searchByPhraseQuery("name", name);
+		return searchSchoolByNameByLuceneQuery(name);
 	}
 	
 	@Override
@@ -87,6 +85,8 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	 	    key = normalizeKey((String)entry.getKey());
 	 	    if(key == null || key.isEmpty())
 	           continue;
+	 	    if(key.startsWith("randomApplicant") || key.startsWith("_randomApplicant") || key.startsWith("(randomApplicant"))
+	 	       continue;   
 	 	    value = null;
 	 	    Object obj = entry.getValue();
 	 	    if(obj instanceof String)
@@ -108,11 +108,11 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	           continue;	
 	        if(key.equalsIgnoreCase("rankOverall") && value.startsWith("Top"))
 	           value = value.substring(4);
-	        if(key.equalsIgnoreCase("acceptRate") && value.endsWith("%"))
+	        if(key.equalsIgnoreCase("acceptRate") && value.indexOf("%")>0)
 		       value = value.replace("%", "");
-	        if((key.equalsIgnoreCase("tuitionFee") || key.equalsIgnoreCase("roomBoard")) && value.startsWith("<"))
+	        if((key.equalsIgnoreCase("tuitionFee") || key.equalsIgnoreCase("roomBoard") || key.equalsIgnoreCase("averageGpa")) && value.startsWith("<"))
 		       value = value.substring(2);
-	       
+	       	       
 	        //----------- Compose hibernate criteria -------------//
 	 		//------ conditional pattern match -------//
     		if(!exactMatch && ("itemcode".equalsIgnoreCase(key))){
@@ -143,16 +143,26 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	        // 	   continue;
 		    //  }
 	 	    //newFeatureCriteria.add(Restrictions.eq(key, Grade.instanceOf(value)));
-	 	    switch(key) {
-	 	       case "sat1Score": case "actScore": case "gpa": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
+	 	   	switch(key) {
+	 	       case "sat1Score": case "actScore": case "gpaScore": case "exactMatch": case "maxresults": case "maxResults": case "totalCost": case "submit":
 	 	       case "toefl": case "ieltsScore": case "toeflScore": 
 	 	      	   break; 
-	  	   	   case "rankOverall": case "tuitionFee": case "roomBoard":  
+	 	      case "rankOverall":  
+	 	    	   schoolCriteria.add(Restrictions.gt(key, 0));
+	 	   		   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
+	 	   		   break;	   
+	  	   	   case "tuitionFee": case "roomBoard":  
 	 	   		   schoolCriteria.add(Restrictions.le(key, Integer.parseInt(value))); 
 	 	   		   break;
 	  	   	   case "applicationFee":	
 	  	   		   schoolCriteria.add(Restrictions.eq(key, Integer.parseInt(value))); 
 	  	   		   break;
+	  	   	   case "averageGpa":	
+	  	   		   schoolCriteria.add(Restrictions.gt(key, 0f));
+	 	   		   schoolCriteria.add(Restrictions.le(key, Float.parseFloat(value))); 
+	 	   		   break;
+	  	   		   
+	  	   		
 	  	       //case "totalCost": 
 	 	   	   //	   schoolCriteria.add(Restrictions.le(sum("tuitionFee", "roomBoard"), Integer.parseInt(value))); 
 	 	   	   //	   break;
@@ -166,15 +176,15 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		 			  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
 		 	       internationalApplicationCriteria.add(Restrictions.le(key, Integer.parseInt(value)));
 		 	       internationalApplicationCriteria.add(Restrictions.gt(key, 0));
-		 		   break;   
-		       case "internationalStudentApplication.toeflScore": case "internationalStudentApplication.minimumToeflScore":
+		 		   break;*/   
+		       case "internationalStudentApplication.minimumToeflScore":
 		 		   key = "minimumToeflScore"; 
 		 		   if(internationalApplicationCriteria == null)
 		 			  internationalApplicationCriteria = schoolCriteria.createCriteria("internationalStudentApplication", JoinType.LEFT_OUTER_JOIN);
 		 	       internationalApplicationCriteria.add(Restrictions.le(key, Integer.parseInt(value)));
 		 	       internationalApplicationCriteria.add(Restrictions.gt(key, 0));
 		   	       break;  
-		       */
+		       
 	  	   	   case "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct":
 			       key = "toeflAcceptedInsteadOfSatOrAct"; 
 				   if(internationalApplicationCriteria == null)
@@ -190,7 +200,11 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 		       case "size": case "acceptRate":   
  	   		       if(value.indexOf("between") >= 0){
  		              String lowerValue = value.substring(value.indexOf("between") + 8, value.indexOf("and")-1);
- 		           String upperValue = value.substring(value.indexOf("and") + 4);
+ 		              String upperValue = null;
+ 		              if(value.indexOf(")")>0)
+ 		                 upperValue = value.substring(value.indexOf("and") + 4, value.indexOf(")"));
+ 		              else
+ 		            	 upperValue = value.substring(value.indexOf("and") + 4);
  		           if(key.equalsIgnoreCase("size")){
  		              schoolCriteria.add(Restrictions.le(key, Integer.parseInt(upperValue)));
  		              schoolCriteria.add(Restrictions.gt(key, Integer.parseInt(lowerValue))); 
@@ -239,7 +253,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
         System.out.println("getItemsByQueryParameters() using criteria = " +schoolCriteria.toString());
      	try {
 			//if(maxResults > 0) 
-		    //   schools =  (List<School>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setMaxResults(maxResults).setCacheable(true).list();//executeCriteria(schoolCriteria);//(List<Product>)schoolCriteria.list();			
+		    //   schools =  (List<Applicant>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setMaxResults(maxResults).setCacheable(true).list();//executeCriteria(schoolCriteria);//(List<Product>)schoolCriteria.list();			
 			//else
 			   schools =  (List<School>)schoolCriteria.getExecutableCriteria(getSession()).setLockMode(LockMode.NONE).setFlushMode(FlushMode.COMMIT).setCacheable(true).list();	
 		}
@@ -261,7 +275,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	   QueryBuilder queryBuilder = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(School.class).get();
 	   // create native Lucene query
 	   org.apache.lucene.search.Query luceneQuery = queryBuilder.bool()
-		   	                                       //.must(queryBuilder.keyword().onField("inactivecode").matching("N  ").createQuery())//School table uses char type which may need some padding to match index id 
+		   	                                       //.must(queryBuilder.keyword().onField("inactivecode").matching("N  ").createQuery())//Applicant table uses char type which may need some padding to match index id 
 	   	                                           .must(queryBuilder.keyword().onField("name").matching(name).createQuery()).createQuery();   
 	   // wrap Lucene query in a javax.persistence.Query
 	   org.hibernate.Query fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, School.class); 
@@ -290,7 +304,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	   }
 	   // wrap Lucene query in a javax.persistence.Query
 	   org.hibernate.Query fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, School.class).setCacheable(true);
-	   // retrieve item list
+	   // retrieve school list
 	   return (List<School>)fullTextQuery.list();     
 	}
 	
@@ -312,7 +326,6 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	   return (List<School>)fullTextQuery.list();     
 	}
 	
-	
 	@Override
 	public void updateSchool(Session session, School school){
 		update(session, school.getId(), school);
@@ -332,8 +345,7 @@ public class SchoolDaoImpl extends GenericDaoImpl<School, Integer> implements Sc
 	
 		private String normalizeKey(String key){
 	       switch(key) {
-	      
-			  case "Intl_Financial_Aid": 
+	          case "Intl_Financial_Aid": 
 		   		 key = "internationalFinancialAid";
 		   		 break;
 			  case "Washington University in St":

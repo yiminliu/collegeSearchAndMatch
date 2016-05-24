@@ -30,6 +30,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
+import com.collegesearch.domain.user.Applicant;
 import com.collegesearch.util.school.SchoolUtil;
 
 
@@ -64,10 +65,6 @@ public class School implements java.io.Serializable {
 	private Integer sat1Percentile75;
 	private Integer actPercentile25;
 	private Integer actPercentile75;
-	private Integer sat1Score;
-	private Integer actScore;
-	private Integer toeflScore;
-	private Integer ieltsScore;
 	private String  satActNotRequired;
 	private Integer numberOfRequiredSat2;
 	private Float   averageGpa;
@@ -88,53 +85,11 @@ public class School implements java.io.Serializable {
 	private Integer averageSAT;
 	private SchoolInternationalApplication schoolInternationalApplication;
 	private SchoolRankInSpeciality schoolRankInSpeciality;
-	private Float anticipationIndex;
+	private Float likelihoodOfSuccess;
 	private String applicationNote;
 	private Set<Major> bestMajors = new HashSet<Major>();
-		
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "best_school_major", catalog = "school", joinColumns = { 
-			@javax.persistence.JoinColumn(name = "School_Id", nullable = false, updatable = false) }, 
-			inverseJoinColumns = {@javax.persistence.JoinColumn(name = "Major_Id", nullable = false, updatable = false) })
-	public Set<Major> getBestMajors() {
-		return this.bestMajors;
-	}
-
-	public void setBestMajors(Set<Major> bestMajors) {
-		this.bestMajors = bestMajors;
-	}
-   
-	public void addBestMajors(Major major){
-		if(bestMajors == null)
-			bestMajors = new HashSet<Major>();
-		bestMajors.add(major);
-	}
+	private Applicant randomApplicant;	
 	
-	
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-	//@Fetch(FetchMode.JOIN)
-	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@IndexedEmbedded
-	public SchoolInternationalApplication getInternationalStudentApplication() {
-		return schoolInternationalApplication;
-	}
-
-	public void setInternationalStudentApplication(
-			SchoolInternationalApplication schoolInternationalApplication) {
-		this.schoolInternationalApplication = schoolInternationalApplication;
-	}
-	
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
-	//@Fetch(FetchMode.JOIN)
-	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	@IndexedEmbedded
-	public SchoolRankInSpeciality getSchoolRankInSpeciality() {
-		return schoolRankInSpeciality;
-	}
-
-	public void setSchoolRankInSpeciality(SchoolRankInSpeciality schoolRankInSpeciality) {
-		this.schoolRankInSpeciality = schoolRankInSpeciality;
-	}
 	
 	@DocumentId
 	@Id
@@ -269,42 +224,6 @@ public class School implements java.io.Serializable {
 		this.sat1Percentile75 = sat1Percentile75;
 	}
 	
-	@Transient
-	public Integer getSat1Score() {
-		return sat1Score;
-	}
-
-	public void setSat1Score(Integer sat1Score) {
-		this.sat1Score = sat1Score;
-	}
-	
-	@Transient
-	public Integer getActScore() {
-		return actScore;
-	}
-
-	public void setActScore(Integer actScore) {
-		this.actScore = actScore;
-	}
-	
-	@Transient
-	public Integer getToeflScore() {
-		return toeflScore;
-	}
-
-	public void setToeflScore(Integer toeflScore) {
-		this.toeflScore = toeflScore;
-	}
-
-	@Transient
-	public Integer getIeltsScore() {
-		return ieltsScore;
-	}
-
-	public void setIeltsScore(Integer ieltsScore) {
-		this.ieltsScore = ieltsScore;
-	}
-
 	@Column(name = "ACT_percentile_25")
 	public Integer getActPercentile25() {
 		return actPercentile25;
@@ -412,7 +331,7 @@ public class School implements java.io.Serializable {
 		this.satActNotRequired = satActNotRequired;
 	}
 
-	@Column(name = "SAT2_Required")
+	@Column(name = "SAT2_Number_Required")
 	public Integer getNumberOfRequiredSat2() {
 		return this.numberOfRequiredSat2;
 	}
@@ -420,7 +339,6 @@ public class School implements java.io.Serializable {
 	public void setNumberOfRequiredSat2(Integer numberOfRequiredSat2) {
 		this.numberOfRequiredSat2 = numberOfRequiredSat2;
 	}
-	
 	
 	@Column(name = "Average_GPA")
     public Float getAverageGpa() {
@@ -629,12 +547,12 @@ public class School implements java.io.Serializable {
 	}
 
 	@Transient
-	public Float getAnticipationIndex() {
-		return anticipationIndex;
+	public Float getLikelihoodOfSuccess() {
+		return likelihoodOfSuccess;
 	}
 
-	public void setAnticipationIndex(Float anticipationIndex) {
-		this.anticipationIndex = anticipationIndex;
+	public void setLikelihoodOfSuccess(Float likelihoodOfSuccess) {
+		this.likelihoodOfSuccess = likelihoodOfSuccess;
 	}
 	
 	@Transient	
@@ -646,6 +564,58 @@ public class School implements java.io.Serializable {
 		this.applicationNote = applicationNote;
 	}
 
+	@Transient
+	public Applicant getRandomApplicant() {
+		return randomApplicant;
+	}
+
+	public void setRandomApplicant(Applicant randomApplicant) {
+		this.randomApplicant = randomApplicant;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "best_school_major", catalog = "school", joinColumns = { 
+			@javax.persistence.JoinColumn(name = "School_Id", nullable = false, updatable = false) }, 
+			inverseJoinColumns = {@javax.persistence.JoinColumn(name = "Major_Id", nullable = false, updatable = false) })
+	public Set<Major> getBestMajors() {
+		return this.bestMajors;
+	}
+
+	public void setBestMajors(Set<Major> bestMajors) {
+		this.bestMajors = bestMajors;
+	}
+   
+	public void addBestMajors(Major major){
+		if(bestMajors == null)
+			bestMajors = new HashSet<Major>();
+		bestMajors.add(major);
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+	//@Fetch(FetchMode.JOIN)
+	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	@IndexedEmbedded
+	public SchoolInternationalApplication getInternationalStudentApplication() {
+		return schoolInternationalApplication;
+	}
+
+	public void setInternationalStudentApplication(
+			SchoolInternationalApplication schoolInternationalApplication) {
+		this.schoolInternationalApplication = schoolInternationalApplication;
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+	//@Fetch(FetchMode.JOIN)
+	//@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	@IndexedEmbedded
+	public SchoolRankInSpeciality getSchoolRankInSpeciality() {
+		return schoolRankInSpeciality;
+	}
+
+	public void setSchoolRankInSpeciality(SchoolRankInSpeciality schoolRankInSpeciality) {
+		this.schoolRankInSpeciality = schoolRankInSpeciality;
+	}
+	
 	public School() {
 	}
 
@@ -711,7 +681,7 @@ public class School implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "School [name=" + name + ", type=" + type + ", city=" + city
+		return "Applicant [name=" + name + ", type=" + type + ", city=" + city
 				+ ", state=" + state + ", setting=" + setting + ", size="
 				+ size + ", tuitionFee=" + tuitionFee + ", roomBoard="
 				+ roomBoard + ", applicationDeadline=" + applicationDeadline
@@ -726,41 +696,91 @@ public class School implements java.io.Serializable {
 				+ ", calendar=" + calendar + ", website="
 				+ website + "]";
 	}
-
 	
+	/*public static class RankComparator implements Comparator<Applicant>{
+	   public int compare(Applicant school1, Applicant school2){
+		   
+		  if(school1 == null)
+			 return 1;
+		  if(school2 == null)
+			 return -1; 
+		  if(school1.getRankOverall() == null && school2.getRankOverall() == null)
+		  	 return 0;
+		  //if(school1.getRankOverall() == null)
+			// return 1; 
+		  //if(school2.getRankOverall() == null)
+			 return -1;
+		  //if(school1.getRankOverall() == school2.getRankOverall())
+			 return 0;//school1.getName().compareTo(school2.getName());
+		  if((school1.getRankOverall() == 0 || school1.getRankOverall() == -1) || school1.getRankOverall() > school2.getRankOverall())
+			 return 1; 
+		  if((school2.getRankOverall() == 0 || school2.getRankOverall() == -1) || school1.getRankOverall() < school2.getRankOverall())
+			 return -1;
+		 // if(school1.getRankOverall() < school2.getRankOverall())
+		//	 return -1;
+		  //if(school1.getRankOverall() > school2.getRankOverall())
+			// return 1;		  
+		  else
+		     return 1;
+	   }
+	}
+	
+	public static class RankComparator implements Comparator<Applicant>{
+	   public int compare(Applicant school1, Applicant school2){
+		   int cmp = 1;
+		   int school1Rank = school1.getRankOverall() == 0 ? 10000 : school1.getRankOverall() == -1 ? 10001 : school1.getRankOverall();
+		   int school2Rank = school2.getRankOverall() == 0 ? 10000 : school2.getRankOverall() == -1 ? 10001 : school2.getRankOverall();
+		   
+		   if((school1.getRankOverall() == 0 || school1.getRankOverall() == -1))
+			   cmp = 1; 
+		   else if((school2.getRankOverall() == 0 || school2.getRankOverall() == -1))
+			   cmp = -1; 
+		   else {
+			   cmp = school1.getRankOverall().compareTo(school2.getRankOverall());
+		       if (cmp == 0) 
+		           cmp = school1.getName().compareTo(school2.getName());
+		   }
+		   return cmp;	   
+	   }
+	}
+	*/
 	
 	public static class RankComparator implements Comparator<School>{
 		   public int compare(School school1, School school2){
-			  int result = 1;
-			  if(school1 == null)
-				 return 1;
-			  if(school2 == null)
-				 return -1; 
-			  result = school1.getCategory().compareTo(school2.getCategory());
-			  if(result > 1)
-				 return 1;
-			  if(school1.getRankOverall() > 0){
-			     try{
-			       if(school1.getRankOverall() < school2.getRankOverall())
-			    	  result = -1;
-			       else if(school1.getRankOverall() > school2.getRankOverall())
-			    	   result = 1;
-			       else if(school1.getRankOverall() == school2.getRankOverall())
-			    	   result = school1.getName().compareTo(school2.getName());
-			     }
-			     catch(Exception e){
-			       e.printStackTrace();
-			     }	
-		      } 
-			  return result;
+			   Integer school1Rank = school1.getRankOverall() == 0 ? 10000 : school1.getRankOverall() == -1 ? 10001 : school1.getRankOverall();
+			   Integer school2Rank = school2.getRankOverall() == 0 ? 10000 : school2.getRankOverall() == -1 ? 10001 : school2.getRankOverall();
+		       int cmp = school1Rank.compareTo(school2Rank);
+			   if (cmp == 0) 
+			       cmp = school1.getName().compareTo(school2.getName());
+			   return cmp;	   
+		   }
+	}		   
+	
+	public static class RankByCategoryComparator implements Comparator<School>{
+		   public int compare(School school1, School school2){
+			   Integer school1Rank = school1.getRankOverall() == 0 ? 10000 : school1.getRankOverall() == -1 ? 10001 : school1.getRankOverall();
+			   Integer school2Rank = school2.getRankOverall() == 0 ? 10000 : school2.getRankOverall() == -1 ? 10001 : school2.getRankOverall();
+		       int cmp = school1.getCategory().compareToIgnoreCase(school2.getCategory());
+			   if(cmp == 0){
+				  cmp = school1Rank.compareTo(school2Rank);
+			      if (cmp == 0) 
+				      cmp = school1.getName().compareTo(school2.getName());
+			   }   
+			   return cmp;	   
 		   }
 	}
 	
-	public static class NameComparator implements Comparator<School>{
+	public static class GpaComparator implements Comparator<School>{
 	   public int compare(School school1, School school2){
-		  return school1.getName().compareToIgnoreCase(school2.getName());
+		  int cmp = 1;
+		  Float gpa1 = (school1.getAverageGpa() == null || school1.getAverageGpa() == 0.0)? 100.f : school1.getAverageGpa();
+		  Float gpa2 = (school2.getAverageGpa() == null || school2.getAverageGpa() == 0.0)? 100.f : school2.getAverageGpa();
+          cmp = gpa1.compareTo(gpa2);
+		  if (cmp == 0) 
+ 	          cmp = school1.getRankOverall().compareTo(school2.getRankOverall());
+		  return cmp;	   
 	   }
-	}
+	}	
 	
 	public static class AcceptanceRateComparator implements Comparator<School>{
 	   public int compare(School school1, School school2){
@@ -782,6 +802,13 @@ public class School implements java.io.Serializable {
 			 return school1.getRankOverall().compareTo(school2.getRankOverall());
 		  else
 			 return 1; 
+	   }
+	}
+	
+
+	public static class NameComparator implements Comparator<School>{
+	   public int compare(School school1, School school2){
+		  return school1.getName().compareToIgnoreCase(school2.getName());
 	   }
 	}
 	
@@ -810,9 +837,9 @@ public class School implements java.io.Serializable {
 	
 	public static class ToeflComparator implements Comparator<School>{
 	   public int compare(School school1, School school2){
-		  if(school1 == null)
+		  if(school1 == null || school1.getInternationalStudentApplication() == null)
 			 return 1;
-		  if(school2 == null)
+		  if(school2 == null || school2.getInternationalStudentApplication() == null)
 			 return -1; 
 		  if(school1.getInternationalStudentApplication().getMinimumToeflScore() == null && school2.getInternationalStudentApplication().getMinimumToeflScore() == null)
 			 return 0;
@@ -884,8 +911,8 @@ public class School implements java.io.Serializable {
 	  }
 	
 	/*
-	public static class SpecialityRankComparator implements Comparator<School>{
-		   public int compare(School school1, School school2){
+	public static class SpecialityRankComparator implements Comparator<Applicant>{
+		   public int compare(Applicant school1, Applicant school2){
 			  if(school1 == null)
 				 return 1;
 			  if(school2 == null)

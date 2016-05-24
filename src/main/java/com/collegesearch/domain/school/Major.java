@@ -58,7 +58,7 @@ public class Major implements java.io.Serializable {
 	
 	
 /*	
-    private Set<School> schools = new HashSet<School>(0);
+    private Set<Applicant> schools = new HashSet<Applicant>(0);
 	private Set<BestSchoolMajor> bestSchoolMajors = new HashSet<BestSchoolMajor>(0);
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -67,17 +67,17 @@ public class Major implements java.io.Serializable {
 			joinColumns = {@javax.persistence.JoinColumn(name = "MAJOR_ID")},
 			inverseJoinColumns = {@javax.persistence.JoinColumn(name = "SCHOOL_ID")}
     )	
-	public Set<School> getSchools() {
+	public Set<Applicant> getSchools() {
 		return this.schools;
 	}
 
-	public void setSchools(Set<School> schools) {
+	public void setSchools(Set<Applicant> schools) {
 		this.schools = schools;
 	}
 	
-	public void addSchools(School school){
+	public void addSchools(Applicant school){
 		if(schools == null)
-			schools = new HashSet<School>();
+			schools = new HashSet<Applicant>();
 		schools.add(school);
 	}
 */

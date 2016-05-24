@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import javax.persistence.Transient;
 
 public class SchoolUtil {
 
@@ -20,19 +19,46 @@ public class SchoolUtil {
 		   	Entry<String, List<String>> entry = (Entry<String, List<String>>)it.next();
 		   	key = (String)entry.getKey();
 		   	if(key.equalsIgnoreCase(searchKey)) {
-		   		 try{
-		   	         value = ((List<String>)entry.getValue()).get(0);
-		   		 }
-		   		 catch(ClassCastException cce) {
+	   		   try{
+		   	       value = ((List<String>)entry.getValue()).get(0);
+		   	   }
+		   	   catch(ClassCastException cce) {
 		   		   Object obj = entry.getValue();	
 		   	       //if(obj instanceof String)
 		   		   value = (String)obj;
-		   		 }  
+		   	   }  
 		   	}	
 		} 
 		if(value != null && value.length() <1)
 		   value = null;	
 		return value;
+	}
+	
+	public static List<String> getListOfValues(final LinkedHashMap<String, List<String>> queryParams, String searchKey) {
+		System.out.println("queryParams = " + queryParams);
+		
+	    Set<Map.Entry<String, List<String>>> set = queryParams.entrySet();
+		Iterator<Entry<String, List<String>>> it = set.iterator(); 
+		String key = null;
+		List<String> values = null;
+		while(it.hasNext()) {
+		   	Entry<String, List<String>> entry = (Entry<String, List<String>>)it.next();
+		   	key = (String)entry.getKey();
+		   	if(key.equalsIgnoreCase(searchKey)) {
+	   		   try{  System.out.println("entry.getValue() = " + entry.getValue());
+		   	       values = (List<String>)entry.getValue();
+		   	   }
+		   	   catch(ClassCastException cce) {
+		   		   Object obj = entry.getValue();
+		   		   System.out.println("error: "+cce.getMessage());
+		   	       //if(obj instanceof String)
+		   		   //values = (List<String>)obj;
+		   	   }  
+		   	}	
+		} 
+		if(values != null && values.size() <1)
+		   values = null;	
+		return values;
 	}
 
 	public static int getMaxResults(final LinkedHashMap<String, List<String>> queryParams){
@@ -50,12 +76,16 @@ public class SchoolUtil {
 	}
 	
 	public static boolean applicantDataExist(final LinkedHashMap<String, List<String>> queryParams){
-		return getValue(queryParams, "toeflScore") !=null? true : 
-			   getValue(queryParams, "ieltsScore") !=null? true : 
-			   getValue(queryParams, "sat1Score") != null? true : 
-			   getValue(queryParams, "actScore") !=null? true :	
-			   getValue(queryParams, "gpa") !=null? true :
-		       getValue(queryParams, "totalCost") !=null? true : false;
+		return getValue(queryParams, "randomApplicant.toeflScore") !=null? true : 
+			   getValue(queryParams, "randomApplicant.ieltsScore") !=null? true :
+			   getValue(queryParams, "randomApplicant.sat1ReadingScore") != null? true : 
+			   getValue(queryParams, "randomApplicant.actReadingScore") !=null? true :	
+			   getValue(queryParams, "randomApplicant.sat1MathScore") != null? true : 
+			   getValue(queryParams, "randomApplicant.actMathScore") !=null? true :	
+			   getValue(queryParams, "randomApplicant.sat1Score") != null? true : 
+			   getValue(queryParams, "randomApplicant.actScore") !=null? true :	
+			   getValue(queryParams, "randomApplicant.gpa") !=null? true :
+		       getValue(queryParams, "randomApplicant.totalCost") !=null? true : false;
 		
 	}
 
@@ -65,17 +95,37 @@ public class SchoolUtil {
 		if(percentile25 <= 0 || percentile75 <= 0) {
 		   return 0;
 		}	
-		float cap = 2100.0f;
+		return adjustSchoolStandardScores(percentile25, percentile75, acceptRate);
+	}
+	
+	public static Integer adjustSchoolStandardByConvertActToSatScores(int actPercentile25, int actPercentile75, float acceptRate) {
+		
+		if(actPercentile25 <= 0 || actPercentile75 <= 0) {
+		   return 0;
+		}	
+		int percentile25 = SchoolUtil.convertActToSat(actPercentile25);
+		int percentile75 = SchoolUtil.convertActToSat(actPercentile75);
+		
+		return adjustSchoolStandardScores(percentile25, percentile75, acceptRate);
+	}
+	
+	private static Integer adjustSchoolStandardScores(int percentile25, int percentile75, Float acceptRate) {
+		if(acceptRate == null)
+		   acceptRate = 50f;	
+		if(percentile25 <= 0 || percentile75 <= 0) {
+		   return 0;
+		}	
+		float cap = 1500.0f;
 		float percentile50 = (percentile25 + percentile75)/2.0f;
 		float ajustedThreashold = 0.0f;
 		if(acceptRate <= 10) 
-			ajustedThreashold = ((percentile75) * 1.3f < cap? percentile75 * 1.2f : cap); //for top 10 return 120% of Percentile75;
+			ajustedThreashold = ((percentile75) * 1.25f < cap? percentile75 * 1.25f : cap); //for top 10 return 120% of Percentile75;
 		else if(acceptRate > 10 && acceptRate <= 20) 
-			ajustedThreashold = percentile75 * 1.2f; //for top 10-25 return 115% of Percentile75
+			ajustedThreashold = ((percentile75) * 1.2f < cap? percentile75 * 1.2f : cap);//for top 10-25 return 115% of Percentile75
 		else if(acceptRate > 20 && acceptRate <= 30) 
-			ajustedThreashold = percentile75 * 1.15f; //for top 20-30 return 110% of Percentile75
+			ajustedThreashold = ((percentile75) * 1.15f < cap? percentile75 * 1.15f : cap); //for top 20-30 return 110% of Percentile75
 		else if(acceptRate > 30 && acceptRate <= 40)
-			ajustedThreashold = percentile75 * 1.1f; //for top 30-40 return 105% of Percentile75
+			ajustedThreashold = ((percentile75) * 1.1f < cap? percentile75 * 1.1f : cap); //for top 30-40 return 105% of Percentile75
 		else if(acceptRate > 40 && acceptRate <= 50) 
 			ajustedThreashold = percentile75 * 1.0f;  //for top 40-50 return 100% of Percentile75
 		/*else if(acceptRate > 50 && acceptRate <= 60) 
@@ -92,42 +142,6 @@ public class SchoolUtil {
 			ajustedThreashold = percentile25;
 		return Math.round(ajustedThreashold);
 	}
-	
-	public static Integer adjustSchoolStandardByConvertActToSatScores(int actPercentile25, int actPercentile75, float acceptRate) {
-		
-		if(actPercentile25 <= 0 || actPercentile75 <= 0) {
-		   return 0;
-		}	
-		
-		float cap = 2100.0f;
-		int percentile25 = SchoolUtil.convertActToSat(actPercentile25);
-		int percentile75 = SchoolUtil.convertActToSat(actPercentile75);
-		float percentile50 = (percentile25 + percentile75)/2.0f;
-		float ajustedThreashold = 0.0f;
-		if(acceptRate <= 10) 
-			ajustedThreashold = ((percentile75) * 1.3f < cap? percentile75 * 1.2f : cap); //for top 10 return 120% of Percentile75;
-		else if(acceptRate > 10 && acceptRate <= 20) 
-			ajustedThreashold = percentile75 * 1.2f; //for top 10-25 return 115% of Percentile75
-		else if(acceptRate > 20 && acceptRate <= 30) 
-			ajustedThreashold = percentile75 * 1.15f; //for top 20-30 return 110% of Percentile75
-		else if(acceptRate > 30 && acceptRate <= 40)
-			ajustedThreashold = percentile75 * 1.1f; //for top 30-40 return 105% of Percentile75
-		else if(acceptRate > 40 && acceptRate <= 50) 
-			ajustedThreashold = percentile75 * 1.0f;  //for top 40-50 return 100% of Percentile75
-		else if(acceptRate > 50 && acceptRate <= 60) 
-			ajustedThreashold = ((percentile75 * 0.9f) > percentile50? (percentile75 * 0.9f) : percentile50);  
-		else if(acceptRate > 60 && acceptRate <= 70) //for top 40-60 return (Percentile25 + Percentile75)/2
-			ajustedThreashold = ((percentile75 * 0.8f) > percentile50? (percentile75 * 0.8f) : percentile50);    //for top 60-70 return 80% of Percentile75
-			//adjustedActStandard = (percentile25 + percentile75)/2; //for top 50-60 return 90% of Percentile75
-		else if(acceptRate > 70 && acceptRate <= 80)                     //for top > 60 Percentile25
-			ajustedThreashold = ((percentile50 * 0.9f) > percentile25? (percentile50 * 0.9f) : percentile25);  
-		else if(acceptRate > 80 && acceptRate <= 90)                     //for top > 60 Percentile25
-			ajustedThreashold = ((percentile50 * 0.8f) > percentile25? (percentile50 * 0.8f) : percentile25);  
-		else if(acceptRate > 90)
-			ajustedThreashold = percentile25;
-		return Math.round(ajustedThreashold);
-	}
-	
 	public static boolean isTestScoreSatisfied(int testScore, int percentile25, int percentile75, Float acceptRate){
 		int standardValue = 0;
 		standardValue = adjustSchoolStandardforSatOrActScores(percentile25, percentile75, acceptRate);

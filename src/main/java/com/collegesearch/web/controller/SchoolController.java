@@ -25,15 +25,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.collegesearch.domain.school.School;
 import com.collegesearch.domain.school.BestSchoolMajor;
 import com.collegesearch.domain.school.School.RankComparator;
-import com.collegesearch.domain.school.School.NameComparator;
+import com.collegesearch.domain.school.School.RankByCategoryComparator;
 import com.collegesearch.domain.school.School.AcceptanceRateComparator;
 import com.collegesearch.domain.school.School.SpecialityRankComparator;
 import com.collegesearch.domain.school.School.TotalCostComparator;
 import com.collegesearch.domain.school.School.ToeflComparator;
 import com.collegesearch.domain.school.School.SatComparator;
-import com.collegesearch.domain.school.BestSchoolMajor.MajorRankComparator;
+import com.collegesearch.domain.school.School.GpaComparator;
 import com.collegesearch.domain.school.enums.States;
 import com.collegesearch.domain.school.enums.PopularMajors;
+import com.collegesearch.domain.school.enums.SchoolCategories;
 import com.collegesearch.exception.DataNotFoundException;
 import com.collegesearch.exception.DatabaseOperationException;
 import com.collegesearch.exception.InputParamException;
@@ -60,7 +61,7 @@ public class SchoolController {
 	//@Qualifier("schoolValidator")
 	//private SchoolValidator validator;
 	   
-	//--------------------------- Search School --------------------------// 
+	//--------------------------- Search Applicant --------------------------// 
 	/**
 	   * This method is used to show the form to search Schools
 	   * @return all schools
@@ -113,9 +114,9 @@ public class SchoolController {
 	  }	  
 	  
 	/**
-	  * This method is used to process the School search based on input search criteria
+	  * This method is used to process the Applicant search based on input search criteria
 	  *
-	  * @return String the School search resulting page which shows all Schools match the search criteria
+	  * @return String the Applicant search resulting page which shows all Schools match the search criteria
 	  */
 	  @RequestMapping(value="/getSchools", method = RequestMethod.GET)
 	  public String getSchools(@RequestParam("limit") int limit, Model model, SessionStatus status) {
@@ -123,58 +124,63 @@ public class SchoolController {
 		  try{
 		     schools = schoolService.getAllSchools();
 		  }
-		  catch(DataNotFoundException e){
-			 status.setComplete(); //finished the "School" SessionAttribute
-	    	 throw e;
-		  }
 		  catch(Exception e){
-			  status.setComplete(); //finished the "School" SessionAttribute
-	    	  throw e;
+		     status.setComplete(); //finished the "Applicant" SessionAttribute
+	    	 throw e;
 		  }
 		  if(limit > 0 && limit < schools.size())
 		  	 schools = schools.subList(0, limit); 
 		  Collections.sort(schools,  new RankComparator());
 		  model.addAttribute("schoolList", schools);
 		  model.addAttribute("operation", "listSchools");
-		  status.setComplete(); //finish the "School" SessionAttribute
+		  status.setComplete(); //finish the "Applicant" SessionAttribute
 		  return "school/successResult";
 	 }
 	  
 	 /**
-	   * This method is used to process the School search based on input search criteria
+	   * This method is used to process the Applicant search based on input search criteria
 	   *
-	   * @return String the School search resulting page which shows all Schools match the search criteria
+	   * @return String the Applicant search resulting page which shows all Schools match the search criteria
   	   */
 	    @RequestMapping(value="/listSchoolsByFeature", method = RequestMethod.GET)
-		public String listSchoolsByFeature(@RequestParam("feature") final String feature,  @RequestParam(value = "size", required=false) int numberOfSchools, Model model, SessionStatus status) {
+		public String listSchoolsByFeature(@RequestParam("feature") final String feature,  @RequestParam(value = "size", required=false) Integer numberOfSchools, Model model, SessionStatus status) {
 		   List<School> schools = null;
 		   
 		   if(feature != null) {
 			  LinkedHashMap<String, List<String>> params = new LinkedHashMap<String, List<String>>();
 		      switch(feature){
-		             case ("lowAcceptanceRate"):
+		             /*case ("lowAcceptanceRate"):
 		               params.put("acceptRate", Arrays.asList(new String[]{"<25"}));
 		   		       params.put("category", Arrays.asList(new String[]{"National University", "National Liberal Arts College",
 	    			            "Regional University-North", "Regional University-South", 
 	    			            "Regional University-Midwest", "Regional University-West", 
 	    			            "Regional College-North", "Regional College-South",
 	    	 		            "Regional College-Midwest", "Regional College-West"}));
-		   		    
-		   		       schools = schoolService.getSchools(params);
+		   		       */
+		           case ("lowAcceptanceRate"):
+	                   params.put("acceptRate", Arrays.asList(new String[]{"<25"}));
+		               params.put("category", Arrays.asList(new String[]{"NU", "NLAC",
+   			           "RU_N", "RU_S", "RU_MW", "RU_W", 
+   			           "RC_N", "RC_S", "RC_MW", "RC_W"}));
+				       schools = schoolService.getSchools(params);
 			     	   Collections.sort(schools, new AcceptanceRateComparator());
 			     	   model.addAttribute("title", "100  Colleges With Highest Acceptance Rate");
 			           break;  
 			       case ("highAcceptanceRate"):
 			    	   params.put("acceptRate", Arrays.asList(new String[]{">80"}));
-					   params.put("category", Arrays.asList(new String[]{"National University", "National Liberal Arts College",
-	    			            "Regional University-North", "Regional University-South", 
-	    			            "Regional University-Midwest", "Regional University-West", 
-	    			            "Regional College-North", "Regional College-South",
-	    	 		            "Regional College-Midwest", "Regional College-West"}));
+					   params.put("category", Arrays.asList(new String[]{"NU", "NLAC",
+	    			            "RU_N", "RU_S", "RU_MW", "RU_W", 
+	    			            "RC_N", "RC_S", "RC_MW", "RC_W"}));
 					   schools = schoolService.getSchools(params);
 					   model.addAttribute("title", "100 Colleges With Highest Acceptance Rate");
 			           Collections.sort(schools, Collections.reverseOrder(new AcceptanceRateComparator()));
 				       break;
+			       case ("100PercentAcceptanceRate"):
+			    	   params.put("acceptRate", Arrays.asList(new String[]{">99.5"}));
+					   schools = schoolService.getSchools(params);
+					   model.addAttribute("title", "Colleges With Automatic Acceptance");
+			           Collections.sort(schools, Collections.reverseOrder(new AcceptanceRateComparator()));
+				       break;    
 			       case ("lowCost"):
 			           List<School> orgSchools = schoolService.getAllSchools();
 			           schools = new ArrayList<School>(orgSchools.size());
@@ -201,6 +207,12 @@ public class SchoolController {
 				       Collections.sort(schools,  new SatComparator());
 				       model.addAttribute("title", "100 Colleges With Lowest SAT/ACT Score Requirement");
 			    	   break;
+			       case ("lowGpa"):
+			    	   params.put("averageGpa", Arrays.asList(new String[]{"< 3.5"}));
+		               schools = schoolService.getSchools(params);
+				       Collections.sort(schools,  new GpaComparator());
+				       model.addAttribute("title", "100 Colleges With Lowest GPA Requirement");
+			    	   break;	   
 			       case ("ASchoolsForBStudents"):
 			    	   schools = schoolService.getAllASchoolsForBStudents();
 		               Collections.sort(schools,  new RankComparator());
@@ -213,27 +225,27 @@ public class SchoolController {
 				  schools = schoolService.getAllSchools();
 			   }
 			   catch(DataNotFoundException e){
-				  status.setComplete(); //finished the "School" SessionAttribute
+				  status.setComplete(); //finished the "Applicant" SessionAttribute
 			      throw e;
 			   }
 			   catch(Exception e){
-				  status.setComplete(); //finished the "School" SessionAttribute
+				  status.setComplete(); //finished the "Applicant" SessionAttribute
 			   	  throw e;
 			   }	   
 		  }
-		  if(numberOfSchools > 0 && numberOfSchools < schools.size())
+		  if(numberOfSchools != null && numberOfSchools > 0 && numberOfSchools < schools.size())
 		  	 schools = schools.subList(0, numberOfSchools); 
 		     model.addAttribute("schoolList", schools);
 			 model.addAttribute("operation", "listSchools");
-			 status.setComplete(); //finish the "School" SessionAttribute
+			 status.setComplete(); //finish the "Applicant" SessionAttribute
 			 return "school/successFeatureResult";
 		 }
 	    
 		    
 	/**
-	  * This method is to show School detail information for the given School code within query string
+	  * This method is to show Applicant detail information for the given Applicant code within query string
 	  *
-	  * @return String the name of the School detail page
+	  * @return String the name of the Applicant detail page
 	  */
 	  @RequestMapping(value="getSchoolDetail/{id}", method = RequestMethod.GET)
 	  public String getSchoolDetail(@PathVariable("id") Integer id, Model model){
@@ -250,8 +262,8 @@ public class SchoolController {
 	   
 	  
 	/**
-	  * This method is to show School detail information for the given School code within query string
-	  * @return String the name of the School detail page
+	  * This method is to show Applicant detail information for the given Applicant code within query string
+	  * @return String the name of the Applicant detail page
 	  */
 	  @RequestMapping(value="searchSchoolsByMatchNamePattern", method = RequestMethod.GET)
 	  public String searchSchoolsByMatchNamePattern(@RequestParam("name") String name, Model model, SessionStatus status){
@@ -268,9 +280,9 @@ public class SchoolController {
 	  }
 			   
 	  /**
-		* This method is used to process the School search based on input search criteria
+		* This method is used to process the Applicant search based on input search criteria
 		*
-		* @return String the School search resulting page which shows all Schools match the search criteria
+		* @return String the Applicant search resulting page which shows all Schools match the search criteria
 		*/
 	
 		@RequestMapping(value="/getBestSchoolMajors/{major}", method = RequestMethod.GET)
@@ -280,21 +292,21 @@ public class SchoolController {
 		       bestSchoolMajorList = schoolService.getBestSchoolMajors(major);
 		   }
 		   catch(Exception e){
-			   status.setComplete(); //finished the "School" SessionAttribute
+			   status.setComplete(); //finished the "Applicant" SessionAttribute
 			   throw e;
 		   }
 		   model.addAttribute("bestSchoolMajorList", bestSchoolMajorList);
 		   model.addAttribute("operation", "getBestSchoolMajors");
 		   model.addAttribute("title", major);
-		   status.setComplete(); //finish the "School" SessionAttribute
+		   status.setComplete(); //finish the "Applicant" SessionAttribute
 		   return "school/successMajorResult";
 	    }
 	   			   
 	/**
-	  * This method is to show School detail information for the given School code within query string
-	  * @return String the name of the School detail page
+	  * This method is to show Applicant detail information for the given Applicant code within query string
+	  * @return String the name of the Applicant detail page
 	  */
-	  @RequestMapping(value="getSchoolsInSpeciality/{speciality}", method = RequestMethod.GET)
+	  @RequestMapping(value="getSchoolsBySpeciality/{speciality}", method = RequestMethod.GET)
 	  public String getSchoolsBySpeciality(@PathVariable("speciality") String speciality, Model model){
 	     List<School> schools = null;
 		 try{
@@ -305,18 +317,24 @@ public class SchoolController {
 		 }
 		 Collections.sort(schools, new SpecialityRankComparator());
 		 model.addAttribute("schoolList", schools);
-		 model.addAttribute("operation", "getSchoolsInSpeciality");
-		 model.addAttribute("title", speciality);
+		 model.addAttribute("operation", "getSchoolsBySpeciality");
+		 if("Engineering_Doctorate".equalsIgnoreCase(speciality))
+		     model.addAttribute("title", "Engineering Programs (Doctorate Degree Offered)");
+		 else if("Engineering_No_Doctorate".equalsIgnoreCase(speciality))
+		     model.addAttribute("title", "Engineering Programs (No_Doctorate Degree Offered)");
+		 else
+			 model.addAttribute("title", speciality);
 		 return "school/successResult";
 	  }
 	  
+	  
 	  /**
-		* This method is to show School detail information for the given School code within query string
-		* @return String the name of the School detail page
+		* This method is to show Applicant detail information for the given Applicant code within query string
+		* @return String the name of the Applicant detail page
 		*/
 	/*	@RequestMapping(value="getGreatSchoolsByMajor/{major}", method = RequestMethod.GET)
 		public String getBestSchoolsByMajor(@PathVariable("major") String major, Model model){
-		     List<School> schools = null;
+		     List<Applicant> schools = null;
 			 try{
 			    schools = schoolService.getSchoolsByMajor(major);
 			 }
@@ -335,90 +353,93 @@ public class SchoolController {
 	    
 	 
 	/**
-	  * This method is used to process the School search based on input search criteria
-	  * @return String the School search resulting page which shows all Schools match the search criteria
+	  * This method is used to process the Applicant search based on input search criteria
+	  * @return String the Applicant search resulting page which shows all Schools match the search criteria
 	  */
 	  @RequestMapping(value="/searchSchools", method = RequestMethod.GET)
-	  //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") School school, Model model, BindingResult result, SessionStatus status) {
+	  //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") Applicant school, Model model, BindingResult result, SessionStatus status) {
 	  public String searchSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, Model model, SessionStatus status) {
 	     List<School> schools = null;
 		 try{
 		    schools = schoolService.getSchools(allRequestParams);
 		 }
 		 catch(DataNotFoundException e){
-		   status.setComplete(); //finished the "School" SessionAttribute
+		   status.setComplete(); //finished the "Applicant" SessionAttribute
 	       throw e;
 		 }
 		 catch(Exception e){
-		   status.setComplete(); //finished the "School" SessionAttribute
+		   status.setComplete(); //finished the "Applicant" SessionAttribute
 	       throw e;
 		 }
-		 //Collections.sort(schools,  new RankComparator());
+		 Collections.sort(schools,  new RankComparator());
 		 model.addAttribute("schoolList",  schools);
 		 model.addAttribute("operation", "listSchools");
-		 status.setComplete(); //finish the "School" SessionAttribute
+		 status.setComplete(); //finish the "Applicant" SessionAttribute
 		 if(SchoolUtil.getValue(allRequestParams, "category") != null)
 			model.addAttribute("category", SchoolUtil.getValue(allRequestParams, "category"));
-		 else if(SchoolUtil.getValue(allRequestParams, "internationalStudentApplication.conditionalAdmissionOffered") != null)   
+		 else if(SchoolUtil.getValue(allRequestParams, "internationalStudentApplication.conditionalAdmissionOffered") != null){   
 			model.addAttribute("title", "Colleges with Conditional Admissions");
-		 else if(SchoolUtil.getValue(allRequestParams, "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct") != null)  
-			model.addAttribute("title", "Colleges Accepting TOEFL Instead of SAT/ACT");
-			
+			model.addAttribute("operation", "listSpecialSchools");
+		 }		
+		 else if(SchoolUtil.getValue(allRequestParams, "internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct") != null){  
+			model.addAttribute("title", "Colleges Accepting TOEFL/IELTS Instead of SAT/ACT");
+			model.addAttribute("operation", "listSpecialSchools");
+		 } 	
 		 return "school/successListResult";
 		}
 	  
 	  /**
-		 * This method is used to process the School search based on input search criteria
-		 * @return String the School search resulting page which shows all Schools match the search criteria
+		 * This method is used to process the Applicant search based on input search criteria
+		 * @return String the Applicant search resulting page which shows all Schools match the search criteria
 		 */
 		 @RequestMapping(value="/searchEngine", method = RequestMethod.GET)
-		 //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") School school, Model model, BindingResult result, SessionStatus status) {
+		 //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") Applicant school, Model model, BindingResult result, SessionStatus status) {
 		 public String searchEngine(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, Model model, SessionStatus status) {
 		    List<School> schools = null;
 		    try{
-			    schools = schoolService.getSchools(allRequestParams);
+			    schools = schoolService.searchEngine(allRequestParams);
 			}
 			catch(Exception e){
-			   status.setComplete(); //finished the "School" SessionAttribute
+			   status.setComplete(); //finished the "Applicant" SessionAttribute
 		       throw e;
 			}
-			//Collections.sort(schools,  new RankComparator());
+			Collections.sort(schools,  new RankComparator());
 			model.addAttribute("schoolList",  schools);
 			model.addAttribute("operation", "searchSchools");
-			status.setComplete(); //finish the "School" SessionAttribute
+			status.setComplete(); //finish the "Applicant" SessionAttribute
 		    return "school/successResult";
 		 }
 		  
 	   
 	  /**
-		 * This method is used to process the School search based on input search criteria
-		 * @return String the School search resulting page which shows all Schools match the search criteria
+		 * This method is used to process the Applicant search based on input search criteria
+		 * @return String the Applicant search resulting page which shows all Schools match the search criteria
 		 */
 		 @RequestMapping(value="/matchEngine", method = RequestMethod.GET)
-		 //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") School school, Model model, BindingResult result, SessionStatus status) {
+		 //public String getSchools(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, @ModelAttribute("school") Applicant school, Model model, BindingResult result, SessionStatus status) {
 		 public String matchEngine(@RequestParam LinkedHashMap<String, List<String>> allRequestParams, Model model, SessionStatus status) {
 		    List<School> schools = null;
 		    try{
-			    schools = schoolService.matchEngine(allRequestParams);
+			    schools = schoolService.matchEngineInternational(allRequestParams);
 			}
 			catch(Exception e){
-			   status.setComplete(); //finished the "School" SessionAttribute
+			   status.setComplete(); //finished the "Applicant" SessionAttribute
 		       throw e;
 			}
-			//Collections.sort(schools,  new RankComparator());
+			Collections.sort(schools,  new RankByCategoryComparator());
 			model.addAttribute("schoolList",  schools);
 			model.addAttribute("operation", "matchEngine");
-			status.setComplete(); //finish the "School" SessionAttribute
+			status.setComplete(); //finish the "Applicant" SessionAttribute
  		    return "school/successMatchResult";
 		 }
 		   	  
 	  
-	    //--------------------------- Create School --------------------------// 
+	    //--------------------------- Create Applicant --------------------------// 
 	   
 	 /**
-	   * This method is used to show the form to create an School
+	   * This method is used to show the form to create an Applicant
 	   *
-	   * @return String the name of first page of School creation
+	   * @return String the name of first page of Applicant creation
 	   */
 	   //@PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')")
 	   @RequestMapping(value = "/createSchool", method = RequestMethod.GET)
@@ -443,7 +464,7 @@ public class SchoolController {
 	   	  return "school/updateSchoolSuccesess";
 	   }
 	      
-	   //--------------------------- Update School --------------------------//  
+	   //--------------------------- Update Applicant --------------------------//  
 	      
 	  /**
 	    * This method is used to show the form to update a school
@@ -492,7 +513,6 @@ public class SchoolController {
 		       throw te;
 		   }
 		   if(schoolList == null || schoolList.size() == 0){
-			  System.out.println("01");
 		      model.addAttribute("school", new School());
 		      model.addAttribute("schoolName", aSchool.getName());
 		      model.addAttribute("submitted", "yes");
@@ -539,7 +559,7 @@ public class SchoolController {
 	    /**
 	     * This method is used to process the ticket form to create a ticket
 	     *
-	     * @return String the name of the update School page
+	     * @return String the name of the update Applicant page
 	     */
 	     //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")
 	     @RequestMapping(value = "/updateSchool", method = RequestMethod.POST)
@@ -560,17 +580,17 @@ public class SchoolController {
 	         return "school/updateSchoolSuccess";
 	     }  
 	     
-	       //------------------------- Delete an School ------------------------//  
+	       //------------------------- Delete an Applicant ------------------------//  
 	       
 	     @RequestMapping(value="deleteSchool", method = RequestMethod.GET)
 	     public String deleteSchool(Model model){
-	  	   model.addAttribute("School", new School());
+	  	   model.addAttribute("Applicant", new School());
 	  	   return "school/deleteSchool";
 	     }
 	     
 	     @RequestMapping(value="deleteSchool", method = RequestMethod.POST)
 	     public String deleteSchool(@ModelAttribute("school") School school, Model model, BindingResult bindingResult) {
-	        //validator.validateSchoolCode(School.getSchoolcode(), DBOperation.DELETE, bindingResult);
+	        //validator.validateSchoolCode(Applicant.getSchoolcode(), DBOperation.DELETE, bindingResult);
 	        if (bindingResult.hasErrors()) {
 	            return "school/deleteSchool";
 	        }
@@ -599,9 +619,9 @@ public class SchoolController {
 	     
 	     @ModelAttribute("schoolTypeList")
 	     public void listOfSchoolTypes(Model model) {
-	    	 model.addAttribute("schoolTypeList", Arrays.asList("Private", "Public"));
+	    	 model.addAttribute("schoolTypeList", Arrays.asList("Public", "Private", "Private_Men", "Private_Women", "Proprietary"));
 	     }
-	     
+	     /*
 	     @ModelAttribute("schoolCategoryList")
 	     public void listOfSchoolCategorys(Model model) {
 	    	 model.addAttribute("schoolCategoryList", Arrays.asList(
@@ -610,6 +630,21 @@ public class SchoolController {
 	    			            "Regional University-Midwest", "Regional University-West", 
 	    			            "Regional College-North", "Regional College-South",
 	    	 		            "Regional College-Midwest", "Regional College-West"));
+	     }
+	     */
+	     @ModelAttribute("schoolCategoryList")
+	     public void listOfSchoolCategories(Model model) {
+	    	 model.addAttribute("schoolCategoryList", SchoolCategories.values());
+	    			           // "NU", "NLAC",
+	    			           // "RU-N", "RU-S", "RU-MW", "RU-W", 
+	    			           // "RC-N", "RC-S", "RC-MW", "RC-W",
+	    			           // "Art Schools", "Business Schools", "Engineering Schools"));
+	     }
+	     
+	     @ModelAttribute("shortSchoolCategoryList")
+	     public void listOfShortSchoolCategoris(Model model) {
+	    	 //model.addAttribute("schoolCategoryLiest", Arrays.asList("NU", "NLAC"));
+	    	 Arrays.asList(SchoolCategories.values());
 	     }
 	     
 	     @ModelAttribute("schoolSettingList")
@@ -650,7 +685,7 @@ public class SchoolController {
 	     
 	     @ModelAttribute("schoolSizeList")
 	     public void listOfSchoolSize(Model model) {
-	     	 model.addAttribute("schoolSizeList", Arrays.asList("Small(<2000)", "Midium(between 2000 and 15000)","Large(>15000"));
+	     	 model.addAttribute("schoolSizeList", Arrays.asList("Small(<2000)", "Midium(between 2000 and 15000)","Large(>15000)"));
 	     }
 	      
 	     @ModelAttribute("recommandationLetters")
@@ -681,6 +716,12 @@ public class SchoolController {
 	     @ModelAttribute("calendarList")
 	     public void listOfCalendar(Model model) {
 	     	 model.addAttribute("calendarList", Arrays.asList("Semester","Quater"));
+	     }
+	     
+	     @ModelAttribute("satSubjectList")
+	     public void listOfSatSubjects(Model model) {
+	     	 model.addAttribute("satSubjectList", Arrays.asList("Math Level1","Math Lavel2","Biology","Physics","Chemistry","Literature",
+	     			                                            "US History","World History","Chinese"));
 	     }
 	     
 	     //----------------------- Exception Handlers ------------------------//

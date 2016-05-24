@@ -24,7 +24,7 @@ public class HomeController {
 	  /**
         * This method is used to show the form to search Schools
 	    *
-	    * @return Main School home page
+	    * @return Main Applicant home page
 	    *
 	    */
 	    @RequestMapping(value = "school/home", method = RequestMethod.GET)

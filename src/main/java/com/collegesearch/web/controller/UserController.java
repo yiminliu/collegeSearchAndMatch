@@ -32,9 +32,9 @@ public class UserController {
 	   //--------------------------- Create User --------------------------// 
 	   
 	   /**
-	   * This method is used to show the form to create an School
+	   * This method is used to show the form to create an Applicant
 	   *
-	   * @return String the name of first page of School creation
+	   * @return String the name of first page of Applicant creation
 	   */
 	   //@PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_PURCHASER')")
 	   @RequestMapping(value = "/createUser", method = RequestMethod.GET)
