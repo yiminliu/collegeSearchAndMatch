@@ -12,4 +12,8 @@
 /target
 /lucene/
 /logs/
-/README.md
+/com.collegesearch.domain.school.School/
+/ProjectsworkspacecollegeSearchAndMatchluceneindexes/
+/RemoteSystemsTempFiles/
+/.metadata/
+/.settings/
