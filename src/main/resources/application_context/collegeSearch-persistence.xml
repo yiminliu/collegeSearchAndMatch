@@ -49,25 +49,27 @@
                 <!-- <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>-->
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>                  
                 
-                <!--<prop key="hibernate.max.fetch.depth">${hibernate.max.fetch.depth}</prop>          
-                <prop key="hibernate.jdbc.fetch.size">${hibernate.jdbc.fetch.size}</prop>          
-                <prop key="hibernate.jdbc.batch.size">${hibernate.jdbc.bstch.size}</prop>--> 
-                  <!-- Hibernate Cache -->
+                <!-- Hibernate Cache -->
                 <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
                 <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
                 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>  
                 <prop key="hibernate.cache.ehcache.configurationResourceName">/ehcache.xml</prop>
                 <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>     
                 <prop key="hibernate.cache.generate_statistics">${hibernate.cache.generate_statistics}</prop> 
+                <prop key="net.sf.ehcache.disabled">${net.sf.ehcache.disabled:false}</prop>
+                   
                 <!--  Hibernate Search -->
-               <!-- <prop key="hibernate.search.autoregister_listeners">false</prop>
-                <prop key="hibernate.search.indexing_strategy">manual</prop> 
+                <prop key="hibernate.search.autoregister_listeners">true</prop>
+                <!--<prop key="hibernate.search.indexing_strategy">manual</prop>--> 
                 <prop key="hibernate.search.default.directory_provider">${hibernate.search.default.directory_provider}</prop>
                 <prop key="hibernate.search.default.indexBase">${hibernate.search.default.indexBase}</prop>  
                 <prop key="hibernate.search.lucene_version">${hibernate.search.lucene_version}</prop>
-                <prop key="hibernate.search.default.refresh">${hibernate.search.default.refresh}</prop>-->
-                     
-            </props>  
+                <prop key="hibernate.search.default.refresh">${hibernate.search.default.refresh}</prop>
+                
+                <prop key="hibernate.max.fetch.depth">${hibernate.max.fetch.depth}</prop>          
+                <prop key="hibernate.jdbc.fetch.size">${hibernate.jdbc.fetch.size}</prop>          
+                <!--<prop key="hibernate.jdbc.batch.size">${hibernate.jdbc.bstch.size}</prop>--> 
+           </props>  
         </property>  
     </bean>
     
@@ -88,7 +90,7 @@
     <!-- <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>-->
     
       <!--  JDBC Config file -->
-    <context:property-placeholder location="classpath:config/jdbc.properties, classpath:config/hibernate.properties" ignore-unresolvable="false"/>
+    <context:property-placeholder location="classpath:properties/jdbc.properties, classpath:properties/hibernate.properties" ignore-unresolvable="false"/>
 
 
 </beans>
