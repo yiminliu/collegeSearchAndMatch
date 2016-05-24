@@ -18,7 +18,7 @@
            <div class="page_title_wide">Top Colleges in ${title} Program (${fn:length(schoolList)} found)</div>
         </c:when>        
         <c:when test="${not empty title && operation eq 'listSchools'}">
-           <div class="page_title_wide">${title}</div>
+           <div class="page_title_wide">${title}(${fn:length(schoolList)} found)</div>
         </c:when>
         <c:when test="${not empty title}">
            <div class="page_title_wide">Top Colleges in ${title} Majors (${fn:length(schoolList)} found)</div>
@@ -42,6 +42,9 @@
                    <c:when test="${not empty title && title eq '100 Colleges With Lowest Cost'}">
                       <th>Total Cost</th>
                    </c:when>
+                   <c:when test="${not empty title && title eq '100 Colleges With Lowest GPA Requirement'}">
+                      <th>Ave. GPA</th>
+                   </c:when>
                    <c:otherwise>   
                    </c:otherwise>
                 </c:choose>      
@@ -59,7 +62,9 @@
 	   	    </c:if>   
 	   	    <th>SAT1/ACT<font size="1"> (25th-75th%)</font></th>
 	   	    <!--<th>SAT II Required</th>-->
-	  	    <th>Ave. GPA</th>
+	   	    <c:if test="${title != '100 Colleges With Lowest GPA Requirement'}">
+	  	       <th>Ave. GPA</th>
+	  	    </c:if>    
 	  	    <c:if test="${title != '100 Colleges With Lowest TOEFL Score Requirement'}">
 		       <th>TOEFL Score (Min/Avg)</th>
 		    </c:if>   	
@@ -79,44 +84,54 @@
 			  <!--<td>${school.name}</td>-->
 			  <c:if test="${title eq '100 Colleges With Lowest TOEFL Score Requirement'}">
 		         <c:choose>
-			    <c:when test="${school.internationalStudentApplication.minimumToeflScore < 0}">
-                         <td>Not Required</td>
-                      </c:when>
-			    <c:when test="${school.internationalStudentApplication.minimumToeflScore == null && school.internationalStudentApplication.averageToeflScore == null}">
+			        <c:when test="${school.internationalStudentApplication.minimumToeflScore < 0}">
+                       <td>Not Required</td>
+                    </c:when>
+			        <c:when test="${school.internationalStudentApplication.minimumToeflScore == null && school.internationalStudentApplication.averageToeflScore == null}">
                         <td>N/A</td>
-                      </c:when>
-                      <c:otherwise>
-                        <c:choose>
-			        <c:when test="${school.internationalStudentApplication.averageToeflScore == null}">
+                    </c:when>
+                    <c:otherwise>
+                       <c:choose>
+			              <c:when test="${school.internationalStudentApplication.averageToeflScore == null}">
                             <td>${school.internationalStudentApplication.minimumToeflScore}</td> 
                           </c:when>
                           <c:otherwise>
                             <td>${school.internationalStudentApplication.minimumToeflScore}/${school.internationalStudentApplication.averageToeflScore}</td> 
                           </c:otherwise>
                         </c:choose>
-                      </c:otherwise>
-                     </c:choose>
-                    </c:if> 
-                    <c:if test="${title eq '100 Colleges With Highest Acceptance Rate'}">
-                       <c:choose>
-                         <c:when test="${school.acceptRate >= 0}">  
+                    </c:otherwise>
+                </c:choose>
+              </c:if> 
+              <c:if test="${title eq '100 Colleges With Highest Acceptance Rate'}">
+                 <c:choose>
+                    <c:when test="${school.acceptRate >= 0}">  
 			          <td>${school.acceptRate}%</td>
-				 </c:when> 
-				 <c:otherwise>
-				    <td>N/A</td>
-				 </c:otherwise>
+		    	    </c:when> 
+				    <c:otherwise>
+				       <td>N/A</td>
+				    </c:otherwise>
 			    </c:choose>
 			  </c:if>   
 			  <c:if test="${title eq '100 Colleges With Lowest Cost'}">
-                       <c:choose>
-                         <c:when test="${school.tuitionFee >= 0}">  
+                 <c:choose>
+                    <c:when test="${school.tuitionFee >= 0}">  
 			          <td>$${school.tuitionFee + school.roomBoard}</td>
-				 </c:when> 
-				 <c:otherwise>
-				    <td>N/A</td>
-				 </c:otherwise>
+				    </c:when> 
+				    <c:otherwise>
+				       <td>N/A</td>
+				    </c:otherwise>
 			    </c:choose>
-			  </c:if>   
+			  </c:if> 
+			  <c:if test="${title eq '100 Colleges With Lowest GPA Requirement'}">
+		 	     <c:choose>
+                    <c:when test="${school.averageGpa > 0}">
+				       <td>${school.averageGpa}</td>
+			        </c:when> 
+			        <c:otherwise>
+			           <td>N/A</td>
+			        </c:otherwise>
+			     </c:choose>
+			  </c:if>  
 			  <td>${school.category}</td>
 			  <c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
 			   <c:choose>
@@ -125,8 +140,8 @@
 			     </c:when>
 			     <c:otherwise>
 			        <c:choose>
-                             <c:when test="${school.rankOverall > 0}">
-				        <td>${school.rankOverall}</td>
+                       <c:when test="${school.rankOverall > 0}">
+				         <td>${school.rankOverall}</td>
 			           </c:when> 
 			           <c:when test="${school.rankOverall < 0}">
 			              <td>Not Ranked</td>
@@ -137,25 +152,26 @@
 			        </c:choose> 
 			     </c:otherwise>
 			   </c:choose>
-		    	  </c:if>
-		    	  <!--<td>${school.size}</td>
-                    <td>${school.type}</td>-->
-                    <c:if test="${title != '100 Colleges With Lowest Cost'}">
+		     </c:if>
+		     <!--<td>${school.size}</td>
+             <td>${school.type}</td>-->
+             <c:if test="${title != '100 Colleges With Lowest Cost'}">
                        <c:choose>
                           <c:when test="${school.tuitionFee != null && school.roomBoard !=null}">
-				     <td>$${school.tuitionFee + school.roomBoard}</td>
-			        </c:when> 
-			        <c:when test="${school.tuitionFee != null && school.roomBoard ==null}">
-			           <td>$${school.tuitionFee} + null</td>
-			        </c:when>
-			        <c:when test="${school.tuitionFee == null && school.roomBoard !=null}">
-			           <td>null + $${school.roomBoard}</td>
-			        </c:when>
-			        <c:otherwise>
-			           <td>N/A</td>
-			        </c:otherwise>
-			     </c:choose>
-			  </c:if>   
+				             <td>$${school.tuitionFee + school.roomBoard}</td>
+			              </c:when> 
+			              <c:when test="${school.tuitionFee != null && school.roomBoard ==null}">
+			                 <td>$${school.tuitionFee} + null</td>
+			              </c:when>
+			              <c:when test="${school.tuitionFee == null && school.roomBoard !=null}">
+			                 <td>null + $${school.roomBoard}</td>
+			              </c:when>
+			              <c:otherwise>
+			                 <td>N/A</td>
+			              </c:otherwise>
+			          </c:choose>
+			  </c:if>
+			     
 			  <c:if test="${title != '100 Colleges With Highest Acceptance Rate'}">
 			    <c:choose>
                          <c:when test="${school.acceptRate >= 0}">  
@@ -195,14 +211,16 @@
 				  <td>N/A</td>
 			      </c:otherwise>
 		        </c:choose>
-		 	  <c:choose>
-                      <c:when test="${school.averageGpa > 0}">
-				 <td>${school.averageGpa}</td>
-			    </c:when> 
-			    <c:otherwise>
-			       <td>N/A</td>
-			    </c:otherwise>
-			 </c:choose>  
+		 	  <c:if test="${title != '100 Colleges With Lowest GPA Requirement'}">
+		 	     <c:choose>
+                    <c:when test="${school.averageGpa > 0}">
+				       <td>${school.averageGpa}</td>
+			        </c:when> 
+			        <c:otherwise>
+			           <td>N/A</td>
+			        </c:otherwise>
+			     </c:choose>
+			  </c:if>     
 			 <!--<td>${school.numberOfRequiredSat2}</td>-->
 			 <c:if test="${title != '100 Colleges With Lowest TOEFL Score Requirement'}">
 		        <c:choose>

@@ -14,8 +14,8 @@
         <c:when test="${empty schoolList}">
            <div class="page_title">No School Found</div>
         </c:when>
-        <c:when test="${not empty title && operation eq 'getSchoolsInSpeciality'}">
-           <div class="page_title_wide">Top Colleges in ${title} Program (${fn:length(schoolList)} found)</div>
+        <c:when test="${not empty title && operation eq 'getSchoolsBySpeciality'}">
+           <div class="page_title_wide">Top Colleges in ${title} (${fn:length(schoolList)} found)</div>
         </c:when>
         <c:when test="${not empty title && operation eq 'listSchools'}">
            <div class="page_title_wide">${title}</div>
@@ -32,7 +32,6 @@
            <table class="datatable" style="font-size: 80%">
              <tr style="background-color: Ivory;">
                 <th>School</th>
-                <th>AI</th>
                 <c:if test="${operation=='searchSchools'}">
 			 <th>Category</th>
 		    </c:if>   
@@ -64,13 +63,12 @@
                     <td style="color : red"><a id="schoolDetail" href="<spring:url value="/school/getSchoolDetail/${school.id}" />">${school.name}</a></td>
 		 	  <!--<td><a href="http://www."${school.website}></a></td>-->
 			  <!--<td>${school.name}</td>-->
-			  <td>${school.anticipationIndex}</td>
 			  <c:if test="${operation eq 'searchSchools'}">
 			     <td>${school.category}</td>
 			  </c:if>    
 			  <c:if test="${operation ne 'getPrincetonReviewGreatSchoolMajors'}">
 			   <c:choose>
-			     <c:when test="${operation eq 'getSchoolsInSpeciality'}">
+			     <c:when test="${operation eq 'getSchoolsBySpeciality'}">
 				  <td>${school.schoolRankInSpeciality.rank}</td>
 			     </c:when>
 			     <c:otherwise>

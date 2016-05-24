@@ -21,7 +21,7 @@
            <div class="page_title_wide">${title}</div>
         </c:when>
         <c:when test="${not empty title}">
-           <div class="page_title_wide">Great Colleges in ${title} Majors (${fn:length(bestSchoolMajorList)} found)</div>
+           <div class="page_title_wide">Top Colleges in ${title} Majors (${fn:length(bestSchoolMajorList)} found)</div>
         </c:when>
         <c:otherwise>          
            <div class="page_title">Search Result(${fn:length(bestSchoolMajorList)} found)</div>

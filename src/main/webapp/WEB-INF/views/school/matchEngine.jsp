@@ -10,37 +10,23 @@
 
 <body background="http://localhost:8080/collegeSearch/static/images/search_bg3.jpg">
   <div class="container">
-     <div><%@ include file="/WEB-INF/views/general/header.jsp"%></div>
+     <%@ include file="/WEB-INF/views/general/header.jsp"%>
      <spring:url var="action" value="/school/matchEngine" />
-     <table class="center_element_text" style="width:70%; margin-top:5px; margin-bottom:8px; padding:0px; border-spacing: 30px 0px;">
+     <table class="center_element_text" style="width:70%; margin-top:5px; margin-bottom:8px; padding:0px;">
        <tr>
-          <td style="background-color:LightGreen;"><h4>Match you and your suitable colleges</h4></td>
+          <td style="background-color:LightGreen;"><h3>Match you and your suitable colleges</h3></td>
        </tr>   
      </table>
-     <div class="content" style="width:70%; margin-top:15px; border-style: solid; border-width:2px; ">  
+     <div class="content" style="width:70%; margin-top:15px; border-style: solid; border-width:10px; ">  
         <form:form method="GET" action="${action}" modelAttribute="school">
-           <table style="width:100%; margin-bottom:-7px; text-align:center;">            
-             <caption>Enter Your Scores</caption>
+           <table style="font-size: 95% margin-top:-8px text-align:left cellpadding: 0px 10px;"> 
+             <h3><caption><span style="background-color:silver;">Enter Your Scores</span></caption></h3>
              <tr>
-                <td><label>GPA:</label><form:input path=""></form:input></td>
-             </tr>
-             <tr>
-                <td><label>SAT I Score:</label><form:input path="sat1Score"></form:input></td>
-                <td>   Or   </td>
-                <td><label for="actScore">ACT Score:</label>
-                    <form:select id="actScore" path="actScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:120px;">
-                       <form:option value="" selected="selected">Select One</form:option>
-                          <c:forEach var="actScore" items="${actScoreList}" varStatus="status">
-                             <form:option value="${actScore}">${actScore}</form:option>
-                          </c:forEach>
-                    </form:select>
-                </td> 
-             </tr> 
-             <tr>
-                <td><label>TOEFL Score:</label><form:input path="toeflScore"></form:input></td>
-                <td>Or</td>
-                <td><label for="actScore">IELTS Score:</label>
-                    <form:select id="ieltsScore" path="ieltsScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:120px;">
+                <td><label>GPA:</label> <form:input path="randomApplicant.gpaScore" /></td>
+                <td><label>TOEFL Score:</label><form:input path="randomApplicant.toeflScore" /></td>
+                <td><span style="color:BLUE; text-align:center">   Or  </span></td>
+                <td><label>IELTS Score:</label>
+                    <form:select id="ieltsScore" path="randomApplicant.ieltsScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:120px;">
                        <form:option value="" selected="selected">Select One</form:option>
                           <c:forEach var="ieltsScore" items="${ieltsScoreList}" varStatus="status">
                              <form:option value="${ieltsScore}">${ieltsScore}</form:option>
@@ -48,43 +34,51 @@
                     </form:select>
                 </td> 
              </tr>
-          </table>
-          <hr></hr>
-          <table style="width:100%; margin-top:-8px;text-align:center; cellpadding: 0px; cellpadding: 0px 10px;"> 
-             <caption>Enter Your Preferences</caption>
-             <!--<tr style="margin-top:15px;">
-                <td><label for="rankOverall">School Rank:</label>
-                    <form:select id="rankOverall" path="rankOverall" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                          <c:forEach var="rankOverall" items="${schoolRankList}" varStatus="status">
-                             <form:option value="${rankOverall}">${rankOverall}</form:option>
+             <tr><span class="label_same_row" style="cellspacing:90px; cellpadding:5px">
+                <td><label>SAT I Reading Score:</label><form:input path="randomApplicant.sat1ReadingScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:140px;" /></td>
+                <td><label>Math Score:</label><form:input path="randomApplicant.sat1MathScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:90px;" /></td>
+                <td><label>Essay Score:</label><form:input path="randomApplicant.sat1EssayScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:90px;" /></td>
+                <td><span style="text-color:BLUE">   Or  </td>
+                <td><label>ACT Reading Score:</label>
+                    <form:select id="actScore" path="randomApplicant.actScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:140px;">
+                       <form:option value="" selected="selected">Select One</form:option>
+                          <c:forEach var="actScore" items="${actScoreList}" varStatus="status">
+                             <form:option value="${actScore}">${actScore}</form:option>
+                          </c:forEach>
+                    </form:select>
+                </td>
+                <td><label>Math Score:</label>
+                    <form:select id="actScore" path="randomApplicant.actScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:90px;">
+                       <form:option value="" selected="selected">Select One</form:option>
+                          <c:forEach var="actScore" items="${actScoreList}" varStatus="status">
+                             <form:option value="${actScore}">${actScore}</form:option>
                           </c:forEach>
                     </form:select>
                 </td> 
-             </tr>-->
-             <!--<tr>
-                <td><label for="tuitionFee">Tuition and Fees($):</label>
-                    <form:select id="tuitionFee" path="tuitionFee" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                          <c:forEach var="tuitionFee" items="${tuitionRangeList}" varStatus="status">
-                             <form:option value="${tuitionFee}">${tuitionFee}</form:option>
+                <td><label>Writing Score:</label>
+                    <form:select id="actScore" path="randomApplicant.actScore" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:90px;">
+                       <form:option value="" selected="selected">Select One</form:option>
+                          <c:forEach var="actScore" items="${actScoreList}" varStatus="status">
+                             <form:option value="${actScore}">${actScore}</form:option>
                           </c:forEach>
                     </form:select>
-                </td>
+                </td> 
+               </span> 
+             </tr> 
+             <tr>  
+                <td>
+                   <label>SAT II:</label>
+                      <form:checkboxes items="${satSubjectList}" path="randomApplicant.satSubjects" />
+                </td> 
              </tr>
+           </table>
+          <hr></hr>
+          <br></br>
+         <table style="width:100%; text-align:center;">   
+             <h3><caption><span style="background-color:silver;">Select Your Preferences</span></caption></h3>
              <tr>
-                <td><label for="roomBoard">Room And Board($):</label>
-                    <form:select id="roomBoard" path="roomBoard" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                          <c:forEach var="roomBoard" items="${tuitionRangeList}" varStatus="status">
-                             <form:option value="${roomBoard}">${roomBoard}</form:option>
-                          </c:forEach>
-                    </form:select>
-                </td>
-             </tr>-->
-             <tr>
-                <td><label for="totalCost">Total Cost (Tuition and Fees + Room and Board)($):</label>
-                    <form:select id="totalCost" path="totalCost" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                <td><label class="label_same_row">Total Cost (Tuition & Fees + Room & Board)($):</label>
+                    <form:select id="totalCost" class="input-container" path="totalCost" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="totalCost" items="${totalCostRangeList}" varStatus="status">
                              <form:option value="${totalCost}">${totalCost}</form:option>
@@ -93,7 +87,27 @@
                 </td>
              </tr>
              <tr>
-               <td><label for="acceptRate">Acceptance Rate(%):</label>
+                <td><label class="label_same_row">Category:</label>
+                    <form:select id="category" path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                          <c:forEach var="category" items="${schoolCategoryList}" varStatus="status">
+                             <form:option value="${category}">${category.description}</form:option>
+                          </c:forEach>
+                    </form:select>
+                </td> 
+            </tr>
+            <tr>
+                <td><label class="label_same_row">Overal Rank:</label>
+                    <form:select id="rankOverall" path="rankOverall" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                          <c:forEach var="rankOverall" items="${schoolRankList}" varStatus="status">
+                             <form:option value="${rankOverall}">${rankOverall}</form:option>
+                          </c:forEach>
+                    </form:select>
+                </td> 
+            </tr>
+            <tr>
+               <td><label class="label_same_row">Acceptance Rate(%):</label>
                     <form:select id="acceptRate" path="acceptRate" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="acceptRate" items="${acceptanceRateList}" varStatus="status">
@@ -103,31 +117,22 @@
                 </td>
              </tr>
              <tr>
-                <td><label for="satnotrequired">SAT/ACT Not Required:</label>
-                    <form:select id="satActNotRequired" path="satActNotRequired" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                       <form:option value="Yes">Yes</form:option>
-                    </form:select>
-                </td> 
+                <td><label class="label_same_row">SAT/ACT Not Required:</label>
+                    <form:radiobutton path="satActNotRequired" value="Yes" />Yes
+                </td>
              </tr>
              <tr>
-                <td><label for="satnotrequired">TOEFL Is Accepted Instead of SAT/ACT:</label>
-                    <form:select id="satActNotRequired" path="internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                       <form:option value="Yes">Yes</form:option>
-                    </form:select>
+                <td><label class="label_same_row">TOEFL Is Accepted Instead of SAT/ACT:</label>
+                    <form:radiobutton id="satActNotRequired" path="internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct" value="Yes" />Yes
                 </td> 
              </tr>	
              <tr>
-                <td><label for="satnotrequired">Conditional Admission Is Offered:</label>
-                    <form:select id="satActNotRequired" path="internationalStudentApplication.conditionalAdmissionOffered" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                       <form:option value="Yes">Yes</form:option>
-                    </form:select>
+                <td><label class="label_same_row">Conditional Admission Is Offered:</label>
+                    <form:radiobutton id="satActNotRequired" path="internationalStudentApplication.conditionalAdmissionOffered" value="Yes" />Yes
                 </td> 
              </tr>	
              <tr>
-                <td><label for="type">School Type:</label>
+                <td><label class="label_same_row">Type:</label>
                     <form:select id="type" path="type" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="type" items="${schoolTypeList}" varStatus="status">
@@ -135,29 +140,16 @@
                           </c:forEach>
                     </form:select>
                 </td> 
-             </tr>
-             <tr>
-                <td><label for="category">School Category:</label>
-                    <form:select id="category" path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                          <c:forEach var="category" items="${schoolCategoryList}" varStatus="status">
-                             <form:option value="${category}">${category}</form:option>
-                          </c:forEach>
-                    </form:select>
-                </td> 
             </tr>
-            <tr>
-                <td><label for="setting">School Setting:</label>
-                    <form:select id="setting" path="setting" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
-                       <form:option value="" selected="selected">No Preference</form:option>
-                          <c:forEach var="setting" items="${schoolSettingList}" varStatus="status">
-                             <form:option value="${setting}">${setting}</form:option>
-                          </c:forEach>
-                    </form:select>
+            <!--<tr>      
+                <td><label class="label_same_row">Type:</label>
+                    <c:forEach var="type" items="${schoolTypeList}" varStatus="status">
+                       <form:radiobutton path="type" value="${type}" />${type}
+                    </c:forEach>
                 </td> 
-            </tr>
+            </tr>-->
             <tr>
-                <td><label for="size">School Size:</label>
+                <td><label class="label_same_row">Size:</label>
                     <form:select id="size" path="size" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="size" items="${schoolSizeList}" varStatus="status">
@@ -167,11 +159,28 @@
                 </td> 
             </tr>
             <tr>
-                <td><label for="state">State:</label>
+                <td><label class="label_same_row">State:</label>
                     <form:select id="state" path="state" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
                        <form:option value="" selected="selected">No Preference</form:option>
                           <c:forEach var="state" items="${stateList}" varStatus="status">
                              <form:option value="${state}">${state.description}</form:option>
+                          </c:forEach>
+                    </form:select>
+                </td> 
+            </tr>
+            <!--<tr>
+                <td><label class="label_same_row">School Setting:</label>
+                    <c:forEach var="setting" items="${schoolSettingList}" varStatus="status">
+                       <form:radiobutton id="setting" path="setting" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;" />
+                    </c:forEach>
+                </td> 
+            </tr>-->
+            <tr>
+                <td><label class="label_same_row">Setting:</label>
+                    <form:select id="setting" path="setting" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:150px;">
+                       <form:option value="" selected="selected">No Preference</form:option>
+                          <c:forEach var="setting" items="${schoolSettingList}" varStatus="status">
+                             <form:option value="${setting}">${setting}</form:option>
                           </c:forEach>
                     </form:select>
                 </td> 
@@ -186,12 +195,13 @@
                     </form:select>
                 </td> 
             </tr>-->	
-         </table>
+         </table> 
          <table class="center_element" style="margin-top:15px;">
+           <tr></tr>
            <tr>
               <td><input type="submit" value="Submit"></input></td>
-            </tr>
-         </table>     
+           </tr>
+         </table>          
       </form:form>
     </div>  
     <div>

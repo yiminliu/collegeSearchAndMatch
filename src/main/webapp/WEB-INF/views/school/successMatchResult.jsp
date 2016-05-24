@@ -60,7 +60,7 @@
                     <td style="color : red"><a id="schoolDetail" href="<spring:url value="/school/getSchoolDetail/${school.id}" />">${school.name}</a></td>
 		 	  <!--<td><a href="http://www."${school.website}></a></td>-->
 			  <!--<td>${school.name}</td>-->
-			  <td>${school.anticipationIndex}</td>
+			  <td>${school.likelihoodOfSuccess}</td>
 	  	        <td>${school.category}</td>
 		        <c:choose>
                        <c:when test="${school.rankOverall > 0}">

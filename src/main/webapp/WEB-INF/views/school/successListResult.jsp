@@ -29,6 +29,9 @@
            <table class="datatable" style="font-size: 80%">
              <tr style="background-color: Ivory;">
               	<th>School</th>
+              	<c:if test="${operation eq 'listSpecialSchools'}">
+              	   <th>Category</th>
+              	</c:if>   
                	<c:if test="${category ne 'Art Schools'}">
 				   <th>Rank</th>
 				   <!--<th>Last Year Rank</th>-->
@@ -57,6 +60,9 @@
                     <td style="color : red"><a id="schoolDetail" href="<spring:url value="/school/getSchoolDetail/${school.id}" />">${school.name}</a></td>
 					<!--<td><a href="http://www."${school.website}></a></td>-->
 					<!--<td>${school.name}</td>-->
+			  <c:if test="${operation eq 'listSpecialSchools'}">
+			     <td>${school.category}</td>
+			  </c:if>   		
 			  <c:choose>
 			     <c:when test="${operation eq 'getSchoolsInSpeciality'}">
 				  <td>${school.schoolRankInSpeciality.rank}</td>
@@ -64,8 +70,8 @@
 			     <c:when test="${category eq 'Art Schools'}">
 			     </c:when> 
 			     <c:otherwise> 		
-					   <c:choose>
-                                  <c:when test="${school.rankOverall > 0}">
+				     <c:choose>
+                       <c:when test="${school.rankOverall > 0}">
 					      <td>${school.rankOverall}</td>
 					   </c:when> 
 					   <c:when test="${school.rankOverall < 0}">

@@ -13,7 +13,7 @@
   <div class="container">
     <div class="content">  
       <table class="section_title_center">
-        <tr><td>Find Ideal Colleges From 2000 Colleges for You</td></tr>
+        <tr><td>Find Your Ideal Colleges From 2000 Colleges</td></tr>
       </table>     
       <table class="center_element_text" style="border:1px; width: 100%">
         <tr>
@@ -35,7 +35,7 @@
            <td>
              <ul style="list-style-type:none">
                 <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional Admissions</a></li>
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Accepting TOEFL Instead of SAT/ACT</a></li>
+                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Accepting TOEFL/IELTS Instead of SAT/ACT</a></li>
              </ul>
            </td>
         </tr>
@@ -76,7 +76,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="National Universities" class="submit_button"/>
-                     <form:hidden path="category" value="National University"/>
+                     <form:hidden path="category" value="NU"/>
                    </td> 
                 </tr>
               </table>
@@ -87,7 +87,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="National Liberal Art Colleges" class="submit_button" />
-                     <form:hidden path="category" value="National Liberal Arts College"/>
+                     <form:hidden path="category" value="NLAC"/>
                    </td> 
                  </tr>
               </table>
@@ -100,7 +100,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Universities-North" class="submit_button"/>
-                     <form:hidden path="category" value="Regional University-North"/>
+                     <form:hidden path="category" value="RU_N"/>
                  </td> 
                 </tr>
               </table>
@@ -111,7 +111,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Universities-West" class="submit_button"/>
-                     <form:hidden path="category" value="Regional University-West"/>
+                     <form:hidden path="category" value="RU_W"/>
                    </td> 
                  </tr>
               </table>
@@ -124,7 +124,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Universities-Midwest" class="submit_button"/>
-                     <form:hidden path="category" value="Regional University-Midwest"/>
+                     <form:hidden path="category" value="RU_MW"/>
                    </td> 
                 </tr>
               </table>
@@ -135,7 +135,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Universities-South" class="submit_button"/>
-                     <form:hidden path="category" value="Regional University-South"/>
+                     <form:hidden path="category" value="RU_S"/>
                    </td> 
                  </tr>
               </table>
@@ -148,7 +148,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Colleges-North" class="submit_button"/>
-                     <form:hidden path="category" value="Regional College-North"/>
+                     <form:hidden path="category" value="RC_N"/>
                    </td> 
                 </tr>
               </table>
@@ -159,7 +159,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Colleges-West" class="submit_button"/>
-                     <form:hidden path="category" value="Regional College-West"/>
+                     <form:hidden path="category" value="RC_W"/>
                    </td> 
                  </tr>
               </table>
@@ -172,7 +172,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Colleges-Midwest" class="submit_button"/>
-                     <form:hidden path="category" value="Regional College-Midwest"/>
+                     <form:hidden path="category" value="RC_MW"/>
                    </td> 
                 </tr>
               </table>
@@ -183,7 +183,7 @@
                <table>            
                  <tr>
                    <td><input name="submit" type="submit" value="Regional Colleges-South" class="submit_button"/>
-                     <form:hidden path="category" value="Regional College-South"/>
+                     <form:hidden path="category" value="RC_S"/>
                    </td> 
                  </tr>
               </table>
@@ -194,17 +194,17 @@
       <table class="section_title_center">
         <tr><td>Rankings By Specialities</td></tr>
       </table>
-      <table>
+      <table class="center_element" style="margin-top:0px;">
          <tr>
           <td>
             <ul>
-		  <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Engineering_Doctorate" />">Engineering Programs (Doctorate Degree Offered)</a></li>
-	        <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Engineering_No_Doctorate" />">Engineering Programs (No_Doctorate Degree Offered)</a></li>
+		  <li><a href="<spring:url value="/school/getSchoolsBySpeciality/Engineering_Doctorate" />">Engineering Programs (Doctorate Degree Offered)</a></li>
+	        <li><a href="<spring:url value="/school/getSchoolsBySpeciality/Engineering_No_Doctorate" />">Engineering Programs (No_Doctorate Degree Offered)</a></li>
 	      </ul>
           </td>
           <td>
             <ul>
-		  <li><a href="<spring:url value="/school/getSchoolsInSpeciality/Business" />">Business Programs</a></li>
+		  <li><a href="<spring:url value="/school/getSchoolsBySpeciality/Business" />">Business Programs</a></li>
 		  <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?category=Art Schools">Art Schools</a></li>
 	       </ul>
           </td>
@@ -215,26 +215,30 @@
       </table> 
       <table class="center_element" style="margin-top:0px;">
         <tr><td><span class="section_title_center">Business Programs</span></td></tr>
-	  <tr>
+	    <tr>
 	    <td>
 	      <ul>
-		  <li><a href="<spring:url value="/school/getBestSchoolMajors/Accounting" />">Accounting</a></li>
-		  <li><a href="<spring:url value="/school/getBestSchoolMajors/Finance"/>">Finance</a></li>
-	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Entrepreneurship"/>">Entrepreneurship</a></li>
-	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Insurance"/>">Insurance</a></li>
-	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/International Business"/>">International Business</a></li>
-	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Management"/>">Management</a></li>
+		    <li><a href="<spring:url value="/school/getBestSchoolMajors/Accounting" />">Accounting</a></li>
+		    <li><a href="<spring:url value="/school/getBestSchoolMajors/Finance"/>">Finance</a></li>
+	 	    <li><a href="<spring:url value="/school/getBestSchoolMajors/Entrepreneurship"/>">Entrepreneurship</a></li>
+	 	    <li><a href="<spring:url value="/school/getBestSchoolMajors/Insurance"/>">Insurance</a></li>
+	 	    <li><a href="<spring:url value="/school/getBestSchoolMajors/International Business"/>">International Business</a></li>
+	 	    <li><a href="<spring:url value="/school/getBestSchoolMajors/Management"/>">Management</a></li>
+	 	    <li><a href="<spring:url value="/school/getBestSchoolMajors/Labor Relations Management"/>">Labor Relations Management</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Human Resource Management"/>">Human Resource Management</a></li>
 	      </ul>
-         </td>
-         <td>
+        </td>
+        <td>
 	      <ul>
  	        <li><a href="http://localhost:8080/collegeSearch/school/getBestSchoolMajors/Marketing and Sales">Marketing and Sales</a></li>
-	    	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Management Information Systems"/>">Management Information Systems</a></li>
+	    	<li><a href="<spring:url value="/school/getBestSchoolMajors/Management Information Systems"/>">Management Information Systems</a></li>
 	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Production and Operations Management"/>">Production/Operations Management</a></li>
-	 	  <li><a href="<spring:url value="/school/getBestSchoolMajors/Quantitative Analysis"/>">Quantitative Analysis</a></li>
+	 	    <li><a href="<spring:url value="/school/getBestSchoolMajors/Quantitative Analysis"/>">Quantitative Analysis</a></li>
 	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Real Estate"/>">Real Estate</a></li>
 	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Supply Chain Management and Logistics"/>">Supply Chain Management and Logistics</a></li>
-	      </ul>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Sports Management"/>">Sports Management</a></li>
+	        <li><a href="<spring:url value="/school/getBestSchoolMajors/Fashion Design"/>">Fashion Design</a></li>
+         </ul>
 	   </td>
 	 </tr>
 	 <tr><td><span class="section_title_center">Engineering Programs</span></td></tr>
@@ -312,8 +316,9 @@
 	   <tr>
             <td>
                <ul>
+                  <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=100PercentAcceptanceRate" />">Colleges with Automatic Acceptance</a></li>
                   <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=highAcceptanceRate&size=100" />">100 Colleges with Highest Acceptance rate</a></li>
-                  <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowSat&size=100" />">100 Colleges with Lowest SAT/ACT</a></li>
+                  <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowSat&size=100" />">100 Colleges with Lowest SAT/ACT Score</a></li>
 		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=ASchoolsForBStudents&size=100"/>">A-Plus Colleges for B-Students</a></li>
 		      <li><a href="http://localhost:8080/collegeSearch/school/searchSchools?acceptRate>95">High Acceptance Rate and Low Cost in top 50 National Colleges</a></li>
                </ul>
@@ -321,7 +326,8 @@
             <td>
 		   <ul>
 		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowCost&size=100" />">100 Colleges with Lowest Cost</a></li>
-		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowToefl&size=100" />">100 Colleges with Lowest TOEFL/IELTS Scores</a></li>
+		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowToefl&size=100" />">100 Colleges with Lowest TOEFL/IELTS Score</a></li>
+		      <li><a href="<spring:url value="/school/listSchoolsByFeature?feature=lowGpa&size=100" />">100 Colleges with Lowest GPA</a></li>
 		      <li><a href="<spring:url value="/school/searchSchools?applicationFee=0" />">Colleges With No Application Fee</a></li>
 	 	      <li><a href="<spring:url value="/school/searchSchools?acceptRate<25%" />">100 Colleges with Lowest Acceptance Rate</a></li>
 	   	   </ul>
