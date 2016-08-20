@@ -1,44 +1,33 @@
-BedLogic
+College Search and Match System
 =============
 
-Bedrosians Business Logic Service written in Java
 
 
 ## Dev Environment
 
-* Mac OS X v10.7.5 or greater
+* 
 
-* VirtualBox with Ubuntu 11.10 x64 Server
+* 
 
 * Git
 
 
 ## Setup
 
-* Install and setup VirtualBox with Ubuntu 11.10 x64 Server
+* Github repository
 
-https://github.com/beachsidecoders/beachside-dev-central/blob/master/virtualbox/vbx-osx-ubuntu.md
-
-* Install and setup Git on Ubuntu with ssh key access 
-
-http://vcs.bedrosians.com/bedrosians/bedrosians-dev-central/blob/master/vcs/git.md
+https://github.com/yiminliu/collegeSearchAndMatch
 
 * Install maven, jdk 6, and curl
 
-```sh
-sudo apt-get install -y maven2 openjdk-6-jdk curl
 
-# Choose java-6 jre if it's not already selected
-sudo update-alternatives --config java
-sudo update-alternatives --config javac
-sudo update-alternatives --config javaws
 ```
 
 * Project Files
 
 ```sh
 # clone repo
-git clone ssh://git@vcs.bedrosians.com:2222/bedrosians/bedlogic.git
+git clone https://github.com/yiminliu/collegeSearchAndMatch.git
 
 cd bedlogic
 ```
@@ -61,10 +50,10 @@ mvn jetty:run
 
 ```sh
 # If the curl command is executed from a host other than the server, replace localhost by the dns name or ip of the server.
-curl --get http://localhost:8080/bedlogic/rest/hello
+curl --get http://localhost:8080/
 
 # The accounts endpoint. Replace <customer-code> with the desired account. ie 411703
-curl --get http://localhost:8080/bedlogic/rest/accounts/<customer-code>
+curl --get http://localhost:8080/<customer-code>
 ```
 
 
