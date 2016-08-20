@@ -1767,7 +1767,9 @@ Insert school values(10071, 0,'Southwest University of Visual Arts',210,null,230
 Insert school values(10072, 0,'University of North Carolina School of the Arts',958,8983,24403,8570,87,null,0,0,0,17,20,null,43.2,null,null,null,6,88.3,2.3,'03-15',95,'04-15',null,'Art Schools','public','Winston-Salem','NC','City','Semester','(336) 770-3399','csFullerton.edu',2.7);
 Insert school values(10073, 0,'University of the Arts',1894,null,39908,14552,81,null,0,0,0,0,0,null,69.5,null,null,null,8,86.4,0.4,'Rolling',60,null,null,'Art Schools','private','Philadelphia','PA','Urban','Semester','(800) 616-2787','csFullerton.edu',3.0);
 Insert school values(10074, 0,'VanderCook College of Music',246,null,25690,10888,83,null,0,0,0,20,28,'Yes',76.1,null,null,null,8,66.3,3.5,'Rolling',35,'08-01',null,'Art Schools','private','Chicago','IL','Urban','Semester','(312) 225-6288','csFullerton.edu',3.5);
-Insert school values(10075, 0,'Watkins College of Art, Design & Film',362,null,20250,9390,63,null,0,0,0,0,0,'Yes',94,null,null,null,null,null,null,'07-15',50,null,null,'Art Schools','private','Nashville','TZ',null,null,'(615) 383-4848','csFullerton.edu',3.0);
+Insert school values(10075, 0,'Watkins College of Art, Design & Film',362,null,20250,9390,63,null,0,0,0,22,26,'Yes',94,null,null,null,null,null,null,'07-15',50,null,null,'Art Schools','private','Nashville','TZ',null,null,'(615) 383-4848','csFullerton.edu',3.0);
+Insert school values(10076, 0,'Parsons-The New School for Design',4100,null,36800,0,0,null,0,0,0,0,0,'Yes',0,null,null,null,null,null,'11-01','02-01',null,50,null,null,'Art Schools','private','New York','NY',null,null,'(000) 000-0000','csFullerton.edu',3.3);
+Insert school values(10077, 0,'Fashion Institute of Technology',10000,null,0,7752,20325,null,0,0,0,0,0,'Yes',0,null,null,null,null,null,null,'07-15',50,null,null,'Art Schools','public','New York','NY',null,null,'(000) 000-0000','csFullerton.edu',0.0);
 
 
 /*Aerospace-Aeronautical-Astronautical_Doctorate*/
@@ -2447,8 +2449,8 @@ Insert best_school_major values('OTHER3',8, 114, 'University of Oregon');
 Insert best_school_major values('OTHER3',9,185, 'Bowling Green State University');
 Insert best_school_major values('OTHER3',10,112, 'Florida State University');
 
-/*Insert best_school_major values('OTHER4',1,178,'Kent State University');
-Insert best_school_major values('OTHER4',2,178,'Kent State University');*/
+Insert best_school_major values('OTHER4',1,10076,'Parsons-The New School for Design');
+Insert best_school_major values('OTHER4',2,10077,'Fashion Institute of Technology');
 Insert best_school_major values('OTHER4',3,10067,'Savannah College of Art and Design');
 Insert best_school_major values('OTHER4',4,178,'Kent State University');
 Insert best_school_major values('OTHER4',5,10061,'Rhode Island School of Design');
@@ -5527,6 +5529,8 @@ Insert school_international_application values(10072,'University of North Caroli
 Insert school_international_application values(10073,'University of the Arts','Rolling',null,'No','No','Yes',80,null,6.0,null,null,null,null,null,'Mara Flamm, Director, International Student Services, (215) 717-6621, mflamm@uarts.edu',null);
 Insert school_international_application values(10074,'VanderCook College of Music','04-01','08-01','No','No','No',70,null,null,null,null,null,null,null,'Amy Lenting, Admissions Coordinator, (312) 225-6288, admissions@vandercook.edu',null);
 Insert school_international_application values(10075,'Watkins College of Art, Design & Film',null,null,'No','No','No',null,null,null,null,null,null,null,null,null,null);
+Insert school_international_application values(10076,'Parsons-The New School for Design','02-01',null,'No','No','Yes',92,100,6.5,7.5,null,null,null,null,null,null);
+Insert school_international_application values(10077,'Fashion Institute of Technology',null,null,'No','No','Yes',null,null,null,null,null,null,null,null,null,null);
 
 Insert a_schools_for_b_students values(55, 'Pepperdine University');
 Insert a_schools_for_b_students values(66, 'Purdue University-West Lafayette');
