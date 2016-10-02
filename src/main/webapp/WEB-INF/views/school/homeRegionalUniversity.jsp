@@ -12,49 +12,6 @@
   <%@ include file="/WEB-INF/views/general/header.jsp"%>
   <div class="container">
     <div class="content">  
-      <table class="section_title_center">
-        <tr><td>Find Your Ideal Colleges From 2000 Colleges</td></tr>
-      </table>     
-      <table class="center_element_text" style="border:1px; width: 100%">
-        <tr>
-           <td>
-             <ul style="list-style-type:none">
-                <!--<li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%"><span style="text-color: RED; text-weight: bold; font-style: italic">College Search Engine</span> -- Find Colleges by Your Preferences</a></li>
-                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;"><span style="text-color: RED; text-weight: bold; font-style: italic">College Match Engine</span> -- Find Colleges by Your Preferences and Qualifications<span style="color:red">  *JUST FOR YOU*</span></a></li>-->
-                <li><a id="searchSchool" href="<spring:url value="/school/showSearchEngineForm" />" class="button_l" style="margin: auto; width: 60%">Find Colleges by Your Preferences</a></li>
-                <li><a id="matchSchool" href="<spring:url value="/school/showMatchEngineForm" />" class="button_l" style="margin: auto; width: 60%;">Find Colleges by Your Preferences and Qualifications<span style="color:red"><br>*JUST FOR YOU*</br></span></a></li>
-             </ul>
-           </td>
-        </tr>
-      </table>
-      <table class="section_title_center">
-        <tr><td>Application Made Easy for International Students</td></tr>
-      </table>     
-      <table class="center_element_text" style="border:1px; width: 100%">
-        <tr>
-           <td>
-             <ul style="list-style-type:none">
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.conditionalAdmissionOffered=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges With Conditional Admissions</a></li>
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?internationalStudentApplication.toeflAcceptedInsteadOfSatOrAct=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Accepting TOEFL/IELTS Instead of SAT/ACT</a></li>
-             </ul>
-           </td>
-        </tr>
-      </table>
-      <!--<table class="section_title_center">
-        <tr><td>Application Made Easier</td></tr>
-      </table>     
-      <table class="center_element_text" style="border:1px; width: 100%">
-        <tr>
-           <td>
-             <ul style="list-style-type:none">
-                <li><a id="searchSchool" href="<spring:url value="/school/searchSchools?satActNotRequired=Yes" />" class="button_l" style="margin: auto; width: 60%">Colleges Not Requiring SAT/ACT</a></li>
-             </ul>
-           </td>
-        </tr>
-      </table>-->
-      <table class="section_title_center">
-        <tr><td>Get A College's Information</td></tr>
-      </table>  
       <form:form method="GET" action="searchSchoolsByMatchNamePattern" modelAttribute="school">
          <table class="table_center" style="margin-top:15px; margin-bottom:15px">
             <tr>
@@ -65,36 +22,12 @@
          </table>
       </form:form> 
       <table class="section_title_center">
-        <tr><td>Rankings By Categories</td></tr>
+        <tr><td>Regional Universitis/Colleges Rankings</td></tr>
       </table>  
       <!--<table class="center_element" style="border-spacing: 80px, -90px">-->
        <spring:url var="action" value="/school/searchSchools" />
        <table class="center_element_text" style="width:70%; margin-top: 15px; margin-bottom: 15px;">
          <tr>
-           <td>
-             <form:form method="GET" action="${action}" modelAttribute="school">
-               <table>            
-                 <tr>
-                   <td><input name="submit" type="submit" value="National Universities" class="submit_button"/>
-                     <form:hidden path="category" value="NU"/>
-                   </td> 
-                </tr>
-              </table>
-            </form:form>
-          </td>
-          <td>    
-            <form:form method="GET" action="${action}" modelAttribute="school">
-               <table>            
-                 <tr>
-                   <td><input name="submit" type="submit" value="National Liberal Art Colleges" class="submit_button" />
-                     <form:hidden path="category" value="NLAC"/>
-                   </td> 
-                 </tr>
-              </table>
-            </form:form>
-         </td>
-        </tr>  
-	    <tr>
           <td>
              <form:form method="GET" action="${action}" modelAttribute="school">
                <table>            
